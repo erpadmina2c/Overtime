@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Overtime.Models.WorkingHour>
+
+@{
+    Layout = null;
+}
+
+@if (@TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong>  <a href="#" class="alert-link">@TempData["errorMessage"]</a>.
+    </div>
+}
+In Minutes
+<div class="row">
+    <div class="col alert alert-light">
+        <label>Worked</label>
+        <a class="alert-link"> @(Math.Round(ViewBag.workingHour*60))</a>
+    </div>
+    <div class="col alert alert-light">
+        <label>Deductions</label>
+        <a class="alert-link"> @(Math.Round(ViewBag.deduction*60))</a>
+    </div>
+    <div class="col alert alert-light">
+        <label>Eligible</label>
+        <a class="alert-link">@((((decimal)ViewBag.workingHour) - ((decimal)ViewBag.deduction))*60)</a>
+    </div>
+</div>
+In Hour
+<div class="row">
+    <div class="col alert alert-light">
+        <label>Worked</label>
+        <a class="alert-link"> @ViewBag.workingHour</a>
+    </div>
+    <div class="col alert alert-light">
+        <label>Deductions</label>
+        <a class="alert-link"> @ViewBag.deduction</a>
+    </div>
+    <div class="col alert alert-light">
+        <label>Eligible<label>
+        <a class="alert-link"> @(((decimal)ViewBag.workingHour) - ((decimal)ViewBag.deduction))</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Minutes
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wh_hours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wh_remarks)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.wh_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wh_cre_date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (@item.wh_hours != null)
+                {
+                    <td>
+                        @(Math.Round(item.wh_hours*60))
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        0
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.wh_hours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wh_remarks)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.wh_cre_by_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wh_cre_date)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

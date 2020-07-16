@@ -1,4 +1,9 @@
 ﻿$(document).ready(function () {
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    var eventsdata = new Array;
 
     $("#rq_cre_by").select2();
     $("#rq_dep_id").select2();
@@ -40,6 +45,25 @@
             });
         }
     });
+    function getDaysInMonth(month, year) {
+        return new Date(year, month, 0).getDate();
+    }
+    if ($("#calendar").length) {
+        
+        var date = new Date();
+        var d = date.getDate(),
+            m = date.getMonth(),
+            y = date.getFullYear();
+        var evts = [];
+        for (var i = 1; i <= getDaysInMonth(m, y); i++) {
+            evts.push({
+                title: "John",
+                start: new Date(y, m, i),
+                backgroundColor: '#f56954',
+                borderColor: '#f56954'
+            });
+        }
+    }
 
     $("#SelectRole").change(function () {
         load_user_menus();
@@ -164,7 +188,105 @@
     $('#role').change(function () {
         load_user_menus()
     });
-   
+    $('#external-events div.external-event').each(function () {
+ 
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+            title: $.trim($(this).text()) // use the element's text as the event title
+        };
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject);
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+            zIndex: 999,
+            revert: true,      // will cause the event to go back to its
+            revertDuration: 0  //  original position after the drag
+        });
+
+    });
+
+
+    /* initialize the calendar
+    -----------------------------------------------------------------*/
+
+    var calendar = $('#calendar').fullCalendar({
+        header: {
+            left: 'title',
+            center: 'month',
+            right: 'prevYear,prev,next,nextYear today'
+        },
+        editable: true,
+        firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+        selectable: true,
+        defaultView: 'month',
+
+        axisFormat: 'h:mm',
+        columnFormat: {
+            month: 'ddd',    // Mon
+            week: 'ddd d', // Mon 7
+            day: 'dddd M/d',  // Monday 9/7
+            agendaDay: 'dddd d'
+        },
+        titleFormat: {
+            month: 'MMMM yyyy', // September 2009
+            week: "MMMM yyyy", // September 2009
+            day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+        },
+        allDaySlot: true,
+        selectHelper: true,
+        select: function (start, end, allDay) {
+            var title = prompt('Event Title:');
+            if (title) {
+                calendar.fullCalendar('renderEvent',
+                    {
+                        title: title,
+                        start: start,
+                        end: end,
+                        allDay: allDay
+                    },
+                    true // make the event "stick"
+                );
+            }
+            calendar.fullCalendar('unselect');
+        },
+        droppable: true, // this allows things to be dropped onto the calendar !!!
+        drop: function (date, allDay) { // this function is called when something is dropped
+           
+            // retrieve the dropped element's stored Event Object
+            var originalEventObject = $(this).data('eventObject');
+
+            // we need to copy it, so that multiple events don't have a reference to the same object
+            var copiedEventObject = $.extend({}, originalEventObject);
+
+            // assign it the date that was reported
+            copiedEventObject.start = date;
+            copiedEventObject.allDay = allDay;
+
+            // render the event on the calendar
+            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+            // is the "remove after drop" checkbox checked?
+            if ($('#drop-remove').is(':checked')) {
+                // if so, remove the element from the "Draggable Events" list
+                $(this).remove();
+            }
+
+        },
+        events: evts,
+        buttonText: {
+            prevYear: "<<",
+            nextYear: ">>",
+            prev:"<",
+            next:">"
+        },
+        
+       
+    });
+
 
 });
 
@@ -218,6 +340,7 @@ function saveWorkFlowDetails() {
 
 
 function overTimeRequestReport() {
+    $('#overlay').fadeIn();
     var data = new FormData();
     data.append("rq_dep_id", $("#rq_dep_id").val());
     data.append("reportrange", $("#reportrange").val());
@@ -240,8 +363,10 @@ function overTimeRequestReport() {
                     'pdfHtml5'
                 ]
             });
+            $('#overlay').fadeOut()
         },
         error: function () {
+            $('#overlay').fadeOut()
         }
     });
 }
@@ -528,6 +653,8 @@ function viewInsights(id,doc_id,flag) {
     });
 }
 
+
+
 function saveInsight() {
     var id = $("#id").val();
     var doc_id = $("#doc_id").val();
@@ -550,7 +677,7 @@ function saveInsight() {
             $("#doc_id").val(doc_id);
             $('#insightsModal').modal('show');
             $("#remarks").val("");
-
+            window.location.reload();
         },
         error: function () {
         }
@@ -559,10 +686,21 @@ function saveInsight() {
 
 function Reject(id) {
     var data = prompt("Reason For Rejection?? ", "");
-    if (data != null) {
+    if (data != null && data != "") {
         $("#reason" + id).val(data);
         $("#reject" + id).submit();
     }
+    else {
+        alert('please enter Reason!!!');
+    }
+}
+function updateHour() {
+
+    if ($("#time").val() != 0) {
+        $("#wh_hours").val(parseFloat($("#time").val()/60).toFixed(2));
+    }
+   
+    
 }
 
 function consolidatedByType() {
@@ -604,4 +742,72 @@ function consolidatedByType() {
         alert("Please choose Report type");
     }
     
+}
+
+function Workinghour(id, doc_id, flag) {
+   
+    var data = new FormData();
+    data.append('id', id);
+    data.append('doc_id', doc_id);
+    $.ajax({
+        url: "/WorkingHour/index",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#workingHourContainer").html(response);
+
+            if (flag == 0) {
+                $("#whfilter").empty()
+            }
+            $("#id").val(id);
+            $("#doc_id").val(doc_id);
+            $('#workingHourModal').modal('show');
+          
+        },
+        error: function () {
+        }
+    });
+}
+
+
+
+function saveWorkinghour() {
+    var id = $("#id").val();
+    var doc_id = $("#doc_id").val();
+    var wh_remarks = $("#wh_remarks").val();
+    var wh_hours = $("#wh_hours").val();
+    if (wh_hours > 0) {
+        var data = new FormData();
+        data.append('id', id);
+        data.append('doc_id', doc_id);
+        data.append('wh_remarks', wh_remarks);
+        data.append('wh_hours', wh_hours);
+
+        $.ajax({
+            url: "/WorkingHour/Create",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#workingHourContainer").html(response);
+                $("#id").val(id);
+                $("#doc_id").val(doc_id);
+                $('#workingHourModal').modal('show');
+                $("#remarks").val("");
+                $("#wh_remarks").val("");
+                $("#time").val("");
+                $("#wh_hours").val("");
+            },
+            error: function () {
+            }
+        });
+    }
+    else {
+        alert("Deduction Cannot be Negative!!!")
+    }
 }

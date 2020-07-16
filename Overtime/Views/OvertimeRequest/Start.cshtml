@@ -39,7 +39,9 @@
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label asp-for="rq_dep_id" class="control-label"></label>
-                                            <select asp-for="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))"></select>
+                                            <select asp-for="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.DepartmentList,"d_id","d_description"))">
+                                                <option value="">select Department</option>
+                                            </select>
                                             <span asp-validation-for="rq_dep_id" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -178,54 +180,107 @@
                                     <tbody>
                                         @foreach (var item in ViewBag.MyOnProcessRequests)
                                         {
-                                            DateTime end = (DateTime)item.rq_end_time;
-                                            DateTime now = (DateTime)item.rq_start_time;
-                                            TimeSpan diff = end.Subtract(now);
-                                        <tr>
-                                            <td>
-                                                @item.rq_id
-                                            </td>
 
-                                            <td>
-                                                @item.rq_description
-                                            </td>
-                                            <td>
-                                                @item.rq_dep_description
-                                            </td>
-                                            <td>
-                                                @item.rq_start_time
-                                            </td>
-                                            <td>
-                                                @item.rq_end_time
-                                            </td>
-                                            <td>
-                                                @diff.ToString(@"dd\:hh\:mm\:ss")
-                                            </td>
-                                            <td>
-                                                @item.rq_remarks
-                                            </td>
-                                            <td>
-                                                @item.rq_cre_by_name
-                                            </td>
-                                            <td>
-                                                @item.rq_cre_date
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                            @if (item.rq_end_time != null)
+                                            {
+
+                                                DateTime end = (DateTime)item.rq_end_time;
+                                                DateTime now = (DateTime)item.rq_start_time;
+                                                TimeSpan diff = end.Subtract(now);
+                                                <tr>
+                                                    <td>
+                                                        @item.rq_id
+                                                    </td>
+
+                                                    <td>
+                                                        @item.rq_description
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_dep_description
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_start_time
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_end_time
+                                                    </td>
+                                                    <td>
+                                                        @diff.ToString(@"dd\:hh\:mm\:ss")
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_remarks
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_cre_by_name
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_cre_date
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
                                                               ,@item.rq_doc_id,
                                                                @item.rq_workflow_id,
                                                                @item.rq_status)">
-                                                    View
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
                                                               ,@item.rq_doc_id
                                                               )">
-                                                    View
-                                                </button>
-                                            </td>
-                                        </tr>
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+}
+                                            else
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.rq_id
+                                                    </td>
+
+                                                    <td>
+                                                        @item.rq_description
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_dep_description
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_start_time
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_end_time
+                                                    </td>
+                                                    <td>
+                                                       
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_remarks
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_cre_by_name
+                                                    </td>
+                                                    <td>
+                                                        @item.rq_cre_date
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-success" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id
+                                                              )">
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     </tbody>
                                 </table>

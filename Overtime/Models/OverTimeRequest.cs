@@ -38,8 +38,20 @@ namespace Overtime.Models
         [Display(Name = "End Time")]
         public DateTime? rq_end_time { get; set; }
 
+       
         [Display(Name = "Hours")]
         public int rq_no_of_hours { get; set; }
+
+        [NotMapped]
+        [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Hours")]
+        public decimal rq_working_hours { get; set; }
+
+
+        [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Deductions")]
+        [NotMapped]
+        public decimal rq_deductions { get; set; }
 
         [Display(Name = "Remarks")]
         public string rq_remarks { get; set; }
@@ -67,7 +79,7 @@ namespace Overtime.Models
         public string rq_cre_for_emp_id { get; set; }
 
         [NotMapped]
-        [Display(Name = "Requester Name")]
+        [Display(Name = "Requester")]
         public string rq_cre_for_name { get; set; }
 
         public string rq_hold_yn { get; set; }

@@ -517,14 +517,17 @@ namespace Overtime.Controllers
                 }
                 else
                 {
+              
+                if (overTimeRequest.rq_dep_id != 0)
+                {
                     try
                     {
-                    IEnumerable<OverTimeRequest> active = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
+                        IEnumerable<OverTimeRequest> active = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
 
-                    if (active.Count() == 0)
-                    {
+                        if (active.Count() == 0)
+                        {
 
-                       
+
                             Documents documents = idocuments.GetDocument(1);
                             overTimeRequest.rq_doc_id = documents.dc_id;
                             overTimeRequest.rq_workflow_id = documents.dc_workflow_id;
@@ -536,15 +539,13 @@ namespace Overtime.Controllers
                             overTimeRequest.rq_cre_date = DateTime.Now;
                             ioverTimeRequest.Add(overTimeRequest);
                             return RedirectToAction(nameof(Start));
-                       
 
-                       
                         }
                         else
                         {
 
-                           TempData["errorMessage"] = "You have been Active OverTime Request!!";
-                           return RedirectToAction(nameof(Start));
+                            TempData["errorMessage"] = "You have been Active OverTime Request!!";
+                            return RedirectToAction(nameof(Start));
                         }
                     }
                     catch
@@ -553,6 +554,13 @@ namespace Overtime.Controllers
                         ViewBag.DepartmentList = (idepartment.GetDepartments);
                         return RedirectToAction(nameof(Start));
                     }
+                }
+                else
+                {
+                    TempData["errorMessage"] = "Please enter all data";
+                    ViewBag.DepartmentList = (idepartment.GetDepartments);
+                    return RedirectToAction(nameof(Start));
+                }
                 }
             
         }
@@ -570,27 +578,29 @@ namespace Overtime.Controllers
                     Documents documents = idocuments.GetDocument(1);
                     OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                     WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-                    int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+                    int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, 0);
                     WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
-
-                    WorkflowTracker workflowTracker = new WorkflowTracker();
-                    workflowTracker.wt_doc_id = documents.dc_id;
-                    workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
-                    workflowTracker.wt_status = overTimeRequest.rq_status;
-                    workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
-                    workflowTracker.wt_role_id = getCurrentUser().u_role_id;
-                    workflowTracker.wt_role_description = getCurrentUser().u_role_description;
-                    workflowTracker.wt_status_to = nextStatus;
-                    workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
-                    workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
-                    workflowTracker.wt_approve_status = "WorkDone";
-                    workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
-                    workflowTracker.wt_cre_date = DateTime.Now;
-                    iworkflowTracker.Add(workflowTracker);
-                    overTimeRequest.rq_status = nextStatus;
-                    overTimeRequest.rq_end_time = DateTime.Now;
-                    ioverTimeRequest.Update(overTimeRequest);
+                    if (overTimeRequest.rq_status != nextStatus)
+                    {
+                        WorkflowTracker workflowTracker = new WorkflowTracker();
+                        workflowTracker.wt_doc_id = documents.dc_id;
+                        workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+                        workflowTracker.wt_status = overTimeRequest.rq_status;
+                        workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+                        workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+                        workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                        workflowTracker.wt_status_to = nextStatus;
+                        workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+                        workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+                        workflowTracker.wt_approve_status = "WorkDone";
+                        workflowTracker.wt_cre_by = getCurrentUser().u_id;
+                        workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
+                        workflowTracker.wt_cre_date = DateTime.Now;
+                        iworkflowTracker.Add(workflowTracker);
+                        overTimeRequest.rq_status = nextStatus;
+                        overTimeRequest.rq_end_time = DateTime.Now;
+                        ioverTimeRequest.Update(overTimeRequest);
+                    }
                     return RedirectToAction(nameof(Start));
                 }
                 catch(Exception ex)

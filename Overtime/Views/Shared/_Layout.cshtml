@@ -13,6 +13,8 @@
     <link href="~/css/select2.css" rel="stylesheet" />
     <link href="~/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/calandarstyle.css" rel="stylesheet" />
+    <link href="~/fonts/font.css" rel="stylesheet" />
 </head>
 
 <body class="sb-nav-fixed">
@@ -114,14 +116,14 @@
             <div class="modal-dialog  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" >Insights</h5>
+                        <h5 class="modal-title">Insights</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="row"  id="filter">
+                            <div class="row" id="filter">
 
                                 <div class="col-md-4">
                                     <input type="hidden" id="id" name="id" class="form-control">
@@ -135,7 +137,7 @@
                                 <hr />
 
                             </div>
-                            
+
                             <div class="row ">
                                 <div class="col-md-8">
                                     <div class="card">
@@ -145,43 +147,106 @@
                                             </div>
                                         </div>
                                     </div>
-                                  
+
 
                                 </div>
 
-                        </div>
+                            </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/scripts.js" asp-append-version="true"></script>
-    <script src="~/js/myscript.js" asp-append-version="true"></script>
-    <script src="~/js/jquery.dataTables.min.js"></script>
-    <script src="~/js/dataTables.bootstrap.min.js"></script>
-    <script src="~/js/dataTables.responsive.min.js"></script>
-    <script src="~/js/responsive.bootstrap.min.js"></script>
-    <script src="~/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="~/js/moment.min.js"></script>
-    <script src="~/js/daterangepicker.min.js"></script>
-    <link href="~/css/daterangepicker.css" rel="stylesheet" />
-    <script src="~/js/jquery-ui.js"></script>
-    <script src="~/js/dataTables.buttons.min.js"></script>
-    <script src="~/js/jszip.min.js"></script>
-    <script src="~/js/pdfmake.min.js"></script>
-    <script src="~/js/vfs_fonts.js"></script>
-    <script src="~/js/multiselect.min.js"></script>
-    <script src="~/js/buttons.html5.min.js"></script>
-    <script src="~/js/sum().js"></script>
-    <script src="~/js/select2.js"></script>
-    @RenderSection("Scripts", required: false)
+        <div class="modal fade bd-example-modal-lg" id="workingHourModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">WorkingHour</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="container">
+
+                            <div class="row" id="whfilter">
+                                <div class="col-md-2">
+                                    <input type="text" id="time" name="time" class="form-control" placeholder="Enter In Minutes" onkeyup="updateHour();" step=".01">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="hidden" id="id" name="id" class="form-control">
+                                    <input type="hidden" id="doc_id" name="doc_id" class="form-control">
+                                    <input type="number" id="wh_hours" name="wh_hour" class="form-control" placeholder="Hours" disabled step=".01">
+
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" id="wh_remarks" name="wh_remarks" class="form-control" placeholder="Enter Remarks..">
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="button" id="save" class="btn btn-success" onclick="saveWorkinghour()" value="Add" />
+                                </div>
+                                <hr />
+
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-body ">
+                                            <div id="workingHourContainer">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="overlay" style="display:none;">
+            <div class="spinner"></div>
+            <br />
+            Loading...
+        </div>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/scripts.js" asp-append-version="true"></script>
+        <script src="~/js/myscript.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.dataTables.min.js"></script>
+        <script src="~/js/dataTables.bootstrap.min.js"></script>
+        <script src="~/js/dataTables.responsive.min.js"></script>
+        <script src="~/js/responsive.bootstrap.min.js"></script>
+        <script src="~/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/daterangepicker.min.js"></script>
+        <link href="~/css/daterangepicker.css" rel="stylesheet" />
+        <script src="~/js/jquery-ui.js"></script>
+        <script src="~/js/dataTables.buttons.min.js"></script>
+        <script src="~/js/jszip.min.js"></script>
+        <script src="~/js/pdfmake.min.js"></script>
+        <script src="~/js/vfs_fonts.js"></script>
+        <script src="~/js/multiselect.min.js"></script>
+        <script src="~/js/buttons.html5.min.js"></script>
+        <script src="~/js/sum().js"></script>
+        <script src="~/js/select2.js"></script>
+        <script src="~/js/calandarscript.js"></script>
+        @RenderSection("Scripts", required: false)
 
 </body>
 

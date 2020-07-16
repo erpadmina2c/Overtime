@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Overtime.Models.HourRate>
+
+@{
+    ViewData["Title"] = "Hour";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="page-header">
+                    <h3>Hour Rates</h3>
+                </div>
+                <p>
+                    <a asp-action="Create" class="btn btn-warning">Create New</a>
+                </p>
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                       
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.hr_date)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.hr_rate)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.hr_active_yn)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.hr_cre_by)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.hr_cre_date)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.hr_date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.hr_rate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.hr_active_yn)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.hr_cre_by)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.hr_cre_date)
+                                            </td>
+                                            <td>
+                                                <a asp-action="Edit" asp-route-id="@item.hr_id">Edit</a> |
+                                                <a asp-action="Details" asp-route-id="@item.hr_id">Details</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.hr_id">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -407,3 +407,80 @@ BEGIN
 	return @role;
 END;
 GO
+
+
+CREATE TABLE [dbo].[HourRates](
+	[hr_id] [int] IDENTITY(1,1) NOT NULL,
+	[hr_date] [date] NOT NULL,
+	[hr_role_id] [int] NULL,
+	[hr_role_description] [varchar](50) NULL,
+	[hr_rate] [numeric](10, 2) NOT NULL,
+	[hr_active_yn] [varchar](1) NULL,
+	[hr_cre_by] [int] NULL,
+	[hr_cre_date] [datetime] NULL,
+ CONSTRAINT [PK_HourRates] PRIMARY KEY CLUSTERED 
+(
+	[hr_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [OverTime]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[get_workflow_next_or_previous_priority]    Script Date: 6/29/2020 2:26:18 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE  FUNCTION [dbo].[get_workflow_next_or_previous_priority](@id int,@type varchar(30),
+    @current_position int
+)
+RETURNS int
+AS 
+BEGIN
+	DECLARE @result int;
+	if(@type='next')
+	   SET @result = (select top 1 wd_priority from WorkflowDetails where wd_workflow_id=@id and wd_priority>@current_position order by wd_priority );
+	else
+	   SET @result = (select top 1 wd_priority from WorkflowDetails where wd_workflow_id=@id and wd_priority<@current_position order by  wd_priority desc );
+	return @result;
+END;
+GO
+
+
+USE [OverTime]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[get_approved_priority]    Script Date: 6/29/2020 2:26:50 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create   FUNCTION [dbo].[get_approved_priority](@id int
+)
+RETURNS int
+AS 
+BEGIN
+	DECLARE @result int;
+	DECLARE @max int;
+	set @max=(select [dbo].get_workflow_min_max(@id,'max'));
+	set @result=(select [dbo].get_workflow_next_or_previous_priority(@id,'previous',@max));
+	return @result;
+END;
+GO
+
+
+CREATE TABLE [dbo].[WorkingHour](
+	[wh_id] [int] IDENTITY(1,1) NOT NULL,
+	[wh_fun_doc_id] [int] NULL,
+	[wh_hours] numeric(10,3) NULL,
+	[wh_cre_by] [int] NULL,
+	[wh_cre_by_name] [varchar](250) NULL,
+	[wh_cre_date] [datetime] NULL
+) 

@@ -32,6 +32,11 @@ namespace Overtime.Repository
 
         public DbSet<Insight> Insights { get; set; }
 
-        public DbSet<Overtime.Models.OvCustomModel> OvCustomModel { get; set; }
+        public DbSet<OvCustomModel> OvCustomModel { get; set; }
+        public DbSet<HourRate> HourRates { get; set; }
+
+        public DbSet<WorkingHour> WorkingHour { get; set; }
+
+
     }
 }
