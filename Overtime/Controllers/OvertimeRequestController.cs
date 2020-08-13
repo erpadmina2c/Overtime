@@ -154,10 +154,6 @@ namespace Overtime.Controllers
                             OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
                             Requests.rq_description = overTimeRequest.rq_description;
                             Requests.rq_dep_id = overTimeRequest.rq_dep_id;
-                            Requests.rq_start_time = overTimeRequest.rq_start_time;
-                            Requests.rq_end_time = overTimeRequest.rq_end_time;
-                            Requests.rq_no_of_hours = overTimeRequest.rq_no_of_hours;
-                            Requests.rq_remarks = overTimeRequest.rq_remarks;
                             ioverTimeRequest.Update(Requests);
                             if (from1.Equals("Approval"))
                             {
