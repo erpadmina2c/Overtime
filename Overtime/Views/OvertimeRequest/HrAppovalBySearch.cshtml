@@ -1,0 +1,240 @@
+﻿@model IEnumerable<Overtime.Models.OverTimeRequest>
+
+@{
+    Layout = null;
+}
+<table class="table  table-responsive text-nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_for_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_dep_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_start_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_end_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_no_of_hours)
+            </th>
+            <th>
+                Deductions(Minutes)
+            </th>
+            <th>Eligible</th>
+            <th>Deductions</th>
+            <th>Hold Details</th>
+            <th>Insights</th>
+            <th></th>
+            <th></th>
+            <th>Approval History</th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rq_cre_date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            if (item.rq_end_time != null)
+            {
+                DateTime end = (DateTime)item.rq_end_time;
+                DateTime now = (DateTime)item.rq_start_time;
+                TimeSpan diff = end.Subtract(now);
+
+                if (item.rq_hold_yn == "Y")
+                {
+
+
+                    <tr style="background-color:#fc6f65" id="@string.Format("row{0}", @item.rq_id)">
+
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="JQ_reject(@item.rq_id);">Reject</button>
+                            @*<form asp-action="Reject" id="@string.Format("reject{0}", @item.rq_id)">
+                                <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                <input type="hidden" class="form-control" name="reason" id="@string.Format("reason{0}", @item.rq_id)" value="" />
+                                <button type="button" class="btn btn-danger" onclick="Reject(@item.rq_id);">Reject</button>
+                            </form>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_description)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_dep_description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_start_time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_end_time)
+                        </td>
+                        <td>
+                            @diff.ToString(@"dd\:hh\:mm")
+                        </td>
+
+                        <td>
+                            @(Math.Round(item.rq_deductions * 60,2))
+                        </td>
+                        <td>
+                            @(Math.Round((item.rq_working_hours - item.rq_deductions)*60,2))
+                        </td>
+                        <td>
+
+                            <button type="button" class="btn btn-primary" onclick="Workinghour(@item.rq_id
+                                                              ,@item.rq_doc_id,1)">
+                                Details
+                            </button>
+                        </td>
+
+
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,'Approve')">
+                                View
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id,1
+                                                              )">
+                                View
+                            </button>
+                        </td>
+                        <td>
+                            
+                            <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
+                        </td>
+
+                        <td>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                                View
+                            </button>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_date)
+                        </td>
+
+                    </tr>
+                }
+                else
+                {
+
+                    <tr  id="@string.Format("row{0}", @item.rq_id)">
+
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="JQ_reject(@item.rq_id);">Reject</button>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_for_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_description)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_dep_description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_start_time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_end_time)
+                        </td>
+                        <td>
+                            @diff.ToString(@"dd\:hh\:mm")
+                        </td>
+                        <td>
+                            @(Math.Round(item.rq_deductions * 60,2))
+                        </td>
+                        <td>
+                            @(Math.Round((item.rq_working_hours - item.rq_deductions)*60,2))
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="Workinghour(@item.rq_id
+                                                              ,@item.rq_doc_id,1)">
+                                Details
+                            </button>
+                        </td>
+
+
+
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,'Approve')">
+                                View
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
+                                                              ,@item.rq_doc_id,1
+                                                              )">
+                                View
+                            </button>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-from="Approval" class="btn btn-info" asp-route-id="@item.rq_id">Edit</a>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="JQ_Approve(@item.rq_id);">Approve</button>
+                            @*<form asp-action="Approve">
+                                <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
+                                <input type="hidden" name="from" class="form-control" value="Approval" />
+                                <input type="submit" value="Approve" class="btn btn-success" />
+                            </form>*@
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default" onclick="workflowHistory(@item.rq_id
+                                                              ,@item.rq_doc_id,
+                                                               @item.rq_workflow_id,
+                                                               @item.rq_status)">
+                                View
+                            </button>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_by_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rq_cre_date)
+                        </td>
+
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

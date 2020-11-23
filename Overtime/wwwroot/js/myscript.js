@@ -811,3 +811,94 @@ function saveWorkinghour() {
         alert("Deduction Cannot be Negative!!!")
     }
 }
+
+function HrAppovalBySearch() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("rq_dep_id", $("#rq_dep_id").val());
+    data.append("reportrange", $("#reportrange").val());
+    data.append("rq_cre_by", $("#rq_cre_by").val());
+    data.append("rq_cre_date", $("#rq_cre_date").val());
+    $.ajax({
+        url: "/OvertimeRequest/HrAppovalBySearch",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+            $('#overlay').fadeOut()
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+function JQ_reject(id) {
+    var reason = prompt("Reason For Rejection?? ", "");
+   
+    if (reason != null && reason != "") {
+       
+        var data = new FormData();
+        data.append("id", id);
+        data.append("reason", reason);
+
+        $.ajax({
+            url: "/OvertimeRequest/JQ_Reject",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    $("#row" + id).remove();
+                }
+                else {
+                    alert(response.message);
+                }
+               
+            },
+            error: function () {
+            }
+        });
+       
+    }
+    else {
+        alert('please enter Reason!!!');
+    }
+}
+function JQ_Approve(id) {
+   
+        var data = new FormData();
+        data.append("id", id);
+        $.ajax({
+            url: "/OvertimeRequest/JQ_Approve",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    $("#row" + id).remove();
+                }
+                else {
+                    alert(response.message);
+                }
+
+            },
+            error: function () {
+            }
+        });
+
+}
