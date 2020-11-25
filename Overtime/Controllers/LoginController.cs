@@ -15,9 +15,11 @@ namespace Overtime.Controllers
     public class LoginController : Controller
     {
         private readonly IUser iuser;
-        public LoginController(IUser _iuser)
+        private readonly ILoginLog iLoginLog;
+        public LoginController(IUser _iuser,ILoginLog _iloginLog)
         {
             iuser = _iuser;
+            iLoginLog = _iloginLog;
         }
         public IActionResult Index()
         {
@@ -43,6 +45,14 @@ namespace Overtime.Controllers
                             newuser.u_password = null;
                             string JsonStr = JsonConvert.SerializeObject(newuser);
                             HttpContext.Session.SetString("User", JsonStr);
+
+                            LoginLog loginLog = new LoginLog();
+                            loginLog.ll_cre_by = newuser.u_id;
+                            loginLog.ll_login_time = DateTime.Now;
+                            loginLog.ll_cre_date = DateTime.Now;
+                            loginLog.ll_cre_by_name = newuser.u_name;
+                            iLoginLog.Add(loginLog);
+
                             return RedirectToAction("Index", "Home");
                         }
                         else

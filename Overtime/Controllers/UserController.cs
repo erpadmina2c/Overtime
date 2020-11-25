@@ -18,14 +18,16 @@ namespace Overtime.Controllers
         private readonly IRole irole;
         private readonly IDepartment idepartment;
         private readonly IMenu imenu;
+        private readonly ILoginLog iloginLog;
 
 
-        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu)
+        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu,ILoginLog _loginLog)
         {
             iuser=_iuser;
             irole = _irole;
             idepartment = _idepartment;
             imenu = _imenu;
+            iloginLog = _loginLog;
         }
         
         public ActionResult Index()
@@ -216,6 +218,49 @@ namespace Overtime.Controllers
             }
         }
 
+        // GET: User/Delete/5
+        public ActionResult UserLoginHistory(int id)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.UserList = iuser.GetUsersList();
+                return View();
+            }
+        }
+
+        // POST: User/Delete/5
+        [HttpPost]
+        public ActionResult UserLoginHistoryBySearch(int id,string reportrange)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                try
+                {
+                    String[] array = reportrange.Split('-');
+
+                    DateTime start_time = DateTime.Parse(array[0]);
+                    DateTime end_time = DateTime.Parse(array[1] + " 11:59:59 PM");
+
+                    IEnumerable<LoginLog> loginLogs= iloginLog.GetLoginLogsBySearch(id,start_time,end_time);
+
+                    return View(loginLogs);
+
+                }
+                catch
+                {
+
+                    return View();
+                }
+            }
+        }
         private User getCurrentUser()
         {
             try

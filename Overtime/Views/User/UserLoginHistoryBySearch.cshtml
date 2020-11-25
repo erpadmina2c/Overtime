@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Overtime.Models.LoginLog>
+
+@{
+    Layout = null;
+}
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ll_login_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ll_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ll_cre_date)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ll_login_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ll_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ll_cre_date)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

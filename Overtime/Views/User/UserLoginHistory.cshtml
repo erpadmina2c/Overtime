@@ -1,0 +1,52 @@
+﻿@model Overtime.Models.LoginLog
+
+@{
+    ViewData["Title"] = "UserLoginHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="page-header">
+                    <h3>User Login History</h3>
+                </div>
+                <div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="control-label">Date Range</label>
+                                    <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label  class="control-label">User Login History</label>
+                                <select  id="ll_cre_by" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))">
+                                    <option value="">All</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-1">
+                            <div class="form-group" align="justify">
+                                <label class="control-label"></label>
+                                <input type="submit" onclick="userLoginHistory();" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="card">
+                        <div class="card-body" id="container">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -862,6 +862,7 @@ function JQ_reject(id) {
             success: function (response) {
                 if (response.message == "Success") {
                     $("#row" + id).remove();
+                   
                 }
                 else {
                     alert(response.message);
@@ -891,6 +892,7 @@ function JQ_Approve(id) {
             success: function (response) {
                 if (response.message == "Success") {
                     $("#row" + id).remove();
+                   
                 }
                 else {
                     alert(response.message);
@@ -901,4 +903,34 @@ function JQ_Approve(id) {
             }
         });
 
+}
+function userLoginHistory() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("id", $("#ll_cre_by").val());
+    $.ajax({
+        url: "/User/UserLoginHistoryBySearch",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                order:[],
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+            $('#overlay').fadeOut()
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
 }
