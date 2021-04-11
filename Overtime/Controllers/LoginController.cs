@@ -39,7 +39,6 @@ namespace Overtime.Controllers
                     if (newuser != null)
                     {
                         var newPassword = AesOperaions.DecryptString(key, newuser.u_password);
-
                         if (user.u_password.ToString().Equals(newPassword.ToString()))
                         {
                             newuser.u_password = null;

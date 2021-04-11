@@ -33,10 +33,12 @@ namespace Overtime.Models
         [Display(Name = "Role Name")]
         public string u_role_description { get; set; }
 
-      
 
         [Display(Name = "is Admin")]
         public string u_is_admin { get; set; }
+        
+        [Display(Name = "Allocation")]
+        public string u_allocation_yn { get; set; }
 
 
         [Display(Name = "Active")]

@@ -56,6 +56,7 @@ namespace Overtime.Repository
                                     u_role_id= u.u_role_id,
                                     u_role_description=r.r_description,
                                     u_active_yn=u.u_active_yn,
+                                    u_allocation_yn=u.u_allocation_yn,
                                     u_is_admin=u.u_is_admin,
                                     u_cre_by= u.u_cre_by,
                                     u_cre_by_Name=k.u_name,
@@ -87,7 +88,7 @@ namespace Overtime.Repository
                           on u.u_role_id equals r.r_id
                         join e in db.Users
                         on u.u_cre_by equals e.u_id
-                        where u.u_name== u_name
+                        where u.u_name== u_name && u.u_active_yn=="Y"
                         select new User
                         {
                            u_id=u.u_id,
@@ -98,10 +99,11 @@ namespace Overtime.Repository
                            u_role_id=u.u_role_id,
                            u_role_description=r.r_description,
                            u_active_yn=u.u_active_yn,
+                           u_allocation_yn=u.u_allocation_yn,
                            u_cre_by=u.u_cre_by,
                            u_cre_by_Name=e.u_name,
                            u_cre_date=u.u_cre_date
-                                                 };
+                        };
 
             return query.FirstOrDefault<User>();
            

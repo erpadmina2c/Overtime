@@ -69,8 +69,6 @@ namespace Overtime.Models
 
         public string rq_active_yn { get; set; }
 
-
-
         [Display(Name = "Request For")]
         public int rq_cre_for { get; set; }
 

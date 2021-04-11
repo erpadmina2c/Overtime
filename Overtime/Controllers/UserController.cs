@@ -110,10 +110,11 @@ namespace Overtime.Controllers
 
                     
                 }
-                catch
+                catch(Exception ex)
                 {
                     ViewBag.RoleList = (irole.GetRoles);
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
+                    ViewBag.Message = ex.Message;
                     return View();
                 }
             }
@@ -151,15 +152,21 @@ namespace Overtime.Controllers
                     User temp_user = iuser.GetUser(id);
                     
                     var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
-                    var encryptedString = AesOperaions.EncryptString(key, user.u_password);
+                   
                     temp_user.u_full_name = user.u_full_name;
                     temp_user.u_name = user.u_name;
                     temp_user.u_is_admin = user.u_is_admin;
                     temp_user.u_role_id = user.u_role_id;
                     temp_user.u_active_yn = user.u_active_yn;
-                    if(!user.u_password.ToString().Equals(""))
+                    temp_user.u_allocation_yn= user.u_allocation_yn;
+                    if(user.u_password!=null)
                     {
+                        var encryptedString = AesOperaions.EncryptString(key, user.u_password);
                         temp_user.u_password = encryptedString.ToString();
+                    }
+                    else
+                    {
+                        temp_user.u_password = temp_user.u_password;
                     }
                     
                    
@@ -172,6 +179,7 @@ namespace Overtime.Controllers
                     ViewBag.RoleList = (irole.GetRoles);
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+                    ViewBag.Message = ex.Message ;
                     return View();
                 }
                
