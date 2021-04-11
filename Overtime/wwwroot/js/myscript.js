@@ -861,8 +861,9 @@ function JQ_reject(id) {
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
-                    $("#row" + id).remove();
-                   
+                   var $datatable = $('#mytable').DataTable();
+		            $datatable.row($("#row" + id)).remove().draw();
+                    
                 }
                 else {
                     alert(response.message);
@@ -891,8 +892,11 @@ function JQ_Approve(id) {
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
-                    $("#row" + id).remove();
-                   
+		var $datatable = $('#mytable').DataTable();
+		$datatable.row($("#row" + id)).remove().draw();
+		    //$('#myTable').dataTable().fnDeleteRow(row);
+                   // $("#row" + id).remove();
+                   // $('#mytable').DataTable().ajax.reload();
                 }
                 else {
                     alert(response.message);
