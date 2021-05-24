@@ -78,5 +78,60 @@ namespace Overtime.Controllers
                 return View("Index");
             }
         }
+        [HttpPost]
+        public Result LoginAPI(string Username,string Password,string Tocken)
+        {
+            Result result = new Result();
+            var ACT_Tocken = "DFG5DF65GFGD5TERTB6FZZSFREGCV546";
+            var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
+            try
+            {
+                if (Username != null && Password != null&& !Username.Equals("")&& !Password.Equals("")&& Tocken== ACT_Tocken)
+                {
+
+
+                    User newuser = iuser.getUserbyUsername(Username);
+                    if (newuser != null)
+                    {
+                        var newPassword = AesOperaions.DecryptString(key, newuser.u_password);
+                        if (Password.ToString().Equals(newPassword.ToString()))
+                        {
+                            newuser.u_password = null;
+                            string JsonStr = JsonConvert.SerializeObject(newuser);
+                            //HttpContext.Session.SetString("User", JsonStr);
+
+                            LoginLog loginLog = new LoginLog();
+                            loginLog.ll_cre_by = newuser.u_id;
+                            loginLog.ll_login_time = DateTime.Now;
+                            loginLog.ll_cre_date = DateTime.Now;
+                            loginLog.ll_cre_by_name = newuser.u_name;
+                            iLoginLog.Add(loginLog);
+                            result.Message = "Success";
+                           
+                        }
+                        else
+                        {
+                            result.Message = "User Name and Password are incrrect!!!";
+                        }
+                    }
+                    else
+                    {
+                       
+                        result.Message = "User Name and Password are incrrect!!!";
+                    }
+                }
+                else
+                {
+                   
+                    result.Message = "User Name and Password are incrrect!!!";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+            }
+            return result;
+        }
     }
 }
