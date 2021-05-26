@@ -56,7 +56,7 @@ namespace Overtime.Controllers
                         }
                         else
                         {
-                            ViewBag.Message = "User Name and Password are incrrect!!!";
+                            ViewBag.Message = "User Name and Password are incorrect!!!";
                             return View("Index");
                         }
                     }
@@ -79,14 +79,14 @@ namespace Overtime.Controllers
             }
         }
         [HttpPost]
-        public Result LoginAPI(string Username,string Password,string Tocken)
+        public ResultData LoginAPI(string Username,string Password,string Token)
         {
-            Result result = new Result();
+            ResultData result = new ResultData();
             var ACT_Tocken = "DFG5DF65GFGD5TERTB6FZZSFREGCV546";
             var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
             try
             {
-                if (Username != null && Password != null&& !Username.Equals("")&& !Password.Equals("")&& Tocken== ACT_Tocken)
+                if (Username != null && Password != null&& !Username.Equals("")&& !Password.Equals("")&& Token == ACT_Tocken)
                 {
 
 
@@ -106,30 +106,42 @@ namespace Overtime.Controllers
                             loginLog.ll_cre_date = DateTime.Now;
                             loginLog.ll_cre_by_name = newuser.u_name;
                             iLoginLog.Add(loginLog);
+                            result.successData = newuser;
                             result.Message = "Success";
-                           
+                            result.hasError = false;
+
+
                         }
                         else
                         {
-                            result.Message = "User Name and Password are incrrect!!!";
+                            result.Message = "User Name and Password are incorrect!!!";
+                            result.successData = null;
+                            result.hasError = true;
                         }
                     }
                     else
                     {
-                       
-                        result.Message = "User Name and Password are incrrect!!!";
+
+                        result.Message = "User Name and Password are incorrect!!!";
+                        result.successData = null;
+                        result.hasError = true;
                     }
                 }
                 else
                 {
-                   
-                    result.Message = "User Name and Password are incrrect!!!";
+
+                    result.Message = "User Name and Password are incorrect!!!";
+                    result.successData = null;
+                    result.hasError = true;
                 }
 
             }
             catch (Exception ex)
             {
                 result.Message = ex.Message;
+               // result.Message = "User Name and Password are incrrect!!!";
+                result.successData = null;
+                result.hasError = true;
             }
             return result;
         }
