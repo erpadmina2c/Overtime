@@ -18,6 +18,11 @@ namespace Overtime.Repository
 
         public IEnumerable<Department> GetDepartments => db.Departments;
 
+        public IEnumerable<Department> GetOvertimeDepartments()
+        {
+            return db.Departments.Where(d=>d.d_allow_overtime_yn=="Y").ToList();
+        }
+
         public void Add(Department department)
         {
             db.Departments.Add(department);

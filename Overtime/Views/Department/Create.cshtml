@@ -22,7 +22,15 @@
                                     <input asp-for="d_description" class="form-control" />
                                     <span asp-validation-for="d_description" class="text-danger"></span>
                                 </div>
-
+                                <div class="form-group">
+                                    <label asp-for="d_allow_overtime_yn" class="control-label"></label>
+                                    <select asp-for="d_allow_overtime_yn" class="form-control" required>
+                                        <option value="">Select Option</option>
+                                        <option value="N">N</option>
+                                        <option selected value="Y">Y</option>
+                                    </select>
+                                    <span asp-validation-for="d_allow_overtime_yn" class="text-danger"></span>
+                                </div>
                                 <div class="form-group">
                                     <input type="submit" value="Create" class="btn btn-primary" />
                                 </div>

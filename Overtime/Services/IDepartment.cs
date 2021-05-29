@@ -16,5 +16,6 @@ namespace Overtime.Services
         void Remove(int id);
 
         void Update(Department department);
+        IEnumerable<Department> GetOvertimeDepartments();
     }
 }

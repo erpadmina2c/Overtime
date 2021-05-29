@@ -8,6 +8,9 @@
     $("#rq_cre_by").select2();
     $("#rq_dep_id").select2();
     $("#rq_cre_for").select2();
+    $("#ud_user_id").select2();
+    $("#ud_depart_id").select2();
+    $("#u_role_id").select2();
     $('#saveMenu').click(function () {
       
         var reqRow = [];

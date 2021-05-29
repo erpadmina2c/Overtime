@@ -645,7 +645,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                ViewBag.DepartmentList = (idepartment.GetOvertimeDepartments());
                 ViewBag.MyLiveOvertimeRequest = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
                 ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
                 return View();

@@ -119,6 +119,7 @@ namespace Overtime.Controllers
                 {
                     Department department1 = idepartment.GetDepartment(id);
                     department1.d_description = department.d_description;
+                    department1.d_allow_overtime_yn = department.d_allow_overtime_yn;
                     idepartment.Update(department1);
                     // TODO: Add update logic here
 

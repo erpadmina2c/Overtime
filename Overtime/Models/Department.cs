@@ -17,6 +17,9 @@ namespace Overtime.Models
         [Display(Name = "Active")]
         public string d_active_yn { get; set; }
 
+        [Display(Name = "Allow Overtime")]
+        public string? d_allow_overtime_yn { get; set; }
+
         [Display(Name = "Created by")]
         public int d_cre_by { get; set; }
 
