@@ -5,12 +5,14 @@
     var y = date.getFullYear();
     var eventsdata = new Array;
 
-    $("#rq_cre_by").select2();
-    $("#rq_dep_id").select2();
-    $("#rq_cre_for").select2();
-    $("#ud_user_id").select2();
-    $("#ud_depart_id").select2();
-    $("#u_role_id").select2();
+    $("#rq_cre_by").select2({ width: '100%' });
+    $("#rq_dep_id").select2({ width: '100%' });
+    $("#rq_cre_for").select2({ width: '100%' });
+    $("#ud_user_id").select2({ width: '100%' });
+    $("#user").select2({ width: '100%' });
+    $("#tr_u_id").select2({ width: '100%' });
+    $("#ud_depart_id").select2({ width: '100%' });
+    $("#u_role_id").select2({ width: '100%' });
     $('#saveMenu').click(function () {
       
         var reqRow = [];
@@ -895,8 +897,8 @@ function JQ_Approve(id) {
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
-		var $datatable = $('#mytable').DataTable();
-		$datatable.row($("#row" + id)).remove().draw();
+		        var $datatable = $('#mytable').DataTable();
+		        $datatable.row($("#row" + id)).remove().draw();
 		    //$('#myTable').dataTable().fnDeleteRow(row);
                    // $("#row" + id).remove();
                    // $('#mytable').DataTable().ajax.reload();
@@ -935,6 +937,99 @@ function userLoginHistory() {
                 ]
             });
             $('#overlay').fadeOut()
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+
+function SearcbTraingingData() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("id", $("#rq_cre_for").val());
+    $.ajax({
+        url: "/Training/TrainingData",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $('#overlay').fadeOut();
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                order: [],
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+function OpenModalForAddTraining() {
+    $('#TrainingModal').modal('show');
+}
+function addTraining() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("tr_start_date", $("#from").val());
+    data.append("tr_u_id", $("#tr_u_id").select2().val());
+    $.ajax({
+        url: "/Training/create",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "success") {
+                $('#TrainingModal').modal('hide');
+                $('#overlay').fadeOut()
+            }
+            else
+            {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+function FinishTraing(id) {
+
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("tr_id", id);
+    data.append("tr_end_date", $("#tr_id" + id).val());
+    $.ajax({
+        url: "/Training/FinishTraing",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+               
+                $("#tr_id" + id).prop("disabled", true);
+                $("#btn" + id).prop("disabled", true);
+                 $('#overlay').fadeOut()
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
         },
         error: function () {
             $('#overlay').fadeOut()

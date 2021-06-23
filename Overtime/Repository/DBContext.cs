@@ -37,6 +37,9 @@ namespace Overtime.Repository
 
         public DbSet<WorkingHour> WorkingHour { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
+        public DbSet<Training> Training { get; set; }
+        public DbSet<List_Training> List_Training { get; set; }
+        public DbSet<DbResult> DbResult { get; set; }
 
 
     }

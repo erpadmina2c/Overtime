@@ -55,6 +55,7 @@ namespace Overtime
             services.AddTransient<IHourRate, HourRateRepository>();
             services.AddTransient<IWorkingHour, WorkingHourRepository>();
             services.AddTransient<ILoginLog, LoginLogRepository>();
+            services.AddTransient<ITraining, TrainingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
