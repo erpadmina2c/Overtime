@@ -18,7 +18,7 @@
                                 <input type="hidden" asp-for="u_id" />
                                 <div class="form-group">
                                     <label asp-for="u_full_name" class="control-label"></label>
-                                    <input asp-for="u_full_name" class="form-control" required/>
+                                    <input asp-for="u_full_name" class="form-control" required />
                                     <span asp-validation-for="u_full_name" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
@@ -30,6 +30,11 @@
                                     <label asp-for="u_password" class="control-label"></label>
                                     <input asp-for="u_password" class="form-control" />
                                     <span asp-validation-for="u_password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="u_email" class="control-label"></label>
+                                    <input asp-for="u_email" class="form-control" required />
+                                    <span asp-validation-for="u_email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="u_role_id" class="control-label"></label>

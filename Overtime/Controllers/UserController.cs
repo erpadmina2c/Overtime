@@ -158,6 +158,7 @@ namespace Overtime.Controllers
                     temp_user.u_is_admin = user.u_is_admin;
                     temp_user.u_role_id = user.u_role_id;
                     temp_user.u_active_yn = user.u_active_yn;
+                    temp_user.u_email = user.u_email;
                     temp_user.u_allocation_yn= user.u_allocation_yn;
                     if(user.u_password!=null)
                     {

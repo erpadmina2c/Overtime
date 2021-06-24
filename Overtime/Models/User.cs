@@ -18,13 +18,13 @@ namespace Overtime.Models
         public string u_full_name{ get; set;}
 
         [Display(Name = "Username")]
-        public string u_name
-        {
-            get; set;
-        }
+        public string u_name{ get; set; }
 
         [Display(Name = "Password")]
         public string u_password { get; set; }
+
+        [Display(Name = "Email")]
+        public string u_email { get; set; }
 
         [Display(Name = "Role Id")]
         public int u_role_id { get; set; }
