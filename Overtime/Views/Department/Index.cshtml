@@ -29,6 +29,9 @@
                                         @Html.DisplayNameFor(model => model.d_allow_overtime_yn)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(model => model.d_allocation_yn)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(model => model.d_active_yn)
                                     </th>
                                     <th>
@@ -45,33 +48,36 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.d_id)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.d_description)
-                                        </td>
-                                         <td>
-                                            @Html.DisplayFor(modelItem => item.d_allow_overtime_yn)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.d_active_yn)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.d_cre_by)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.d_cre_date)
-                                        </td>
-                                        <td>
-                                            <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.d_id">Edit</a>
-                                        </td>
-                                        <td>
-                                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.d_id">Delete</a>
-                                        </td>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_allow_overtime_yn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_allocation_yn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_active_yn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_cre_by)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.d_cre_date)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.d_id">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.d_id">Delete</a>
+                                    </td>
 
-                                    </tr>
+                                </tr>
                                 }
                             </tbody>
                         </table>
