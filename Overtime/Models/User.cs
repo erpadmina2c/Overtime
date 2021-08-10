@@ -24,7 +24,7 @@ namespace Overtime.Models
         public string u_password { get; set; }
 
         [Display(Name = "Email")]
-        public string u_email { get; set; }
+        public string? u_email { get; set; }
 
         [Display(Name = "Role Id")]
         public int u_role_id { get; set; }
