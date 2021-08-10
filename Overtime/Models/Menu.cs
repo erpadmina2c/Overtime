@@ -27,13 +27,13 @@ namespace Overtime.Models
 
         [NotMapped]
         [Display(Name = "Parrent Name")]
-        public string m_parrent_name { get; set; }
+        public string? m_parrent_name { get; set; }
 
         [Display(Name = "Type")]
         public string m_type { get; set; }
 
         [Display(Name = "Active")]
-        public string m_active_yn { get; set; }
+        public string? m_active_yn { get; set; }
 
         [Display(Name = "Created by id")]
         public int m_cre_by { get; set; }
