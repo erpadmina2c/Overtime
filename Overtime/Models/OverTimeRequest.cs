@@ -54,7 +54,7 @@ namespace Overtime.Models
         public decimal rq_deductions { get; set; }
 
         [Display(Name = "Remarks")]
-        public string rq_remarks { get; set; }
+        public string? rq_remarks { get; set; }
 
         [Display(Name = "Status code")]
         public int rq_status { get; set; }
@@ -67,7 +67,7 @@ namespace Overtime.Models
         [Display(Name = "Status description")]
         public string rq_status_desc { get; set; }
 
-        public string rq_active_yn { get; set; }
+        public string? rq_active_yn { get; set; }
 
         [Display(Name = "Request For")]
         public int rq_cre_for { get; set; }
@@ -80,7 +80,7 @@ namespace Overtime.Models
         [Display(Name = "Requester")]
         public string rq_cre_for_name { get; set; }
 
-        public string rq_hold_yn { get; set; }
+        public string? rq_hold_yn { get; set; }
 
         [Display(Name = "hold by id")]
         public int? rq_hold_by { get; set; }
