@@ -639,15 +639,16 @@ namespace Overtime.Controllers
 
         public ActionResult Start()
         {
-            if (getCurrentUser() == null)
+            User user = getCurrentUser();
+            if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
             else
             {
                 ViewBag.DepartmentList = (idepartment.GetOvertimeDepartments());
-                ViewBag.MyLiveOvertimeRequest = ioverTimeRequest.GetMyLiveOvertimeRequest(getCurrentUser().u_id);
-                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
+                ViewBag.MyLiveOvertimeRequest = ioverTimeRequest.GetMyLiveOvertimeRequest(user.u_id);
+                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyOnProcessRequests(user.u_id);
                 return View();
                 
             }
