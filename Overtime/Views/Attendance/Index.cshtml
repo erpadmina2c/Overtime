@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Overtime.Models.Attendance>
+
+@{
+    ViewData["Title"] = "Attendance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .status_A {
+        background-color : red;
+    }
+    .status_P {
+        background-color: green;
+    }
+</style>
+    <div class="container-fluid" style="margin-top:10px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="page-header">
+                    <h3>Attendance</h3>
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table" id="mytable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_full_name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_email)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_department)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_status)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_remark)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_attendance_date)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_full_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_department)
+                                        </td>
+                                        <td class="status_@item.u_status">
+                                            @Html.DisplayFor(modelItem => item.u_status)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_remark)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_attendance_date)
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

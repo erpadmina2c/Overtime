@@ -55,6 +55,7 @@ namespace Overtime
             services.AddTransient<IHourRate, HourRateRepository>();
             services.AddTransient<IWorkingHour, WorkingHourRepository>();
             services.AddTransient<ILoginLog, LoginLogRepository>();
+            services.AddTransient<IBioMatrix, BioMatrixRepository>();
             services.AddTransient<ITraining, TrainingRepository>();
         }
 

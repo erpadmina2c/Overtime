@@ -1,0 +1,50 @@
+﻿@model Overtime.Models.MachineDetail
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="card">
+        <div class="card-body">
+            <div class="page-header">
+                <h3>Edit Machine Detail</h3>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="machine_Id" />
+                                <div class="form-group">
+                                    <label asp-for="machine_name" class="control-label"></label>
+                                    <input asp-for="machine_name" class="form-control" />
+                                    <span asp-validation-for="machine_name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="port_number" class="control-label"></label>
+                                    <input asp-for="port_number" class="form-control" />
+                                    <span asp-validation-for="port_number" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ip_address" class="control-label"></label>
+                                    <input asp-for="ip_address" class="form-control" />
+                                    <span asp-validation-for="ip_address" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

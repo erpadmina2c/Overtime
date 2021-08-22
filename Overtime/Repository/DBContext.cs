@@ -40,6 +40,8 @@ namespace Overtime.Repository
         public DbSet<Training> Training { get; set; }
         public DbSet<List_Training> List_Training { get; set; }
         public DbSet<DbResult> DbResult { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<MachineDetail> MachineDetails { get; set; }
 
 
     }

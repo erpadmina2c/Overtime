@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Overtime.Models.MachineDetail>
+@{
+    ViewData["Title"] = "MachineDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid" style="margin-top:10px;">
+    <div class="card">
+        <div class="card-body">
+            <div class="page-header">
+                <h3>Machine Detail</h3>
+            </div>
+            <p>
+                <a asp-action="Create" class="btn btn-warning">Add New</a>
+            </p>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.machine_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.machine_name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.port_number)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ip_address)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.created_at)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.machine_Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.machine_name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.port_number)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ip_address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.created_at)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-info" asp-route-id="@item.machine_Id">Edit</a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
