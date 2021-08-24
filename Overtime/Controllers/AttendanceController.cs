@@ -141,26 +141,26 @@ namespace Overtime.Controllers
         }
         public ActionResult MonthReport()
         {
-            //if (getCurrentUser() == null)
-            //{
-            //    return RedirectToAction("Index", "Login");
-            //}
-            //else
-            //{
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
                 return View();
-            //}
+            }
         }
 
 
         [HttpPost]
         public ActionResult GetMonthReport(string reportrange)
         {
-            //if (getCurrentUser() == null)
-            //{
-            //    return RedirectToAction("Index", "Login");
-            //}
-            //else
-            //{
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
                 String[] array = reportrange.Split('-');
 
                 DateTime rq_start_time = DateTime.Parse(array[0]);
@@ -171,7 +171,7 @@ namespace Overtime.Controllers
 
 
                 return View(dataTable);
-            //}
+            }
         }
 
 
