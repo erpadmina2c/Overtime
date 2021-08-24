@@ -32,7 +32,19 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(ibio.GetAttendance());
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult GetDailyAttendance(string date)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ibio.GetAttendance(date));
             }
         }
         public ActionResult EmailSetting()
@@ -129,20 +141,39 @@ namespace Overtime.Controllers
         }
         public ActionResult MonthReport()
         {
-            if (getCurrentUser() == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            else
-            {
+            //if (getCurrentUser() == null)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
+            //else
+            //{
+                return View();
+            //}
+        }
+
+
+        [HttpPost]
+        public ActionResult GetMonthReport(string reportrange)
+        {
+            //if (getCurrentUser() == null)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
+            //else
+            //{
+                String[] array = reportrange.Split('-');
+
+                DateTime rq_start_time = DateTime.Parse(array[0]);
+                DateTime rq_end_time = DateTime.Parse(array[1] + " 11:59:59 PM");
+
                 DataTable dataTable = new DataTable();
-                dataTable = ibio.GetMonthReport();
+                dataTable = ibio.GetMonthReport(rq_start_time, rq_end_time);
 
 
                 return View(dataTable);
-            }
+            //}
         }
-        
+
 
         // GET: AttendanceController/Delete/5
         public ActionResult Delete(int id)

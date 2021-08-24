@@ -376,6 +376,68 @@ function overTimeRequestReport() {
     });
 }
 
+function GetDailyAttendance() {
+    if ($("#c_date").val() == "") {
+        alert('select Date');
+        return;
+    }
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("date", $("#c_date").val());
+    $.ajax({
+        url: "/Attendance/GetDailyAttendance",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+            $('#overlay').fadeOut()
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+
+function GetMonthReport() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("reportrange", $("#attdatarange").val());
+    $.ajax({
+        url: "/Attendance/GetMonthReport",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+            $('#overlay').fadeOut()
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+
 function workflowHistory(rowid,doc_id,workflow,status) {
     var data = new FormData();
     data.append("rowid", rowid);
@@ -462,6 +524,30 @@ $(function () {
         ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+
+});
+
+$(function () {
+
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#attdatarange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('#attdatarange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
             'This Month': [moment().startOf('month'), moment().endOf('month')],
