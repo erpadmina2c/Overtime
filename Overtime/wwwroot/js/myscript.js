@@ -1122,3 +1122,25 @@ function FinishTraing(id) {
         }
     });
 }
+
+function DeleteLeave(LeaveId) {
+  
+    var data = new FormData();
+    data.append("LeaveId", LeaveId);
+  
+    $.ajax({
+        url: "/Attendance/DeleteLeave",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            alert(response)
+            location.reload();
+        },
+        error: function () {
+            //$('#overlay').fadeOut()
+        }
+    });
+}

@@ -13,5 +13,7 @@ namespace Overtime.Services
         void Add(MachineDetail machine);
         MachineDetail GetMachine(int machine_Id);
         DataTable GetMonthReport(DateTime rq_start_time, DateTime rq_end_time);
+
+        public IEnumerable<LeaveDetail> GetLeaveDetail();
     }
 }

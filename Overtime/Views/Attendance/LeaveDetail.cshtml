@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Overtime.Models.LeaveDetail>
+
+@{
+    ViewData["Title"] = "LeaveDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/Attandance/LeaveDetail">Leave Detail</a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid" style="margin-top:10px;">
+    <div class="card">
+        <div class="card-body">
+
+            <p>
+                <a class="btn btn-warning" asp-action="AddLeave">Create New</a>
+            </p>
+            <table class="table" id="mytable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EmpName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MarkedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastModifiedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastModfiedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MarkedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LeaveType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CurrentStatus)
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MarkedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModfiedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MarkedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CurrentStatus)
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" asp-action="LeaveEdit" asp-route-id="@item.LeaveId">Edit</a>
+                        </td>
+                         <td>
+                            <a class="btn btn-danger" onclick="DeleteLeave(@item.LeaveId)" >Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+</div>
+</div>
+</div>
+

@@ -47,6 +47,8 @@ namespace Overtime.Repository
                             attendance.u_status = reader["u_status"].ToString();
                             attendance.u_remark = reader["u_remark"].ToString();
                             attendance.u_attendance_date = DateTime.Parse(reader["u_attendance_date"].ToString());
+                            attendance.OfficeIn = reader["OfficeIn"].ToString();
+
                             result.Add(attendance);
                         }
                     }
@@ -60,6 +62,10 @@ namespace Overtime.Repository
 
             return result;
         }
+
+
+       
+
         public void Add(MachineDetail machine)
         {
             db.MachineDetails.Add(machine);
@@ -104,6 +110,50 @@ namespace Overtime.Repository
             return dt;
         }
 
+
+        public IEnumerable<LeaveDetail> GetLeaveDetail()
+        {
+            List<LeaveDetail> result = new List<LeaveDetail>();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"exec spGetLeaveDetail";
+                    command.CommandText = query;
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            LeaveDetail leave = new LeaveDetail();
+                            leave.LeaveId = Convert.ToInt32(reader["LeaveId"]);
+                            leave.EmpName = reader["EmpName"].ToString();
+                            System.Diagnostics.Trace.WriteLine(reader["StartDate"].ToString());
+                            if(!reader["StartDate"].ToString().Equals("")) leave.StartDate =DateTime.Parse(reader["StartDate"].ToString());
+                            if (!reader["EndDate"].ToString().Equals("")) leave.EndDate = DateTime.Parse(reader["EndDate"].ToString());
+                            leave.MarkedBy = reader["MarkedBy"].ToString();
+                            leave.MarkedDate = reader["MarkedDate"].ToString();
+                            leave.LastModifiedBy = reader["LastModifiedBy"].ToString();
+                            leave.LastModfiedDate = reader["LastModfiedDate"].ToString();
+                            leave.LeaveType = reader["LeaveType"].ToString();
+                            leave.CurrentStatus = reader["CurrentStatus"].ToString();
+
+                            result.Add(leave);
+                        }
+                    }
+                    reader.Dispose();
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
 
     }
 }
