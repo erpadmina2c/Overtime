@@ -17,11 +17,17 @@ namespace Overtime.Controllers
         private readonly IMenu imenu;
         private readonly IBioMatrix ibio;
         private readonly DBContext context;
-        public AttendanceController(DBContext _context, IMenu _imenu, IBioMatrix _ibio)
+        private readonly IUser iuser;
+        private readonly ILeavetype ileavetype;
+        private readonly ILeaveDetail ileavedetail;
+        public AttendanceController(DBContext _context, IMenu _imenu, IBioMatrix _ibio, IUser _iuser, ILeavetype _ileavetype,ILeaveDetail _leaveDetail)
         {
             imenu = _imenu;
             ibio = _ibio;
             context = _context;
+            iuser = _iuser;
+            ileavetype = _ileavetype;
+            ileavedetail = _leaveDetail;
         }
         // GET: AttendanceController
         public ActionResult Index()
@@ -32,7 +38,19 @@ namespace Overtime.Controllers
             }
             else
             {
-                return View(ibio.GetAttendance());
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult GetDailyAttendance(string date)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(ibio.GetAttendance(date));
             }
         }
         public ActionResult EmailSetting()
@@ -135,14 +153,33 @@ namespace Overtime.Controllers
             }
             else
             {
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult GetMonthReport(string reportrange)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                String[] array = reportrange.Split('-');
+
+                DateTime rq_start_time = DateTime.Parse(array[0]);
+                DateTime rq_end_time = DateTime.Parse(array[1] + " 11:59:59 PM");
+
                 DataTable dataTable = new DataTable();
-                dataTable = ibio.GetMonthReport();
+                dataTable = ibio.GetMonthReport(rq_start_time, rq_end_time);
 
 
                 return View(dataTable);
             }
         }
-        
+
 
         // GET: AttendanceController/Delete/5
         public ActionResult Delete(int id)
@@ -213,6 +250,123 @@ namespace Overtime.Controllers
             {
                 return null;
             }
+        }
+
+
+        // GET: AttendanceController/Create
+        public ActionResult AddLeave()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.LeaveType = ileavetype.GetLeavetypes;
+
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddLeave(LeaveDetail leaveDetail)
+        {
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.LeaveType = ileavetype.GetLeavetypes;
+                ViewBag.Message = "Session Expired !! Please Reload !!";
+                return View();
+            }
+            else
+            {
+                var flag = "Add";
+                var result = ileavedetail.AddUpdateLeave(leaveDetail, flag, user.u_id);
+                if(result.Equals("Successfully added"))
+                {
+                    return RedirectToAction("LeaveDetail");
+                }
+                else
+                {
+                    ViewBag.UserList = (iuser.GetUsersList());
+                    ViewBag.LeaveType = ileavetype.GetLeavetypes;
+                    ViewBag.Message =result;
+                    return View();
+                }
+               
+            }
+        }
+
+        public ActionResult LeaveEdit(int id)
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.LeaveType = ileavetype.GetLeavetypes;
+                LeaveDetail leaveobj = ibio.GetLeaveDetail().Where(m=>m.LeaveId== id).FirstOrDefault();
+                return  View(leaveobj);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LeaveEdit(LeaveDetail leaveDetail)
+        {
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.LeaveType = ileavetype.GetLeavetypes;
+                ViewBag.Message = "Session Expired !! Please Reload !!";
+                return View();
+            }
+            else
+            {
+                var flag = "Update";
+                var result = ileavedetail.AddUpdateLeave(leaveDetail, flag, user.u_id);
+                if (result.Equals("Successfully added"))
+                {
+                    return RedirectToAction("LeaveDetail");
+                }
+                else
+                {
+                    ViewBag.UserList = (iuser.GetUsersList());
+                    ViewBag.LeaveType = ileavetype.GetLeavetypes;
+                    ViewBag.Message = result;
+                    return View();
+                }
+
+            }
+        }
+
+        public ActionResult LeaveDetail()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                var values = ibio.GetLeaveDetail();
+                return View(values);
+            }
+
+        }
+
+        public ActionResult DeleteLeave(int LeaveId)
+        {
+           
+           var result = ileavedetail.DeleteLeave(LeaveId);
+
+            return new JsonResult(result);
+
         }
     }
 }

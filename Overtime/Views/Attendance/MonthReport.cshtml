@@ -34,39 +34,30 @@
             <div class="page-header">
                 <h3>MonthReport</h3>
             </div>
+
             <div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table text-nowrap table-bordered " id="mytable" style="width:100%;">
-                                <thead>
-                                    <tr>
-                                        @foreach (DataColumn col in Model.Columns)
-                                        {
-                                            <th style="text-align: center;"> @col.ColumnName</th>
-
-                                        }
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{                                        
-                                        foreach (DataRow row in Model.Rows)
-                                        {
-                                            <tr>
-
-                                                @foreach (DataColumn col in Model.Columns)
-                                                {
-                                                    <td class="status_@row[col.ColumnName]"> @row[col.ColumnName]</td>
-
-                                                }
-
-                                            </tr>
-                                        }
-                                    }
-                                    </tbody>
-                                </table>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="control-label">Date Range</label>
+                                <input id="attdatarange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group" align="justify">
+                            <label class="control-label"></label>
+                            <input type="submit" onclick="GetMonthReport();" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="card">
+                    <div class="card-body" id="container">
+
+
                     </div>
                 </div>
             </div>

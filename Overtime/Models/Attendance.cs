@@ -32,5 +32,8 @@ namespace Overtime.Models
         [Display(Name = "AttendanceDate")]
         [DataType(DataType.Date)]
         public DateTime u_attendance_date { get; set; }
+
+        [Display(Name = "OfficeIn")]
+        public string? OfficeIn { get; set; }
     }
 }

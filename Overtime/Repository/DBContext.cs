@@ -42,6 +42,8 @@ namespace Overtime.Repository
         public DbSet<DbResult> DbResult { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<MachineDetail> MachineDetails { get; set; }
+        public DbSet<Leavetypetbl> Leavetypetbl { get; set; }
+        public DbSet<LeaveDetail> LeaveDetail { get; set; }
 
 
     }

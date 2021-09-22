@@ -1,0 +1,62 @@
+﻿@model Overtime.Models.LeaveDetail
+
+@{
+    ViewData["Title"] = "AddLeave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/Attandance/StartWork">AddLeave</a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid" style="margin-top:10px;">
+    <div class="card">
+        <div class="card-body"> 
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="AddLeave">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="EmpName" class="control-label"></label>
+                            <select asp-for="EmpName" id="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))">
+                                <option value="">All</option>
+                            </select>
+                            <span asp-validation-for="EmpName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="StartDate" class="control-label"></label>
+                            <input id="StartDate" name="StartDate" type="date" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EndDate" class="control-label"></label>
+                            <input id="EndDate" name="EndDate" type="date" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LeaveType" class="control-label"></label>
+                            <select asp-for="LeaveType" id="rq_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.LeaveType,"LeavetypeId","Leavetype"))">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="label" style="color:white">@ViewBag.Message</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <a asp-action="LeaveDetail">Back to List</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
