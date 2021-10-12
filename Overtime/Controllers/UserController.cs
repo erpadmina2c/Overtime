@@ -19,15 +19,17 @@ namespace Overtime.Controllers
         private readonly IDepartment idepartment;
         private readonly IMenu imenu;
         private readonly ILoginLog iloginLog;
+        private readonly IUserReportingHierarchy iuserReportingHierarchy;
 
 
-        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu,ILoginLog _loginLog)
+        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu,ILoginLog _loginLog, IUserReportingHierarchy _iuserReportingHierarchy)
         {
             iuser=_iuser;
             irole = _irole;
             idepartment = _idepartment;
             imenu = _imenu;
             iloginLog = _loginLog;
+            iuserReportingHierarchy = _iuserReportingHierarchy;
         }
         
         public ActionResult Index()
@@ -43,6 +45,58 @@ namespace Overtime.Controllers
             }
             
         }
+
+        public ActionResult UserReportingHeirarchy()
+        {
+            User user = getCurrentUser();
+            ViewBag.Users = iuser.GetUsersList();
+            if (user != null)
+            {
+               
+                  
+            }
+            else
+            {
+               
+                ViewBag.Message = "Session Already Expired!!! Please reload !!";
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult getUserReportingHeirarchy(UserReportingHierarchy userReportingHierarchy)
+        {
+            User user = getCurrentUser();
+            IEnumerable<List_UserReportingHierarchy> list_UserReportingHierarchies = Enumerable.Empty<List_UserReportingHierarchy>();
+            if (user != null)
+            {
+                list_UserReportingHierarchies = iuserReportingHierarchy.GetUserReportingHierarchysByuser(userReportingHierarchy);
+            }
+            else
+            {
+
+                ViewBag.Message = "Session Expired !! Please reload Page !!";
+            }
+
+            return View(list_UserReportingHierarchies);
+        }
+
+        [HttpPost]
+        public DbResult AddUserReportingHeirarchy(UserReportingHierarchy userReportingHierarchy)
+        {
+            DbResult result = new DbResult();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+                result = iuserReportingHierarchy.addUserReportingHierarchy(userReportingHierarchy);
+            }
+            else
+            {
+
+                result.Message = "Session Expired !! Please reload Page !!";
+            }
+            return result;
+        }
+
 
         // GET: User/Details/5
         public ActionResult Details(int id)

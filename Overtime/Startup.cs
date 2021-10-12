@@ -59,6 +59,8 @@ namespace Overtime
             services.AddTransient<ITraining, TrainingRepository>();
             services.AddTransient<ILeavetype, LeavetypeRepository>();
             services.AddTransient<ILeaveDetail, LeaveDetailRepository>();
+            services.AddTransient<IUserShift, UserShiftRepository>();
+            services.AddTransient<IUserReportingHierarchy, UserReportingHierarchyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

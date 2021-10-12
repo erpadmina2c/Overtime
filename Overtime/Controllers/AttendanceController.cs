@@ -44,14 +44,30 @@ namespace Overtime.Controllers
         [HttpPost]
         public ActionResult GetDailyAttendance(string date)
         {
-            if (getCurrentUser() == null)
+           
+          
+                return View(ibio.GetAttendance(date));
+           
+        }
+
+        [HttpPost]
+        public ActionResult GetDailyAttendanceByDate(string date)
+        {
+            IEnumerable<List_Attendance> list_Attendances = Enumerable.Empty<List_Attendance>();
+            User user = getCurrentUser();
+            if (user != null)
             {
-                return RedirectToAction("Index", "Login");
+                list_Attendances = ibio.GetAttendanceByDate(date,user.u_id);
+                return View(list_Attendances);
             }
             else
             {
-                return View(ibio.GetAttendance(date));
+                ViewBag.Message = "Session Expired !! Please Reload Page !!";
+                return View(list_Attendances);
             }
+            
+              
+            
         }
         public ActionResult EmailSetting()
         {

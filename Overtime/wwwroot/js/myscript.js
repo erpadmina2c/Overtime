@@ -8,9 +8,12 @@
     $("#rq_cre_by").select2({ width: '100%' });
     $("#rq_dep_id").select2({ width: '100%' });
     $("#rq_cre_for").select2({ width: '100%' });
+    $("#us_u_id").select2({ width: '100%' });
     $("#ud_user_id").select2({ width: '100%' });
     $("#user").select2({ width: '100%' });
     $("#tr_u_id").select2({ width: '100%' });
+    $("#urh_u_id").select2({ width: '100%' });
+    $("#urh_reporting_to").select2({ width: '100%' });
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
     $('#saveMenu').click(function () {
@@ -385,7 +388,7 @@ function GetDailyAttendance() {
     var data = new FormData();
     data.append("date", $("#c_date").val());
     $.ajax({
-        url: "/Attendance/GetDailyAttendance",
+        url: "/Attendance/GetDailyAttendanceByDate",
         type: "POST",
         contentType: false,
         processData: false,
@@ -1123,6 +1126,110 @@ function FinishTraing(id) {
     });
 }
 
+
+
+function SearchUserShiftData() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("id", $("#us_u_id").val());
+    $.ajax({
+        url: "/UserShift/UserShiftData",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $('#overlay').fadeOut();
+            $("#container").html(response);
+            if (!$.fn.DataTable.isDataTable('#mytable')) {
+                $('#mytable').DataTable({
+                    order: [],
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+            }
+
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+function OpenModalForAddUserShift() {
+    $('#UserShiftModal').modal('show');
+}
+function addUserShilft() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("us_start_time", $("#us_start_time").val());
+    data.append("us_end_time", $("#us_end_time").val());
+    data.append("us_start_date", $("#us_start_date").val());
+    data.append("us_u_id", $("#user").select2().val());
+    if ($("#user").select2().val() != 0) {
+        $.ajax({
+            url: "/UserShift/Create",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    $('#UserShiftModal').modal('hide');
+                    SearchUserShiftData();
+                    $('#overlay').fadeOut();
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut();
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    } else {
+        alert("Please select user !!!");
+        $('#overlay').fadeOut();
+    }
+}
+function FinishUserShift(id) {
+
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("us_id", id);
+    data.append("us_end_date", $("#us_id" + id).val());
+    $.ajax({
+        url: "/UserShift/FinishUserShift",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+
+                $("#us_id" + id).prop("disabled", true);
+                $("#btn" + id).prop("disabled", true);
+                $('#overlay').fadeOut()
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+
 function DeleteLeave(LeaveId) {
   
     var data = new FormData();
@@ -1143,4 +1250,73 @@ function DeleteLeave(LeaveId) {
             //$('#overlay').fadeOut()
         }
     });
+}
+function getUserReportingHeirarchy() {
+
+    var data = new FormData();
+    data.append("urh_u_id", $("#urh_u_id").select2().val());
+    data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
+    data.append("urh_priority", $("#urh_priority").val());
+
+    $.ajax({
+        url: "/User/getUserReportingHeirarchy",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable("mytable");
+        },
+        error: function () {
+        }
+    });
+}
+function loadDatatable(tableid) {
+    if (!$.fn.DataTable.isDataTable('#'+ tableid)) {
+        $('#' + tableid).DataTable({
+            order: [],
+            dom: 'lBfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'pdfHtml5'
+            ]
+        });
+    }
+}
+function AddUserReportingHeirarchy() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("urh_u_id", $("#urh_u_id").select2().val());
+    data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
+    data.append("urh_priority", $("#urh_priority").val());
+    
+    if ($("#urh_u_id").select2().val() != 0) {
+        $.ajax({
+            url: "/user/AddUserReportingHeirarchy",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    getUserReportingHeirarchy();
+                    $('#overlay').fadeOut();
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut();
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    } else {
+        alert("Please select user !!!");
+        $('#overlay').fadeOut();
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Overtime.Models;
 using Overtime.Services;
 using System;
@@ -155,5 +156,15 @@ namespace Overtime.Repository
             return result;
         }
 
+        public IEnumerable<List_Attendance> GetAttendanceByDate(string date,int u_id)
+        {
+            var _date = new SqlParameter("date", date + "");
+            var _u_id = new SqlParameter("u_id", u_id + "");
+           
+
+            var attendances = db.List_Attendance.FromSqlRaw<List_Attendance>("EXECUTE dbo.GetAttendancebydate @date,@u_id",_date,_u_id).ToList();
+
+            return attendances;
+        }
     }
 }

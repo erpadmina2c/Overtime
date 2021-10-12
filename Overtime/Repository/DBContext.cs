@@ -44,6 +44,11 @@ namespace Overtime.Repository
         public DbSet<MachineDetail> MachineDetails { get; set; }
         public DbSet<Leavetypetbl> Leavetypetbl { get; set; }
         public DbSet<LeaveDetail> LeaveDetail { get; set; }
+        public DbSet<UserShift> UserShift { get; set; }
+        public DbSet<List_UserShift> List_UserShift { get; set; }
+        public DbSet<UserReportingHierarchy> UserReportingHierarchy { get; set; }
+        public DbSet<List_UserReportingHierarchy> List_UserReportingHierarchy { get; set; }
+        public DbSet<List_Attendance> List_Attendance { get; set; }
 
 
     }

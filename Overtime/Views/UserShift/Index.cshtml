@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/UserShift/Index">User shift</a></li>
+    </ol>
+</nav>
+<div class="card">
+    <div class="card-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Employee</label>
+                            <select id="us_u_id" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))">
+                                <option value="0">All</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Date Range</label>
+                            <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+
+                            <button type="button" onclick="SearchUserShiftData();" style="margin-top:25px;" class="btn btn-primary"> Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4" align="center">
+                        <div class="form-group">
+                            <button type="button" onclick="OpenModalForAddUserShift();" style="margin-top:25px;" class="btn btn-warning  pull-right  ">Add </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UserShiftModal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Shift </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row" id="filter">
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label class="control-label">Employee </label>
+                                <select id="user" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))" required>
+                                    <option value="0">All</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Shift Start time </label>
+                                <input id="us_start_time" type="time" class="form-control"  value="@DateTime.Now.ToString("HH:mm")" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Shift end time </label>
+                                <input id="us_end_time" type="time" class="form-control"  value="@DateTime.Now.ToString("HH:mm")"  required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">start date </label>
+                                <input type="date" class="form-control" id="us_start_date"  value="@DateTime.Today.ToString("yyyy-MM-dd")" required/>
+                            </div>
+                          
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="save" class="btn btn-success" onclick="addUserShilft()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

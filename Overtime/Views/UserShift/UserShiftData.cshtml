@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Overtime.Models.List_UserShift>
+
+@{
+    Layout = null;
+}
+
+
+<table class="table nowrap" id="mytable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.us_u_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_u_full_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_start_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_end_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_start_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_end_date)
+            </th>
+            <th>.</th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_cre_date)
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_u_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_u_full_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_end_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_start_date)
+            </td>
+
+            @if (item.us_end_date == null)
+            {
+                <td>
+                    <input type="date" class="form-control" id="@string.Format("us_id{0}", @item.us_id)" />
+                </td>
+                <td> <button id="@string.Format("btn{0}", @item.us_id)" onclick="FinishUserShift(@item.us_id)" class="btn btn-primary">Update</button></td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_end_date)
+                </td>
+                <td>
+                </td>
+            }
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.us_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_cre_date)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

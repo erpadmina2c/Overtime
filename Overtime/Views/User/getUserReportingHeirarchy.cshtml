@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Overtime.Models.List_UserReportingHierarchy>
+
+@{
+    Layout = null;
+}
+
+
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.urh_u_id_name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.urh_reporting_to_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.urh_priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.urh_cre_by_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.urh_cre_date)
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_u_id_name)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_reporting_to_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_priority)
+            </td>
+       
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_cre_by_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_cre_date)
+            </td>
+          
+        </tr>
+}
+    </tbody>
+</table>
