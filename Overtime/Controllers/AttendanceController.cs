@@ -69,6 +69,49 @@ namespace Overtime.Controllers
               
             
         }
+
+    
+        public ActionResult AttendanceDetails()
+        {
+            User user = getCurrentUser();
+            ViewBag.UserList = (iuser.GetUsersList());
+            if (user != null)
+            {
+              
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult AttendanceDetailsBySearch(string reportrange,int u_id)
+        {
+            IEnumerable<List_Attendance> list_Attendances = Enumerable.Empty<List_Attendance>();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+
+                String[] array = reportrange.Split('-');
+
+                DateTime fromdate = DateTime.Parse(array[0] +" 12:00:00 AM");
+                DateTime todate = DateTime.Parse(array[1] + " 11:59:59 PM");
+
+                list_Attendances = ibio.AttendanceDetailsBySearch(fromdate, todate, u_id, user.u_id);
+                return View(list_Attendances);
+            }
+            else
+            {
+                ViewBag.Message = "Session Expired !! Please Reload Page !!";
+                return View(list_Attendances);
+            }
+
+
+
+        }
         public ActionResult EmailSetting()
         {
             if (getCurrentUser() == null)

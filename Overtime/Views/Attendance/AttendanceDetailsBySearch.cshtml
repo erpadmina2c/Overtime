@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Overtime.Models.List_Attendance>
+
+@{
+    Layout = null;
+}
+
+
+@if (ViewBag.Message != null)
+{
+
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Message
+    </div>
+}
+else
+{
+    <table class="table" id="mytable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_u_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_full_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_department)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_duty_start)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_first_Punch)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_remark)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_duty_ended_at)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_second_punch)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_duration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_status)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.a_attendance_date)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_u_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_full_name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_duty_start)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_first_Punch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_remark)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_duty_ended_at)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_second_punch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_duration)
+                    </td>
+                    <td class="status_@item.a_status">
+                        @Html.DisplayFor(modelItem => item.a_status)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.a_attendance_date)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

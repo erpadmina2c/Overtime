@@ -9,6 +9,7 @@
     $("#rq_dep_id").select2({ width: '100%' });
     $("#rq_cre_for").select2({ width: '100%' });
     $("#us_u_id").select2({ width: '100%' });
+    $("#User").select2({ width: '100%' });
     $("#ud_user_id").select2({ width: '100%' });
     $("#user").select2({ width: '100%' });
     $("#tr_u_id").select2({ width: '100%' });
@@ -1319,4 +1320,24 @@ function AddUserReportingHeirarchy() {
         alert("Please select user !!!");
         $('#overlay').fadeOut();
     }
+}
+
+function attandancedetails() {
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("u_id", $("#User").select2().val());
+    $.ajax({
+        url: "/Attendance/AttendanceDetailsBySearch",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable("mytable");
+        },
+        error: function () {
+        }
+    });
 }

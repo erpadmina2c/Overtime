@@ -10300,3 +10300,14 @@ th {
         transform: rotate(360deg);
     }
 }
+.status_A {
+    background-color: red;
+}
+
+.status_P {
+    background-color: green;
+}
+
+.status_L {
+    background-color: orange;
+}

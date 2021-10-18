@@ -16,5 +16,6 @@ namespace Overtime.Services
         DataTable GetMonthReport(DateTime rq_start_time, DateTime rq_end_time);
 
         public IEnumerable<LeaveDetail> GetLeaveDetail();
+        IEnumerable<List_Attendance> AttendanceDetailsBySearch(DateTime fromdate, DateTime todate, int u_id,int curr_user_id);
     }
 }

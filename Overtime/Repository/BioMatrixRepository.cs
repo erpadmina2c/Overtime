@@ -166,5 +166,18 @@ namespace Overtime.Repository
 
             return attendances;
         }
+
+        public IEnumerable<List_Attendance> AttendanceDetailsBySearch(DateTime fromdate, DateTime todate, int u_id,int curr_user_id)
+        {
+            var _fromdate = new SqlParameter("fromdate", fromdate + "");
+            var _todate = new SqlParameter("todate", todate + "");
+            var _u_id = new SqlParameter("u_id", u_id + "");
+            var _curr_user_id = new SqlParameter("curr_user_id", curr_user_id + "");
+
+
+            var attendances = db.List_Attendance.FromSqlRaw<List_Attendance>("EXECUTE dbo.AttendanceDetails @fromdate,@todate,@u_id,@curr_user_id", _fromdate, _todate, _u_id, _curr_user_id).ToList();
+
+            return attendances;
+        }
     }
 }
