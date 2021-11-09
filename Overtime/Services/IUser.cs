@@ -20,5 +20,7 @@ namespace Overtime.Services
         User getUserbyUsername(string u_name);
         void Update(User user);
         IEnumerable<string> getUsersNames(string name);
+        List<List_User> getEmployeeInformation(int u_id, string type);
+        DbResult CancelEmployee(int u_id, string u_cancelation_date,int cre_by);
     }
 }

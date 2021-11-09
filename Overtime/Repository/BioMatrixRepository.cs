@@ -135,6 +135,7 @@ namespace Overtime.Repository
                             System.Diagnostics.Trace.WriteLine(reader["StartDate"].ToString());
                             if(!reader["StartDate"].ToString().Equals("")) leave.StartDate =DateTime.Parse(reader["StartDate"].ToString());
                             if (!reader["EndDate"].ToString().Equals("")) leave.EndDate = DateTime.Parse(reader["EndDate"].ToString());
+                            if (!reader["LeaveDays"].ToString().Equals(""))  leave.LeaveDays = int.Parse(reader["LeaveDays"].ToString());
                             leave.MarkedBy = reader["MarkedBy"].ToString();
                             leave.MarkedDate = reader["MarkedDate"].ToString();
                             leave.LastModifiedBy = reader["LastModifiedBy"].ToString();

@@ -14,6 +14,7 @@ namespace Overtime.Repository
         {
         }
         public DbSet<User> Users {get;set;}
+        public DbSet<List_User> List_User { get;set;}
         public DbSet<Role> Roles { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Workflow> Workflows { get; set; }

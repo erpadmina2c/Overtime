@@ -11,8 +11,15 @@ namespace Overtime.Models
         [Key]
         public int? LeaveId { get; set; }
         public string? EmpName { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
+
+        [Display(Name = "Leave Days")]
+        public int LeaveDays { get; set; }
         public string? MarkedBy { get; set; }
         public string? LastModifiedBy { get; set; }
         public string? LastModfiedDate { get; set; }

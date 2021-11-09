@@ -80,6 +80,34 @@ namespace Overtime.Controllers
             return View(list_UserReportingHierarchies);
         }
 
+        public Result deleteEmployeeReportingHirarchy(int urh_id)
+        {
+            Result result = new Result();
+            User user = getCurrentUser();
+            if(user!=null)
+            {
+                UserReportingHierarchy userReportingHeirarchy = iuserReportingHierarchy.GetUserReportingHierarchy(urh_id);
+                if (userReportingHeirarchy != null)
+                {
+                    iuserReportingHierarchy.Remove(urh_id);
+                    result.Message = "Success";
+                }else
+                {
+                    result.Message = "Data Not Found!!!";
+                }
+
+            }
+            else
+            {
+                result.Message = "Session Expired !! Please Reload Page!!!";
+            }
+
+            return result;
+
+        }
+
+
+
         [HttpPost]
         public DbResult AddUserReportingHeirarchy(UserReportingHierarchy userReportingHierarchy)
         {
@@ -323,6 +351,50 @@ namespace Overtime.Controllers
                     return View();
                 }
             }
+        }
+
+        public ActionResult EmployeeInformation()
+        {
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+
+            }
+            else
+            {
+                ViewBag.UserList = iuser.GetUsersList();
+            }
+            return View();
+        }
+        public ActionResult getEmployeeInformation(int u_id,string Type)
+        {
+            List<List_User> list_Users = new List<List_User>();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+                list_Users = iuser.getEmployeeInformation(u_id,Type);
+            }
+            else
+            {
+                ViewBag.Message = "Session Timeout !! Please Reload the Page !!";
+            }
+            return View(list_Users);
+        }
+
+        public DbResult CancelEmployee(int u_id, string u_cancelation_date)
+        {
+            DbResult dbResult = new DbResult();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+                dbResult = iuser.CancelEmployee(u_id, u_cancelation_date,user.u_id);
+            }
+            else
+            {
+                ViewBag.Message = "Session Timeout !! Please Reload the Page !!";
+            }
+            return dbResult;
         }
         private User getCurrentUser()
         {

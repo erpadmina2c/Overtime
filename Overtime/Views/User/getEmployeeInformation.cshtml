@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Overtime.Models.List_User>
+
+@{
+    Layout = null;
+}
+
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.u_full_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_cre_by_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.u_cre_date)
+            </th>
+          
+            <th>@Html.DisplayNameFor(model => model.u_cancelation_date)</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_full_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_email)
+            </td>
+         
+            <td>
+                @Html.DisplayFor(modelItem => item.u_cre_by_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.u_cre_date)
+            </td>
+            <td align="center">
+                <Label class="control-label" id="@string.Format("labl_{0}", @item.u_id)"> @Html.DisplayFor(modelItem => item.u_cancelation_date)</Label>
+                @if (@item.u_cancelation_date == null)
+                {
+                    <button class="btn btn-danger" id="@string.Format("btn_{0}", @item.u_id)" onclick="OpenCancelationModal(@item.u_id);">Cancel Employee </button>
+                }
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

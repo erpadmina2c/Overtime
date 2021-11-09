@@ -7,8 +7,10 @@
 
 <table class="table" id="mytable">
     <thead>
-        <tr>
-
+        <tr >
+            <th>
+                Id 
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.urh_u_id_name)
             </th>
@@ -25,31 +27,38 @@
             <th>
                 @Html.DisplayNameFor(model => model.urh_cre_date)
             </th>
-          
+            <th></th>
+
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
 
+        <tr id="@string.Format("row{0}", @item.urh_id)">
+
+            <td>
+                @Html.DisplayFor(modelItem => item.urh_id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.urh_u_id_name)
             </td>
-           
+
             <td>
                 @Html.DisplayFor(modelItem => item.urh_reporting_to_name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.urh_priority)
             </td>
-       
+
             <td>
                 @Html.DisplayFor(modelItem => item.urh_cre_by_name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.urh_cre_date)
             </td>
-          
+            <td>
+                <button class="btn btn-danger" onclick="deleteEmployeeReportingHirarchy(@item.urh_id);">Delete</button>
+            </td>
         </tr>
 }
     </tbody>

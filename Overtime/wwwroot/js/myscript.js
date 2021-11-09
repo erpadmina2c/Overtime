@@ -1294,7 +1294,7 @@ function AddUserReportingHeirarchy() {
     data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
     data.append("urh_priority", $("#urh_priority").val());
     
-    if ($("#urh_u_id").select2().val() != 0) {
+    if ($("#urh_u_id").select2().val() != 0 && $("#urh_reporting_to").select2().val() != 0 && $("#urh_priority").val()!=0) {
         $.ajax({
             url: "/user/AddUserReportingHeirarchy",
             type: "POST",
@@ -1317,7 +1317,7 @@ function AddUserReportingHeirarchy() {
             }
         });
     } else {
-        alert("Please select user !!!");
+        alert("Please Enter all data !!!");
         $('#overlay').fadeOut();
     }
 }
@@ -1340,4 +1340,84 @@ function attandancedetails() {
         error: function () {
         }
     });
+}
+function getEmployeeInformation() {
+    var data = new FormData();
+    data.append("Type", $("#Type").val());
+    data.append("u_id", $("#User").select2().val());
+    $.ajax({
+        url: "/User/getEmployeeInformation",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable("mytable");
+        },
+        error: function () {
+        }
+    });
+}
+function OpenCancelationModal(id) {
+
+    $('#CancelationModel').modal('show');
+    $("#id").val(id);
+
+}
+function CancelEmployee() {
+    var data = new FormData();
+    if ($("#u_cancelation_date").val() != "" && $("#id").val() != 0) {
+        data.append("u_cancelation_date", $("#u_cancelation_date").val());
+        data.append("u_id", $("#id").val());
+        $.ajax({
+            url: "/User/CancelEmployee",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    $('#CancelationModel').modal('hide');
+                    $("#labl_"+$("#id").val()).text($("#u_cancelation_date").val());
+                    $("#btn_"+$("#id").val()).remove();
+                    $('#overlay').fadeOut();
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut();
+                }
+            },
+            error: function () {
+            }
+        });
+    } else {
+        alert("Please enter all Data !!!");
+    }
+}
+function deleteEmployeeReportingHirarchy(urh_id) {
+    var data = new FormData();
+        data.append("urh_id", urh_id);
+        $.ajax({
+            url: "/User/deleteEmployeeReportingHirarchy",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    var $datatable = $('#mytable').DataTable();
+                    $datatable.row($("#row" + urh_id)).remove().draw();
+                }
+                else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+            }
+        });
+
 }

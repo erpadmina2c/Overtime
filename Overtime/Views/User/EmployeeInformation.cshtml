@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewData["Title"] = "Employee Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/User/EmployeeInformation">Employee Information</a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid" style="margin-top:10px;">
+    <div class="card">
+        <div class="card-body">
+
+            <div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Employee</label>
+                            <select id="User" class="form-control" asp-items="@(new SelectList(ViewBag.Userlist,"u_id","u_full_name"))">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Type</label>
+                            <select id="Type" class="form-control">
+                                <option value="">All</option>
+                                <option value="Y">Active</option>
+                                <option value="N">Inactive</option>
+                            </select>
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group" align="justify">
+                            <input type="submit" onclick="getEmployeeInformation();" class="btn btn-primary" style="margin-top:20px" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="card">
+                    <div class="card-body" id="Container">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="CancelationModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cancelation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="Pallet">
+                    <div class="row" id="filter">
+                        <div class="col-md-4">
+                            <input type="hidden" id="id" name="id" class="form-control">
+                            <label class="control-label">With Effected From </label>
+                            <input type="date" id="u_cancelation_date" name="in_remarks" class="form-control" placeholder="With Effected From" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="button" id="Update" class="btn btn-danger" onclick="CancelEmployee()" value="Cancel Employee" />
+            </div>
+        </div>
+    </div>
+</div>

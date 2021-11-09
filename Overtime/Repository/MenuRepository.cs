@@ -66,6 +66,18 @@ namespace Overtime.Repository
             return query;
         }
 
+        public Menu getMenulistByRoleAndTypeAndLink(int role, string type, string option)
+        {
+            var quary = (from u in db.Menus
+                         join r in db.RoleMenus
+                           on u.m_id equals r.rm_menu_id
+                         join d in db.Roles
+                         on r.rm_role_id equals d.r_id
+                         where r.rm_role_id == role && u.m_type == type && u.m_link == option
+                         select u).FirstOrDefault();
+            return quary;
+        }
+
         public IEnumerable<Menu> getMenuListNotMappedByRoleAndType(int role, string type)
         {
 

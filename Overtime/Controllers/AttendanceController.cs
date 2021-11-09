@@ -413,6 +413,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.AllocationAccess = imenu.getMenulistByRoleAndTypeAndLink(getCurrentUser().u_role_id, "Options", "LeaveModification");
                 var values = ibio.GetLeaveDetail();
                 return View(values);
             }
