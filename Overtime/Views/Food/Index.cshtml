@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewData["Title"] = "Food Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="containerfood mai">
+    <header class="headerfood">
+        <h1 id="title" class="text-center">𝐅𝐎𝐎𝐃 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊 𝐅𝐎𝐑𝐌</h1>
+        <p id="description" class="description text-center">
+            Thank you for taking the time to help us improve!
+        </p>
+    </header>
+    
+    <form id="survey-form">
+        <div class="form-group">
+            <p>𝐇𝐨𝐰 𝐰𝐨𝐮𝐥𝐝 𝐲𝐨𝐮 𝐥𝐢𝐤𝐞 𝐭𝐨 𝐫𝐚𝐭𝐞 𝐲𝐞𝐬𝐭𝐞𝐫𝐝𝐚𝐲'𝐬 𝐛𝐫𝐞𝐚𝐤𝐟𝐚𝐬𝐭?آپ کل کے ناشتے کی درجہ بندی کیسے کرنا چاہیں گے</p>
+            <div class="feedbackbox">
+                <div class="b_emoji">
+                    <div id="b_emoji">
+                        <img src="~/Images/poor.png" alt="poor" />
+                        <img src="~/Images/bad.png" alt="bad" />
+                        <img src="~/Images/okay.png" alt="okay" />
+                        <img src="~/Images/good.png" alt="good" />
+                        <img src="~/Images/excellent.png" alt="excellent" />
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star" id="b_poor" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="b_bad" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="b_okay" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="b_good" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="b_excellent" onclick="emoji(this.id)"></i>
+                </div>
+                <div class="lbl_feedback">
+                    <label id="lbl_BreakfastFeedback" name="Breakfast" for="html"></label><br> 
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <p>𝐇𝐨𝐰 𝐰𝐨𝐮𝐥𝐝 𝐲𝐨𝐮 𝐥𝐢𝐤𝐞 𝐭𝐨 𝐫𝐚𝐭𝐞 𝐲𝐞𝐬𝐭𝐞𝐫𝐝𝐚𝐲'𝐬 𝐥𝐮𝐧𝐜𝐡?آپ کل کے دوپہر کے کھانے کی درجہ بندی کیسے کرنا چاہیں گے</p>
+            <div class="feedbackbox">
+                <div class="l_emoji">
+                    <div id="l_emoji">
+                        <img src="~/Images/poor.png" alt="poor" />
+                        <img src="~/Images/bad.png" alt="bad" />
+                        <img src="~/Images/okay.png" alt="okay" />
+                        <img src="~/Images/good.png" alt="good" />
+                        <img src="~/Images/excellent.png" alt="excellent" />
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star" id="l_poor" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="l_bad" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="l_okay" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="l_good" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="l_excellent" onclick="emoji(this.id)"></i>
+                </div>
+                <div class="lbl_feedback">
+                    <label id="lbl_LunchFeedback" name="Lunch" for="html"></label><br>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <p>𝐇𝐨𝐰 𝐰𝐨𝐮𝐥𝐝 𝐲𝐨𝐮 𝐥𝐢𝐤𝐞 𝐭𝐨 𝐫𝐚𝐭𝐞 𝐲𝐞𝐬𝐭𝐞𝐫𝐝𝐚𝐲'𝐬 𝐝𝐢𝐧𝐧𝐞𝐫?آپ کل کے کھانے کی درجہ بندی کیسے کرنا چاہیں گے<p/>
+            <div class="feedbackbox">
+                <div class="s_emoji">
+                    <div id="s_emoji">
+                        <img src="~/Images/poor.png" alt="poor" />
+                        <img src="~/Images/bad.png" alt="bad" />
+                        <img src="~/Images/okay.png" alt="okay" />
+                        <img src="~/Images/good.png" alt="good" />
+                        <img src="~/Images/excellent.png" alt="excellent" />
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star" id="s_poor" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="s_bad" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="s_okay" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="s_good" onclick="emoji(this.id)"></i>
+                    <i class="fas fa-star" id="s_excellent" onclick="emoji(this.id)"></i>
+                </div>
+                <div class="lbl_feedback">
+                    <label id="lbl_SupperFeedback" name="Dinner" for="html"></label><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p>𝐀𝐧𝐲 𝐜𝐨𝐦𝐦𝐞𝐧𝐭𝐬 𝐨𝐫 𝐬𝐮𝐠𝐠𝐞𝐬𝐭𝐢𝐨𝐧𝐬?کوئی تبصرہ یا تجاویز</p>
+            <textarea id="comments"
+                      class="input-textarea"
+                      name="comment"
+                      placeholder="Enter your comment here..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <button type="button" id="submit" class="submit-button" onclick="AddFoodDetails();">
+                𝑺𝒖𝒃𝒎𝒊𝒕
+            </button>
+        </div>
+    </form>
+    <section id="success-feedback">
+        <div id="success-feedback-box">
+            <div id="success-check-container">
+                <div id="success-check">
+                    <div id="success-bar1"></div>
+                    <div id="success-bar2"></div>
+                </div>
+            </div>
+            <div id="success-text">Success !</div>
+            <div id="success-button">Done</div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+

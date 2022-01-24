@@ -18,7 +18,7 @@
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
     $('#saveMenu').click(function () {
-      
+
         var reqRow = [];
         $("#multiselect_to option").each(function () {
             reqRow.push($(this).val());
@@ -58,7 +58,7 @@
         return new Date(year, month, 0).getDate();
     }
     if ($("#calendar").length) {
-        
+
         var date = new Date();
         var d = date.getDate(),
             m = date.getMonth(),
@@ -78,9 +78,9 @@
         load_user_menus();
     });
     $("#multiselect_rightSelected").click(function () {
-        if ($("#multiselect_to option[value='" + $("#multiselect").val()+"']").length ==0) {
+        if ($("#multiselect_to option[value='" + $("#multiselect").val() + "']").length == 0) {
             $("#multiselect_to").append($("<option />").val($("#multiselect option:selected").val()).text($("#multiselect option:selected").text()));
-            $("#multiselect option[value='" + $("#multiselect option:selected").val()+"']").remove();
+            $("#multiselect option[value='" + $("#multiselect option:selected").val() + "']").remove();
         }
     });
     $("#multiselect_rightAll").click(function () {
@@ -93,11 +93,11 @@
                     $("#multiselect option[value='" + $(this).val() + "']").remove();
                 }
             });
-        }    
+        }
     });
     $("#multiselect_leftSelected").click(function () {
         if ($("#multiselect option[value='" + $("#multiselect_to").val() + "']").length == 0) {
-           
+
             $("#multiselect").append($("<option />").val($("#multiselect_to option:selected").val()).text($("#multiselect_to option:selected").text()));
             $("#multiselect_to option[value='" + $("#multiselect_to option:selected").val() + "']").remove();
         }
@@ -115,7 +115,7 @@
         }
     });
     $('.multiselect').multiselect();
-    $('#forWhom').change(function() {
+    $('#forWhom').change(function () {
         if (!$(this).is(":checked")) {
             var returnVal = confirm("Are you sure?");
             $(this).attr("uncheck", returnVal);
@@ -123,14 +123,14 @@
         else {
             alert();
         }
-              
+
     });
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
     if ($("#demo").length) {
         setInterval(myTimer, 1000);
     }
     if ($("#liveMonitoring").length) {
-       setInterval(loadTimeForAllTr, 1000);
+        setInterval(loadTimeForAllTr, 1000);
         //loadTimeForAllTr();
     }
     if ($("#mytable").length) {
@@ -141,7 +141,7 @@
                 'excelHtml5',
                 'pdfHtml5'
             ]
-         } );
+        });
     }
     if ($("#table2").length) {
         $('#table2').DataTable({
@@ -153,7 +153,7 @@
             ]
         });
     }
-    
+
     $("#name").autocomplete({
 
         source: function (req, resp) {
@@ -189,7 +189,7 @@
             offset: '1000 4' // Shift 20px to the left, 4px down.
         }
     });
-   
+
     $('input[type=radio][name=frmTypes]').change(function () {
 
         load_user_menus();
@@ -198,7 +198,7 @@
         load_user_menus()
     });
     $('#external-events div.external-event').each(function () {
- 
+
         // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
         // it doesn't need to have a start or end
         var eventObject = {
@@ -263,7 +263,7 @@
         },
         droppable: true, // this allows things to be dropped onto the calendar !!!
         drop: function (date, allDay) { // this function is called when something is dropped
-           
+
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
 
@@ -289,17 +289,15 @@
         buttonText: {
             prevYear: "<<",
             nextYear: ">>",
-            prev:"<",
-            next:">"
+            prev: "<",
+            next: ">"
         },
-        
-       
+
+
     });
-
-
 });
 
-function openWorkflowDetl(id) {
+    function openWorkflowDetl(id) {
         var data = new FormData();
         data.append('ID', id);
         $.ajax({
@@ -318,493 +316,45 @@ function openWorkflowDetl(id) {
             error: function () {
             }
         });
-}
-
-function saveWorkFlowDetails() {
-    var workflowid = $("#wd_workflow_id").val();
-    var role_id = $("#wd_role_id").val();
-    var priority = $("#wd_priority").val();
-
-    var data = new FormData();
-    data.append('wd_workflow_id', workflowid);
-    data.append('wd_role_id', role_id);
-    data.append('wd_priority', priority);
-    $.ajax({
-        url: "/WorkflowDetail/Create",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#modalContainer").html(response);
-            $('#myModal').modal('show');
-            $("#wd_priority").val("");
-
-        },
-        error: function () {
-        }
-    });
-}
-
-
-function overTimeRequestReport() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("reportrange", $("#reportrange").val());
-    data.append("rq_cre_by", $("#rq_cre_by").val());
-    data.append("rq_cre_date", $("#rq_cre_date").val());
-    $.ajax({
-        url: "/OvertimeRequest/CustomReport",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-            $('#overlay').fadeOut()
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-
-function GetDailyAttendance() {
-    if ($("#c_date").val() == "") {
-        alert('select Date');
-        return;
-    }
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("date", $("#c_date").val());
-    $.ajax({
-        url: "/Attendance/GetDailyAttendanceByDate",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-            $('#overlay').fadeOut()
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-
-function GetMonthReport() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("reportrange", $("#attdatarange").val());
-    $.ajax({
-        url: "/Attendance/GetMonthReport",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-            $('#overlay').fadeOut()
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-
-function workflowHistory(rowid,doc_id,workflow,status) {
-    var data = new FormData();
-    data.append("rowid", rowid);
-    data.append("doc_id", doc_id);
-    data.append("workflow", workflow);
-    
-    $.ajax({
-        url: "/WorkflowTracker/History",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            workflowDetailStatus(workflow, status);
-            $("#modalContainer").html(response);
-            $('#historyModal').modal('show');
-
-        },
-        error: function () {
-        }
-    });
-}
-
-function workflowDetailStatus( workflow,status) {
-    var data = new FormData();
-    data.append("workflow", workflow);
-    data.append("status", status); 
-    $.ajax({
-        url: "/WorkflowDetail/Status",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#cont").html(response);
-          
-        },
-        error: function () {
-        }
-    });
-}
-
-function OverTimeConsolidatedReport() {
-    var data = new FormData();
-    data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("rq_cre_for", $("#rq_cre_for").val());
-    data.append("reportrange", $("#reportrange").val());
-    $.ajax({
-        url: "/OvertimeRequest/ConsolidatedReports",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-        },
-        error: function () {
-        }
-    });
-}
-$(function () {
-
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
+    function saveWorkFlowDetails() {
+        var workflowid = $("#wd_workflow_id").val();
+        var role_id = $("#wd_role_id").val();
+        var priority = $("#wd_priority").val();
 
-    cb(start, end);
+        var data = new FormData();
+        data.append('wd_workflow_id', workflowid);
+        data.append('wd_role_id', role_id);
+        data.append('wd_priority', priority);
+        $.ajax({
+            url: "/WorkflowDetail/Create",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#modalContainer").html(response);
+                $('#myModal').modal('show');
+                $("#wd_priority").val("");
 
-});
-
-$(function () {
-
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-
-    function cb(start, end) {
-        $('#attdatarange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#attdatarange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-    cb(start, end);
-
-});
-
-
-
-function myTimer() {
- var date1 = new Date();
-  //  var date2 = Date.parse("2020/05/29 21:59:00");
-    var date2 = Date.parse($("#lbl_start").text());
-var delta = Math.abs(date1 - date2) / 1000;
-
-// calculate (and subtract) whole days
-var days = Math.floor(delta / 86400);
-delta -= days * 86400;
-
-// calculate (and subtract) whole hours
-var hours = Math.floor(delta / 3600) % 24;
-delta -= hours * 3600;
-
-// calculate (and subtract) whole minutes
-var minutes = Math.floor(delta / 60) % 60;
-delta -= minutes * 60;
-
-// what's left is seconds
-var seconds = delta % 60;
-    document.getElementById("demo").innerHTML = days + ": " + hours + ":" + minutes + ":" + Math.round(seconds);
-}
-
-
-function loadTimeForAllTr() {
-    if ($("#mytable").length) {
-        
-        $("tr.a").each(function (i, tr) {
-            var value = $(this).find("input.b").val();
-           
-            var date1 = new Date();
-            //  var date2 = Date.parse("2020/05/29 21:59:00");
-            var date2 = Date.parse($(this).find("#starttime" + value).val() );
-            var delta = Math.abs(date1 - date2) / 1000;
-
-            // calculate (and subtract) whole days
-            var days = Math.floor(delta / 86400);
-            delta -= days * 86400;
-
-            // calculate (and subtract) whole hours
-            var hours = Math.floor(delta / 3600) % 24;
-            delta -= hours * 3600;
-
-            // calculate (and subtract) whole minutes
-            var minutes = Math.floor(delta / 60) % 60;
-            delta -= minutes * 60;
-
-            // what's left is seconds
-            var seconds = delta % 60;
-            $(this).find("#Duration" + value).text(n(days) + ": " + n(hours) + ":" + n(minutes) + ":" + n(Math.round(seconds)));
+            },
+            error: function () {
+            }
         });
     }
 
-}
 
-function n(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
-
-function holdHistory(rowid, doc_id,from) {
-    var data = new FormData();
-    data.append("rowid", rowid);
-    data.append("doc_id", doc_id);
-    data.append("from", from);
-
-    $.ajax({
-        url: "/Hold/History",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#modalContainer").html(response);
-            $('#historyModal').modal('show');
-        },
-        error: function () {
-        }
-    });
-}
-function replayForHold(id) {
-    var data = new FormData();
-    data.append("id", id);
-    data.append("replay", $("#replay" + id).val().replace(/[\n\r]/g, ''));
-    $.ajax({
-        url: "/Hold/Replay",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-        },
-        error: function () {
-        }
-    });
-}
-function hold(id) {
-    var data = prompt("Reason For Blocking?? ", "");
-    if (data != null) {
-        $("#reason" + id).val(data);
-        $("#hold" + id).submit();
-    }
-   
-}
-function unhold(id) {
-    var data = prompt("Reason For Blocking?? ", "");
-    if (data != null) {
-        $("#reason" + id).val(data);
-        $("#unhold" + id).submit();
-    }
-   
-}
-
-function load_user_menus() {
-    var $option = $('#SelectRole').find('option:selected');
-    var role = $option.val();
-
-    var type = $('input[name=frmTypes]:checked').val();
-    var data = new FormData();
-    data.append('role', role);
-    data.append('type', type);
-    $.ajax({
-        url: "/RoleMenu/showRoleMenus",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            var data = JSON.parse(response);
-            var i;
-            if ($.isEmptyObject(response)) {
-                $("#multiselect_to").empty();
-                $("#multiselect").empty();
-            } else {
-              
-                $('#saveMenu').prop('disabled', false);
-                $("#multiselect_to").empty();
-                $("#multiselect").empty();
-                for (i = 0; i < data.userMenu.length; ++i) {
-                    $("#multiselect_to").append($("<option />").val(data.userMenu[i].m_id).text(data.userMenu[i].m_description));
-                   
-                }
-                for (i = 0; i < data.allMenu.length; ++i) {
-                    $("#multiselect").append($("<option />").val(data.allMenu[i].m_id).text(data.allMenu[i].m_description));
-
-                }
-            }
-        },
-        error: function () {
-            
-            $("#multiselect_to").empty();
-            $("#multiselect").empty();
-        }
-    });
-}
-
-function viewInsights(id,doc_id,flag) {
-    var data = new FormData();
-    data.append('id', id);
-    data.append('doc_id', doc_id);
-    $.ajax({
-        url: "/Insights/index",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#insightsContainer").html(response);
-            if (flag == 0) {
-                $("#filter").empty()
-            }
-            $("#id").val(id);
-            $("#doc_id").val(doc_id);
-            $('#insightsModal').modal('show');
-        },
-        error: function () {
-        }
-    });
-}
-
-
-
-function saveInsight() {
-    var id = $("#id").val();
-    var doc_id = $("#doc_id").val();
-    var in_remarks = $("#remarks").val();
-
-    var data = new FormData();
-    data.append('id', id);
-    data.append('doc_id', doc_id);
-    data.append('remarks', in_remarks);
-    $.ajax({
-        url: "/Insights/Create",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#insightsContainer").html(response);
-            $("#id").val(id);
-            $("#doc_id").val(doc_id);
-            $('#insightsModal').modal('show');
-            $("#remarks").val("");
-            window.location.reload();
-        },
-        error: function () {
-        }
-    });
-}
-
-function Reject(id) {
-    var data = prompt("Reason For Rejection?? ", "");
-    if (data != null && data != "") {
-        $("#reason" + id).val(data);
-        $("#reject" + id).submit();
-    }
-    else {
-        alert('please enter Reason!!!');
-    }
-}
-function updateHour() {
-
-    if ($("#time").val() != 0) {
-        $("#wh_hours").val(parseFloat($("#time").val()/60).toFixed(2));
-    }
-   
-    
-}
-
-function consolidatedByType() {
-    var data = new FormData();
-    data.append("type", $("#type").val());
-    if ($("#type").val() != "") {
+    function overTimeRequestReport() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("rq_dep_id", $("#rq_dep_id").val());
         data.append("reportrange", $("#reportrange").val());
+        data.append("rq_cre_by", $("#rq_cre_by").val());
+        data.append("rq_cre_date", $("#rq_cre_date").val());
         $.ajax({
-            url: "/OvertimeRequest/consolidateReportByType",
+            url: "/OvertimeRequest/CustomReport",
             type: "POST",
             contentType: false,
             processData: false,
@@ -812,15 +362,142 @@ function consolidatedByType() {
             data: data,
             success: function (response) {
                 $("#container").html(response);
+                $('#mytable').DataTable({
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+                $('#overlay').fadeOut()
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
 
-                if ($("#type").val() == "Department") {
-                    $('td[name^="emp"]').remove();
-                    $('th[name^="emp"]').remove();
-                }
-                else {
-                    $('td[name^="dep"]').remove();
-                    $('th[name^="dep"]').remove();
-                }
+    function GetDailyAttendance() {
+        if ($("#c_date").val() == "") {
+            alert('select Date');
+            return;
+        }
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("date", $("#c_date").val());
+        $.ajax({
+            url: "/Attendance/GetDailyAttendanceByDate",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#container").html(response);
+                $('#mytable').DataTable({
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+                $('#overlay').fadeOut()
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+
+    function GetMonthReport() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("reportrange", $("#attdatarange").val());
+        $.ajax({
+            url: "/Attendance/GetMonthReport",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#container").html(response);
+                $('#mytable').DataTable({
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+                $('#overlay').fadeOut()
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+
+    function workflowHistory(rowid,doc_id,workflow,status) {
+        var data = new FormData();
+        data.append("rowid", rowid);
+        data.append("doc_id", doc_id);
+        data.append("workflow", workflow);
+
+        $.ajax({
+            url: "/WorkflowTracker/History",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                workflowDetailStatus(workflow, status);
+                $("#modalContainer").html(response);
+                $('#historyModal').modal('show');
+
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function workflowDetailStatus(workflow, status) {
+        var data = new FormData();
+        data.append("workflow", workflow);
+        data.append("status", status);
+        $.ajax({
+            url: "/WorkflowDetail/Status",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#cont").html(response);
+
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function OverTimeConsolidatedReport() {
+        var data = new FormData();
+        data.append("rq_dep_id", $("#rq_dep_id").val());
+        data.append("rq_cre_for", $("#rq_cre_for").val());
+        data.append("reportrange", $("#reportrange").val());
+        $.ajax({
+            url: "/OvertimeRequest/ConsolidatedReports",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#container").html(response);
                 $('#mytable').DataTable({
                     dom: 'lBfrtip',
                     buttons: [
@@ -833,56 +510,340 @@ function consolidatedByType() {
             error: function () {
             }
         });
-    } else {
-        alert("Please choose Report type");
     }
-    
-}
+    $(function () {
 
-function Workinghour(id, doc_id, flag) {
-   
-    var data = new FormData();
-    data.append('id', id);
-    data.append('doc_id', doc_id);
-    $.ajax({
-        url: "/WorkingHour/index",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#workingHourContainer").html(response);
+        var start = moment().subtract(29, 'days');
+        var end = moment();
 
-            if (flag == 0) {
-                $("#whfilter").empty()
-            }
-            $("#id").val(id);
-            $("#doc_id").val(doc_id);
-            $('#workingHourModal').modal('show');
-          
-        },
-        error: function () {
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
     });
-}
+
+    $(function () {
+
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+
+        function cb(start, end) {
+            $('#attdatarange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#attdatarange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
+    });
 
 
 
-function saveWorkinghour() {
-    var id = $("#id").val();
-    var doc_id = $("#doc_id").val();
-    var wh_remarks = $("#wh_remarks").val();
-    var wh_hours = $("#wh_hours").val();
-    if (wh_hours > 0) {
+    function myTimer() {
+        var date1 = new Date();
+        //  var date2 = Date.parse("2020/05/29 21:59:00");
+        var date2 = Date.parse($("#lbl_start").text());
+        var delta = Math.abs(date1 - date2) / 1000;
+
+        // calculate (and subtract) whole days
+        var days = Math.floor(delta / 86400);
+        delta -= days * 86400;
+
+        // calculate (and subtract) whole hours
+        var hours = Math.floor(delta / 3600) % 24;
+        delta -= hours * 3600;
+
+        // calculate (and subtract) whole minutes
+        var minutes = Math.floor(delta / 60) % 60;
+        delta -= minutes * 60;
+
+        // what's left is seconds
+        var seconds = delta % 60;
+        document.getElementById("demo").innerHTML = days + ": " + hours + ":" + minutes + ":" + Math.round(seconds);
+    }
+
+
+    function loadTimeForAllTr() {
+        if ($("#mytable").length) {
+
+            $("tr.a").each(function (i, tr) {
+                var value = $(this).find("input.b").val();
+
+                var date1 = new Date();
+                //  var date2 = Date.parse("2020/05/29 21:59:00");
+                var date2 = Date.parse($(this).find("#starttime" + value).val());
+                var delta = Math.abs(date1 - date2) / 1000;
+
+                // calculate (and subtract) whole days
+                var days = Math.floor(delta / 86400);
+                delta -= days * 86400;
+
+                // calculate (and subtract) whole hours
+                var hours = Math.floor(delta / 3600) % 24;
+                delta -= hours * 3600;
+
+                // calculate (and subtract) whole minutes
+                var minutes = Math.floor(delta / 60) % 60;
+                delta -= minutes * 60;
+
+                // what's left is seconds
+                var seconds = delta % 60;
+                $(this).find("#Duration" + value).text(n(days) + ": " + n(hours) + ":" + n(minutes) + ":" + n(Math.round(seconds)));
+            });
+        }
+
+    }
+
+    function n(n) {
+        return n > 9 ? "" + n : "0" + n;
+    }
+
+    function holdHistory(rowid, doc_id,from) {
+        var data = new FormData();
+        data.append("rowid", rowid);
+        data.append("doc_id", doc_id);
+        data.append("from", from);
+
+        $.ajax({
+            url: "/Hold/History",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#modalContainer").html(response);
+                $('#historyModal').modal('show');
+            },
+            error: function () {
+            }
+        });
+    }
+    function replayForHold(id) {
+        var data = new FormData();
+        data.append("id", id);
+        data.append("replay", $("#replay" + id).val().replace(/[\n\r]/g, ''));
+        $.ajax({
+            url: "/Hold/Replay",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+            },
+            error: function () {
+            }
+        });
+    }
+    function hold(id) {
+        var data = prompt("Reason For Blocking?? ", "");
+        if (data != null) {
+            $("#reason" + id).val(data);
+            $("#hold" + id).submit();
+        }
+
+    }
+    function unhold(id) {
+        var data = prompt("Reason For Blocking?? ", "");
+        if (data != null) {
+            $("#reason" + id).val(data);
+            $("#unhold" + id).submit();
+        }
+
+    }
+
+    function load_user_menus() {
+        var $option = $('#SelectRole').find('option:selected');
+        var role = $option.val();
+
+        var type = $('input[name=frmTypes]:checked').val();
+        var data = new FormData();
+        data.append('role', role);
+        data.append('type', type);
+        $.ajax({
+            url: "/RoleMenu/showRoleMenus",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                var data = JSON.parse(response);
+                var i;
+                if ($.isEmptyObject(response)) {
+                    $("#multiselect_to").empty();
+                    $("#multiselect").empty();
+                } else {
+
+                    $('#saveMenu').prop('disabled', false);
+                    $("#multiselect_to").empty();
+                    $("#multiselect").empty();
+                    for (i = 0; i < data.userMenu.length; ++i) {
+                        $("#multiselect_to").append($("<option />").val(data.userMenu[i].m_id).text(data.userMenu[i].m_description));
+
+                    }
+                    for (i = 0; i < data.allMenu.length; ++i) {
+                        $("#multiselect").append($("<option />").val(data.allMenu[i].m_id).text(data.allMenu[i].m_description));
+
+                    }
+                }
+            },
+            error: function () {
+
+                $("#multiselect_to").empty();
+                $("#multiselect").empty();
+            }
+        });
+    }
+
+    function viewInsights(id, doc_id,flag) {
         var data = new FormData();
         data.append('id', id);
         data.append('doc_id', doc_id);
-        data.append('wh_remarks', wh_remarks);
-        data.append('wh_hours', wh_hours);
-
         $.ajax({
-            url: "/WorkingHour/Create",
+            url: "/Insights/index",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#insightsContainer").html(response);
+                if (flag == 0) {
+                    $("#filter").empty()
+                }
+                $("#id").val(id);
+                $("#doc_id").val(doc_id);
+                $('#insightsModal').modal('show');
+            },
+            error: function () {
+            }
+        });
+    }
+
+
+
+    function saveInsight() {
+        var id = $("#id").val();
+        var doc_id = $("#doc_id").val();
+        var in_remarks = $("#remarks").val();
+
+        var data = new FormData();
+        data.append('id', id);
+        data.append('doc_id', doc_id);
+        data.append('remarks', in_remarks);
+        $.ajax({
+            url: "/Insights/Create",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#insightsContainer").html(response);
+                $("#id").val(id);
+                $("#doc_id").val(doc_id);
+                $('#insightsModal').modal('show');
+                $("#remarks").val("");
+                window.location.reload();
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function Reject(id) {
+        var data = prompt("Reason For Rejection?? ", "");
+        if (data != null && data != "") {
+            $("#reason" + id).val(data);
+            $("#reject" + id).submit();
+        }
+        else {
+            alert('please enter Reason!!!');
+        }
+    }
+    function updateHour() {
+
+        if ($("#time").val() != 0) {
+            $("#wh_hours").val(parseFloat($("#time").val()/60).toFixed(2));
+        }
+
+
+    }
+
+    function consolidatedByType() {
+        var data = new FormData();
+        data.append("type", $("#type").val());
+        if ($("#type").val() != "") {
+            data.append("reportrange", $("#reportrange").val());
+            $.ajax({
+                url: "/OvertimeRequest/consolidateReportByType",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    $("#container").html(response);
+
+                    if ($("#type").val() == "Department") {
+                        $('td[name^="emp"]').remove();
+                        $('th[name^="emp"]').remove();
+                    }
+                    else {
+                        $('td[name^="dep"]').remove();
+                        $('th[name^="dep"]').remove();
+                    }
+                    $('#mytable').DataTable({
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'pdfHtml5'
+                        ]
+                    });
+                },
+                error: function () {
+                }
+            });
+        } else {
+            alert("Please choose Report type");
+        }
+
+    }
+
+    function Workinghour(id, doc_id, flag) {
+
+        var data = new FormData();
+        data.append('id', id);
+        data.append('doc_id', doc_id);
+        $.ajax({
+            url: "/WorkingHour/index",
             type: "POST",
             contentType: false,
             processData: false,
@@ -890,92 +851,129 @@ function saveWorkinghour() {
             data: data,
             success: function (response) {
                 $("#workingHourContainer").html(response);
+
+                if (flag == 0) {
+                    $("#whfilter").empty()
+                }
                 $("#id").val(id);
                 $("#doc_id").val(doc_id);
                 $('#workingHourModal').modal('show');
-                $("#remarks").val("");
-                $("#wh_remarks").val("");
-                $("#time").val("");
-                $("#wh_hours").val("");
+
             },
             error: function () {
             }
         });
     }
-    else {
-        alert("Deduction Cannot be Negative!!!")
-    }
-}
 
-function HrAppovalBySearch() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("rq_dep_id", $("#rq_dep_id").val());
-    data.append("reportrange", $("#reportrange").val());
-    data.append("rq_cre_by", $("#rq_cre_by").val());
-    data.append("rq_cre_date", $("#rq_cre_date").val());
-    $.ajax({
-        url: "/OvertimeRequest/HrAppovalBySearch",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
+
+
+    function saveWorkinghour() {
+        var id = $("#id").val();
+        var doc_id = $("#doc_id").val();
+        var wh_remarks = $("#wh_remarks").val();
+        var wh_hours = $("#wh_hours").val();
+        if (wh_hours > 0) {
+            var data = new FormData();
+            data.append('id', id);
+            data.append('doc_id', doc_id);
+            data.append('wh_remarks', wh_remarks);
+            data.append('wh_hours', wh_hours);
+
+            $.ajax({
+                url: "/WorkingHour/Create",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    $("#workingHourContainer").html(response);
+                    $("#id").val(id);
+                    $("#doc_id").val(doc_id);
+                    $('#workingHourModal').modal('show');
+                    $("#remarks").val("");
+                    $("#wh_remarks").val("");
+                    $("#time").val("");
+                    $("#wh_hours").val("");
+                },
+                error: function () {
+                }
             });
-            $('#overlay').fadeOut()
-        },
-        error: function () {
-            $('#overlay').fadeOut()
         }
-    });
-}
-function JQ_reject(id) {
-    var reason = prompt("Reason For Rejection?? ", "");
-   
-    if (reason != null && reason != "") {
-       
-        var data = new FormData();
-        data.append("id", id);
-        data.append("reason", reason);
+        else {
+            alert("Deduction Cannot be Negative!!!")
+        }
+    }
 
+    function HrAppovalBySearch() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("rq_dep_id", $("#rq_dep_id").val());
+        data.append("reportrange", $("#reportrange").val());
+        data.append("rq_cre_by", $("#rq_cre_by").val());
+        data.append("rq_cre_date", $("#rq_cre_date").val());
         $.ajax({
-            url: "/OvertimeRequest/JQ_Reject",
+            url: "/OvertimeRequest/HrAppovalBySearch",
             type: "POST",
             contentType: false,
             processData: false,
             cache: false,
             data: data,
             success: function (response) {
-                if (response.message == "Success") {
-                   var $datatable = $('#mytable').DataTable();
-		            $datatable.row($("#row" + id)).remove().draw();
-                    
-                }
-                else {
-                    alert(response.message);
-                }
-               
+                $("#container").html(response);
+                $('#mytable').DataTable({
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+                $('#overlay').fadeOut()
             },
             error: function () {
+                $('#overlay').fadeOut()
             }
         });
-       
     }
-    else {
-        alert('please enter Reason!!!');
+    function JQ_reject(id) {
+        var reason = prompt("Reason For Rejection?? ", "");
+
+        if (reason != null && reason != "") {
+
+            var data = new FormData();
+            data.append("id", id);
+            data.append("reason", reason);
+
+            $.ajax({
+                url: "/OvertimeRequest/JQ_Reject",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    if (response.message == "Success") {
+                        var $datatable = $('#mytable').DataTable();
+                        $datatable.row($("#row" + id)).remove().draw();
+
+                    }
+                    else {
+                        alert(response.message);
+                    }
+
+                },
+                error: function () {
+                }
+            });
+
+        }
+        else {
+            alert('please enter Reason!!!');
+        }
     }
-}
-function JQ_Approve(id) {
-   
+    function JQ_Approve(id) {
+
         var data = new FormData();
         data.append("id", id);
         $.ajax({
@@ -987,11 +985,11 @@ function JQ_Approve(id) {
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
-		        var $datatable = $('#mytable').DataTable();
-		        $datatable.row($("#row" + id)).remove().draw();
-		    //$('#myTable').dataTable().fnDeleteRow(row);
-                   // $("#row" + id).remove();
-                   // $('#mytable').DataTable().ajax.reload();
+                    var $datatable = $('#mytable').DataTable();
+                    $datatable.row($("#row" + id)).remove().draw();
+                    //$('#myTable').dataTable().fnDeleteRow(row);
+                    // $("#row" + id).remove();
+                    // $('#mytable').DataTable().ajax.reload();
                 }
                 else {
                     alert(response.message);
@@ -1002,149 +1000,53 @@ function JQ_Approve(id) {
             }
         });
 
-}
-function userLoginHistory() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("reportrange", $("#reportrange").val());
-    data.append("id", $("#ll_cre_by").val());
-    $.ajax({
-        url: "/User/UserLoginHistoryBySearch",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                order:[],
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-            $('#overlay').fadeOut()
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-
-function SearcbTraingingData() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("reportrange", $("#reportrange").val());
-    data.append("id", $("#rq_cre_for").val());
-    $.ajax({
-        url: "/Training/TrainingData",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $('#overlay').fadeOut();
-            $("#container").html(response);
-            $('#mytable').DataTable({
-                order: [],
-                dom: 'lBfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'pdfHtml5'
-                ]
-            });
-        
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-function OpenModalForAddTraining() {
-    $('#TrainingModal').modal('show');
-}
-function addTraining() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("tr_start_date", $("#from").val());
-    data.append("tr_u_id", $("#tr_u_id").select2().val());
-    $.ajax({
-        url: "/Training/create",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            if (response.message == "success") {
-                $('#TrainingModal').modal('hide');
+    }
+    function userLoginHistory() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("reportrange", $("#reportrange").val());
+        data.append("id", $("#ll_cre_by").val());
+        $.ajax({
+            url: "/User/UserLoginHistoryBySearch",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#container").html(response);
+                $('#mytable').DataTable({
+                    order:[],
+                    dom: 'lBfrtip',
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'pdfHtml5'
+                    ]
+                });
+                $('#overlay').fadeOut()
+            },
+            error: function () {
                 $('#overlay').fadeOut()
             }
-            else
-            {
-                alert(response.message);
-                $('#overlay').fadeOut()
-            }
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-function FinishTraing(id) {
+        });
+    }
 
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("tr_id", id);
-    data.append("tr_end_date", $("#tr_id" + id).val());
-    $.ajax({
-        url: "/Training/FinishTraing",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            if (response.message == "Success") {
-               
-                $("#tr_id" + id).prop("disabled", true);
-                $("#btn" + id).prop("disabled", true);
-                 $('#overlay').fadeOut()
-            }
-            else {
-                alert(response.message);
-                $('#overlay').fadeOut()
-            }
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-
-
-
-function SearchUserShiftData() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("reportrange", $("#reportrange").val());
-    data.append("id", $("#us_u_id").val());
-    $.ajax({
-        url: "/UserShift/UserShiftData",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $('#overlay').fadeOut();
-            $("#container").html(response);
-            if (!$.fn.DataTable.isDataTable('#mytable')) {
+    function SearcbTraingingData() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("reportrange", $("#reportrange").val());
+        data.append("id", $("#rq_cre_for").val());
+        $.ajax({
+            url: "/Training/TrainingData",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $('#overlay').fadeOut();
+                $("#container").html(response);
                 $('#mytable').DataTable({
                     order: [],
                     dom: 'lBfrtip',
@@ -1154,27 +1056,52 @@ function SearchUserShiftData() {
                         'pdfHtml5'
                     ]
                 });
-            }
 
-        },
-        error: function () {
-            $('#overlay').fadeOut()
-        }
-    });
-}
-function OpenModalForAddUserShift() {
-    $('#UserShiftModal').modal('show');
-}
-function addUserShilft() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("us_start_time", $("#us_start_time").val());
-    data.append("us_end_time", $("#us_end_time").val());
-    data.append("us_start_date", $("#us_start_date").val());
-    data.append("us_u_id", $("#user").select2().val());
-    if ($("#user").select2().val() != 0) {
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+    function OpenModalForAddTraining() {
+        $('#TrainingModal').modal('show');
+    }
+    function addTraining() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("tr_start_date", $("#from").val());
+        data.append("tr_u_id", $("#tr_u_id").select2().val());
         $.ajax({
-            url: "/UserShift/Create",
+            url: "/Training/create",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "success") {
+                    $('#TrainingModal').modal('hide');
+                    $('#overlay').fadeOut()
+                }
+                else
+                {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+    function FinishTraing(id) {
+
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("tr_id", id);
+        data.append("tr_end_date", $("#tr_id" + id).val());
+        $.ajax({
+            url: "/Training/FinishTraing",
             type: "POST",
             contentType: false,
             processData: false,
@@ -1182,32 +1109,297 @@ function addUserShilft() {
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
-                    $('#UserShiftModal').modal('hide');
-                    SearchUserShiftData();
-                    $('#overlay').fadeOut();
+
+                    $("#tr_id" + id).prop("disabled", true);
+                    $("#btn" + id).prop("disabled", true);
+                    $('#overlay').fadeOut()
                 }
                 else {
                     alert(response.message);
-                    $('#overlay').fadeOut();
+                    $('#overlay').fadeOut()
                 }
             },
             error: function () {
-                $('#overlay').fadeOut();
+                $('#overlay').fadeOut()
             }
         });
-    } else {
-        alert("Please select user !!!");
-        $('#overlay').fadeOut();
     }
-}
-function FinishUserShift(id) {
 
-    $('#overlay').fadeIn();
+
+
+    function SearchUserShiftData() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("reportrange", $("#reportrange").val());
+        data.append("id", $("#us_u_id").val());
+        $.ajax({
+            url: "/UserShift/UserShiftData",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $('#overlay').fadeOut();
+                $("#container").html(response);
+                if (!$.fn.DataTable.isDataTable('#mytable')) {
+                    $('#mytable').DataTable({
+                        order: [],
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'pdfHtml5'
+                        ]
+                    });
+                }
+
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+    function OpenModalForAddUserShift() {
+        $('#UserShiftModal').modal('show');
+    }
+    function addUserShilft() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("us_start_time", $("#us_start_time").val());
+        data.append("us_end_time", $("#us_end_time").val());
+        data.append("us_start_date", $("#us_start_date").val());
+        data.append("us_u_id", $("#user").select2().val());
+        if ($("#user").select2().val() != 0) {
+            $.ajax({
+                url: "/UserShift/Create",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    if (response.message == "Success") {
+                        $('#UserShiftModal').modal('hide');
+                        SearchUserShiftData();
+                        $('#overlay').fadeOut();
+                    }
+                    else {
+                        alert(response.message);
+                        $('#overlay').fadeOut();
+                    }
+                },
+                error: function () {
+                    $('#overlay').fadeOut();
+                }
+            });
+        } else {
+            alert("Please select user !!!");
+            $('#overlay').fadeOut();
+        }
+    }
+    function FinishUserShift(id) {
+
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("us_id", id);
+        data.append("us_end_date", $("#us_id" + id).val());
+        $.ajax({
+            url: "/UserShift/FinishUserShift",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+
+                    $("#us_id" + id).prop("disabled", true);
+                    $("#btn" + id).prop("disabled", true);
+                    $('#overlay').fadeOut()
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut()
+            }
+        });
+    }
+
+    function DeleteLeave(LeaveId) {
+
+        var data = new FormData();
+        data.append("LeaveId", LeaveId);
+
+        $.ajax({
+            url: "/Attendance/DeleteLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                alert(response)
+                location.reload();
+            },
+            error: function () {
+                //$('#overlay').fadeOut()
+            }
+        });
+    }
+    function getUserReportingHeirarchy() {
+
+        var data = new FormData();
+        data.append("urh_u_id", $("#urh_u_id").select2().val());
+        data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
+        data.append("urh_priority", $("#urh_priority").val());
+
+        $.ajax({
+            url: "/User/getUserReportingHeirarchy",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#Container").html(response);
+                loadDatatable("mytable");
+            },
+            error: function () {
+            }
+        });
+    }
+    function loadDatatable(tableid) {
+        if (!$.fn.DataTable.isDataTable('#'+ tableid)) {
+            $('#' + tableid).DataTable({
+                order: [],
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        }
+    }
+    function AddUserReportingHeirarchy() {
+        $('#overlay').fadeIn();
+        var data = new FormData();
+        data.append("urh_u_id", $("#urh_u_id").select2().val());
+        data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
+        data.append("urh_priority", $("#urh_priority").val());
+
+        if ($("#urh_u_id").select2().val() != 0 && $("#urh_reporting_to").select2().val() != 0 && $("#urh_priority").val() != 0) {
+            $.ajax({
+                url: "/user/AddUserReportingHeirarchy",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    if (response.message == "Success") {
+                        getUserReportingHeirarchy();
+                        $('#overlay').fadeOut();
+                    }
+                    else {
+                        alert(response.message);
+                        $('#overlay').fadeOut();
+                    }
+                },
+                error: function () {
+                    $('#overlay').fadeOut();
+                }
+            });
+        } else {
+            alert("Please Enter all data !!!");
+            $('#overlay').fadeOut();
+        }
+    }
+
+    function attandancedetails() {
+        var data = new FormData();
+        data.append("reportrange", $("#reportrange").val());
+        data.append("u_id", $("#User").select2().val());
+        $.ajax({
+            url: "/Attendance/AttendanceDetailsBySearch",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#Container").html(response);
+                loadDatatable("mytable");
+            },
+            error: function () {
+            }
+        });
+    }
+    function getEmployeeInformation() {
+        var data = new FormData();
+        data.append("Type", $("#Type").val());
+        data.append("u_id", $("#User").select2().val());
+        $.ajax({
+            url: "/User/getEmployeeInformation",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#Container").html(response);
+                loadDatatable("mytable");
+            },
+            error: function () {
+            }
+        });
+    }
+    function OpenCancelationModal(id) {
+
+        $('#CancelationModel').modal('show');
+        $("#id").val(id);
+
+    }
+    function CancelEmployee() {
+        var data = new FormData();
+        if ($("#u_cancelation_date").val() != "" && $("#id").val() != 0) {
+            data.append("u_cancelation_date", $("#u_cancelation_date").val());
+            data.append("u_id", $("#id").val());
+            $.ajax({
+                url: "/User/CancelEmployee",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    if (response.message == "Success") {
+                        $('#CancelationModel').modal('hide');
+                        $("#labl_"+$("#id").val()).text($("#u_cancelation_date").val());
+                        $("#btn_"+$("#id").val()).remove();
+                        $('#overlay').fadeOut();
+                    }
+                    else {
+                        alert(response.message);
+                        $('#overlay').fadeOut();
+                    }
+                },
+                error: function () {
+                }
+            });
+        } else {
+            alert("Please enter all Data !!!");
+        }
+    }
+function deleteEmployeeReportingHirarchy(urh_id) {
     var data = new FormData();
-    data.append("us_id", id);
-    data.append("us_end_date", $("#us_id" + id).val());
+    data.append("urh_id", urh_id);
     $.ajax({
-        url: "/UserShift/FinishUserShift",
+        url: "/User/deleteEmployeeReportingHirarchy",
         type: "POST",
         contentType: false,
         processData: false,
@@ -1215,209 +1407,214 @@ function FinishUserShift(id) {
         data: data,
         success: function (response) {
             if (response.message == "Success") {
-
-                $("#us_id" + id).prop("disabled", true);
-                $("#btn" + id).prop("disabled", true);
-                $('#overlay').fadeOut()
+                var $datatable = $('#mytable').DataTable();
+                $datatable.row($("#row" + urh_id)).remove().draw();
             }
             else {
                 alert(response.message);
-                $('#overlay').fadeOut()
             }
         },
         error: function () {
-            $('#overlay').fadeOut()
         }
     });
+
 }
 
-function DeleteLeave(LeaveId) {
-  
+function AddFoodDetails() {
+
     var data = new FormData();
-    data.append("LeaveId", LeaveId);
-  
+    var isValid = true;
+    var breakFeedback = $("#lbl_BreakfastFeedback").text();
+    var lunchFeedback = $("#lbl_LunchFeedback").text();
+    var supperFeedback = $("#lbl_SupperFeedback").text();
+    var cmdSuggestion = $("#comments").val();
+    $('#lbl_BreakfastFeedback,#lbl_LunchFeedback,#lbl_SupperFeedback').each(function () {
+        var  checkmeals= $.trim($(this).is(':contains("choose")'));
+        if ($.trim($(this).text()) == '') {
+            isValid = false;
+            $(this).css({ "border": "3px solid red", "background": "#FF0000", "text-decoration":"thickness"});
+            $(this).text("choose the " + $(this).attr("name") + " feedback");
+        }
+        else if (checkmeals != 'false') {
+            isValid = false;
+            $(this).text("choose the " + $(this).attr("name") + " feedback");
+        }
+        else {
+            $(this).css({ "border": "", "background": "" });
+        }
+    });
+    if (isValid == false)
+        return false;
+    data.append("F_Breakfeedback", breakFeedback);
+    data.append("F_Lunchfeedback", lunchFeedback);
+    data.append("F_Supperfeedback", supperFeedback);
+    data.append("F_cmdSuggestion", cmdSuggestion);
     $.ajax({
-        url: "/Attendance/DeleteLeave",
+        url: "/Food/AddFoodDetails",
         type: "POST",
         contentType: false,
         processData: false,
         cache: false,
         data: data,
         success: function (response) {
-            alert(response)
-            location.reload();
+           
+            if (response.message == "Success") {
+                alert(response.message);
+                window.location.replace("/Home/index");
+               
+            }
+            else {
+                alert(response.message);
+              
+            }
+           
+
         },
-        error: function () {
-            //$('#overlay').fadeOut()
+        error: function (xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText
+            alert('Error - ' + errorMessage);
         }
     });
 }
-function getUserReportingHeirarchy() {
 
-    var data = new FormData();
-    data.append("urh_u_id", $("#urh_u_id").select2().val());
-    data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
-    data.append("urh_priority", $("#urh_priority").val());
+function AssignFeedback(Firstid, Secondid) {
+    if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); $("#lbl_BreakfastFeedback").css({ "border": "", "background": "" }); }
+    if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); $("#lbl_LunchFeedback").css({ "border": "", "background": "" }); }
+    if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); $("#lbl_SupperFeedback").css({ "border": "", "background": "" }); }
+    Firstid = "";
+    Secondid = "";
 
-    $.ajax({
-        url: "/User/getUserReportingHeirarchy",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#Container").html(response);
-            loadDatatable("mytable");
-        },
-        error: function () {
-        }
-    });
 }
-function loadDatatable(tableid) {
-    if (!$.fn.DataTable.isDataTable('#'+ tableid)) {
-        $('#' + tableid).DataTable({
-            order: [],
-            dom: 'lBfrtip',
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'pdfHtml5'
-            ]
-        });
+
+function emoji(clickid) {
+    var stars = document.getElementsByClassName("fas");
+    var emoji = document.getElementById("emoji");
+    var Firstid = clickid.split('_')[0].trim();
+    var Secondid = clickid.split('_')[1].trim();
+    var jj = '#' + Firstid + '_' + 'poor';
+    if (clickid == "b_poor" || clickid == "l_poor" || clickid == "s_poor") {
+        $('#' + Firstid+'_'+'poor').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'bad').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'okay').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'good').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${0}px)`);
+        AssignFeedback(Firstid, Secondid);
+        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); $("#lbl_BreakfastFeedback").css({ "border": "", "background": "" });}
+        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); $("#lbl_LunchFeedback").css({ "border": "", "background": "" });}
+        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); $("#lbl_SupperFeedback").css({ "border": "", "background": "" });}
+        //Firstid = "";
+        //Secondid = "";
+
     }
-}
-function AddUserReportingHeirarchy() {
-    $('#overlay').fadeIn();
-    var data = new FormData();
-    data.append("urh_u_id", $("#urh_u_id").select2().val());
-    data.append("urh_reporting_to", $("#urh_reporting_to").select2().val());
-    data.append("urh_priority", $("#urh_priority").val());
-    
-    if ($("#urh_u_id").select2().val() != 0 && $("#urh_reporting_to").select2().val() != 0 && $("#urh_priority").val()!=0) {
-        $.ajax({
-            url: "/user/AddUserReportingHeirarchy",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: data,
-            success: function (response) {
-                if (response.message == "Success") {
-                    getUserReportingHeirarchy();
-                    $('#overlay').fadeOut();
-                }
-                else {
-                    alert(response.message);
-                    $('#overlay').fadeOut();
-                }
-            },
-            error: function () {
-                $('#overlay').fadeOut();
-            }
-        });
-    } else {
-        alert("Please Enter all data !!!");
-        $('#overlay').fadeOut();
+    if (clickid == "b_bad" || clickid == "l_bad" || clickid == "s_bad") {
+        $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'bad').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'okay').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'good').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-100}px)`);
+        AssignFeedback(Firstid, Secondid);
+        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
+        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
+        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
+        //Firstid = "";
+        //Secondid = "";
     }
+    if (clickid == "b_okay" || clickid == "l_okay" || clickid == "s_okay") {
+        $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'bad').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'okay').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'good').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-200}px)`);
+        AssignFeedback(Firstid, Secondid);
+        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
+        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
+        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
+        //Firstid = "";
+        //Secondid = "";
+    }
+    if (clickid == "b_good" || clickid == "l_good" || clickid == "s_good") {
+        $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'bad').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'okay').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'good').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
+        $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-300}px)`);
+        AssignFeedback(Firstid, Secondid);
+        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
+        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
+        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
+        //Firstid = "";
+        //Secondid = "";
+    }
+
+    if (clickid == "b_excellent" || clickid == "l_excellent" || clickid == "s_excellent") {
+        $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'bad').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'okay').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'good').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'excellent').css("color", "#ffd93b");
+        $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-400}px)`);
+        AssignFeedback(Firstid, Secondid);
+        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
+        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
+        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
+        //Firstid = "";
+        //Secondid = "";
+    }
+
 }
 
-function attandancedetails() {
+function GetFoodFeedBackDaily() {
+    var test = $('#c_date1').val();
+    if ($('#c_date1').val() == "") {
+        alert("choose date..! ");
+    }
     var data = new FormData();
-    data.append("reportrange", $("#reportrange").val());
-    data.append("u_id", $("#User").select2().val());
+    data.append("date", $("#c_date1").val());
+
+
+
+    //$.ajax({
+    //    url: "/Attendance/GetDailyAttendanceByDate",
+    //    type: "POST",
+    //    contentType: false,
+    //    processData: false,
+    //    cache: false,
+    //    data: data,
+    //    success: function (response) {
+    //        $("#container").html(response);
+    //        $('#mytable').DataTable({
+    //            dom: 'lBfrtip',
+    //            buttons: [
+    //                'copyHtml5',
+    //                'excelHtml5',
+    //                'pdfHtml5'
+    //            ]
+    //        });
+    //        $('#overlay').fadeOut()
+    //    },
+    //    error: function () {
+    //        $('#overlay').fadeOut()
+    //    }
+    //});
+
     $.ajax({
-        url: "/Attendance/AttendanceDetailsBySearch",
+        url: "/Food/GetFoodFeedBackReportByDate",
         type: "POST",
         contentType: false,
         processData: false,
         cache: false,
         data: data,
         success: function (response) {
-            $("#Container").html(response);
-            loadDatatable("mytable");
+          
+            $("#container").html(response);
         },
         error: function () {
+            $('#overlay').fadeOut();
         }
     });
-}
-function getEmployeeInformation() {
-    var data = new FormData();
-    data.append("Type", $("#Type").val());
-    data.append("u_id", $("#User").select2().val());
-    $.ajax({
-        url: "/User/getEmployeeInformation",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            $("#Container").html(response);
-            loadDatatable("mytable");
-        },
-        error: function () {
-        }
-    });
-}
-function OpenCancelationModal(id) {
-
-    $('#CancelationModel').modal('show');
-    $("#id").val(id);
-
-}
-function CancelEmployee() {
-    var data = new FormData();
-    if ($("#u_cancelation_date").val() != "" && $("#id").val() != 0) {
-        data.append("u_cancelation_date", $("#u_cancelation_date").val());
-        data.append("u_id", $("#id").val());
-        $.ajax({
-            url: "/User/CancelEmployee",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: data,
-            success: function (response) {
-                if (response.message == "Success") {
-                    $('#CancelationModel').modal('hide');
-                    $("#labl_"+$("#id").val()).text($("#u_cancelation_date").val());
-                    $("#btn_"+$("#id").val()).remove();
-                    $('#overlay').fadeOut();
-                }
-                else {
-                    alert(response.message);
-                    $('#overlay').fadeOut();
-                }
-            },
-            error: function () {
-            }
-        });
-    } else {
-        alert("Please enter all Data !!!");
-    }
-}
-function deleteEmployeeReportingHirarchy(urh_id) {
-    var data = new FormData();
-        data.append("urh_id", urh_id);
-        $.ajax({
-            url: "/User/deleteEmployeeReportingHirarchy",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: data,
-            success: function (response) {
-                if (response.message == "Success") {
-                    var $datatable = $('#mytable').DataTable();
-                    $datatable.row($("#row" + urh_id)).remove().draw();
-                }
-                else {
-                    alert(response.message);
-                }
-            },
-            error: function () {
-            }
-        });
 
 }

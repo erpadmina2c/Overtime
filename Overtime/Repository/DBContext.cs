@@ -50,6 +50,9 @@ namespace Overtime.Repository
         public DbSet<UserReportingHierarchy> UserReportingHierarchy { get; set; }
         public DbSet<List_UserReportingHierarchy> List_UserReportingHierarchy { get; set; }
         public DbSet<List_Attendance> List_Attendance { get; set; }
+        public DbSet<FoodSchedule> Foodschedule { get; set; }
+
+
 
 
     }

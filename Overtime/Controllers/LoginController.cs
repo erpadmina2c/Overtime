@@ -53,7 +53,8 @@ namespace Overtime.Controllers
                             loginLog.ll_cre_by_name = newuser.u_name;
                             iLoginLog.Add(loginLog);
 
-                            return RedirectToAction("Index", "Home");
+                            //return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Food");
                         }
                         else
                         {

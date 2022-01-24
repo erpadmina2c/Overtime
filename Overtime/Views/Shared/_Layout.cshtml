@@ -15,6 +15,7 @@
     <link href="~/css/responsive.bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/calandarstyle.css" rel="stylesheet" />
     <link href="~/fonts/font.css" rel="stylesheet" />
+    <link href="~/css/FoodsSchedule.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="sb-nav-fixed">
@@ -222,7 +223,52 @@
             <br />
             Loading...
         </div>
+        <script>
 
+            var stars = document.getElementsByClassName("fas");
+            var emoji = document.getElementById("emoji");
+            stars[0].onclick = function () {
+                alert();
+                stars[0].style.color = "#ffd93b";
+                stars[1].style.color = "#e4e4e4";
+                stars[2].style.color = "#e4e4e4";
+                stars[3].style.color = "#e4e4e4";
+                stars[4].style.color = "#e4e4e4";
+                emoji.style.transform = "translateX(0)";
+            };
+            stars[1].onclick = function () {
+                stars[0].style.color = "#ffd93b";
+                stars[1].style.color = "#ffd93b";
+                stars[2].style.color = "#e4e4e4";
+                stars[3].style.color = "#e4e4e4";
+                stars[4].style.color = "#e4e4e4";
+                emoji.style.transform = "translateX(-100px)";
+            };
+            stars[2].onclick = function () {
+                stars[0].style.color = "#ffd93b";
+                stars[1].style.color = "#ffd93b";
+                stars[2].style.color = "#ffd93b";
+                stars[3].style.color = "#e4e4e4";
+                stars[4].style.color = "#e4e4e4";
+                emoji.style.transform = "translateX(-200px)";
+            };
+            stars[3].onclick = function () {
+                stars[0].style.color = "#ffd93b";
+                stars[1].style.color = "#ffd93b";
+                stars[2].style.color = "#ffd93b";
+                stars[3].style.color = "#ffd93b";
+                stars[4].style.color = "#e4e4e4";
+                emoji.style.transform = "translateX(-300px)";
+            };
+            stars[4].onclick = function () {
+                stars[0].style.color = "#ffd93b";
+                stars[1].style.color = "#ffd93b";
+                stars[2].style.color = "#ffd93b";
+                stars[3].style.color = "#ffd93b";
+                stars[4].style.color = "#ffd93b";
+                emoji.style.transform = "translateX(-400px)";
+            };
+        </script>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -246,7 +292,9 @@
         <script src="~/js/sum().js"></script>
         <script src="~/js/select2.js"></script>
         <script src="~/js/calandarscript.js"></script>
+        @*<script src="https://kit.fontawesome.com/66aa7c98b3.js" crossorigin="anonymous"></script>*@
         @RenderSection("Scripts", required: false)
+        
 
 </body>
 
