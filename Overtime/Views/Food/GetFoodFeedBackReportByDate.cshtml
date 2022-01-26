@@ -3,13 +3,20 @@
 @{
     Layout = null;
 }
+@if(ViewBag.dtcount ==0)
+{
+<div class="alert alert-info" role="alert">
+    Info Nothing Found.. choose another date!
+</div>
+}
+else{
 <div class="table-responsive">
     <table class="table text-nowrap table-bordered " id="mytable" style="width:100%;">
         <thead>
             <tr>
                 @foreach (DataColumn col in Model.Columns)
                 {
-                    <th style="text-align: center;"> @col.ColumnName</th>
+                <th style="text-align: center;"> @col.ColumnName</th>
 
                 }
 
@@ -19,17 +26,18 @@
             @{
                 foreach (DataRow row in Model.Rows)
                 {
-                    <tr>
+                <tr>
 
-                        @foreach (DataColumn col in Model.Columns)
+                    @foreach (DataColumn col in Model.Columns)
                         {
-                            <td class="status_@row[col.ColumnName]" style="text-align: center;"> @row[col.ColumnName]</td>
+                    <td class="status_@row[col.ColumnName]" style="text-align: center;"> @row[col.ColumnName]</td>
 
                         }
 
-                    </tr>
+                </tr>
                 }
             }
         </tbody>
     </table>
 </div>
+}

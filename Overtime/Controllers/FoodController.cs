@@ -157,6 +157,7 @@ namespace Overtime.Controllers
             else
             {
                 dataTable= ifoodschedule.GetFoodFeedBackReportByDate(date, user.u_id);
+                ViewBag.dtcount = dataTable.Rows.Count;
             }
             return View(dataTable);
         }

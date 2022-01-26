@@ -1483,7 +1483,6 @@ function AssignFeedback(Firstid, Secondid) {
     if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); $("#lbl_SupperFeedback").css({ "border": "", "background": "" }); }
     Firstid = "";
     Secondid = "";
-
 }
 
 function emoji(clickid) {
@@ -1500,12 +1499,6 @@ function emoji(clickid) {
         $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
         $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${0}px)`);
         AssignFeedback(Firstid, Secondid);
-        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); $("#lbl_BreakfastFeedback").css({ "border": "", "background": "" });}
-        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); $("#lbl_LunchFeedback").css({ "border": "", "background": "" });}
-        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); $("#lbl_SupperFeedback").css({ "border": "", "background": "" });}
-        //Firstid = "";
-        //Secondid = "";
-
     }
     if (clickid == "b_bad" || clickid == "l_bad" || clickid == "s_bad") {
         $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
@@ -1515,11 +1508,6 @@ function emoji(clickid) {
         $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
         $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-100}px)`);
         AssignFeedback(Firstid, Secondid);
-        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
-        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
-        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
-        //Firstid = "";
-        //Secondid = "";
     }
     if (clickid == "b_okay" || clickid == "l_okay" || clickid == "s_okay") {
         $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
@@ -1529,11 +1517,6 @@ function emoji(clickid) {
         $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
         $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-200}px)`);
         AssignFeedback(Firstid, Secondid);
-        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
-        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
-        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
-        //Firstid = "";
-        //Secondid = "";
     }
     if (clickid == "b_good" || clickid == "l_good" || clickid == "s_good") {
         $('#' + Firstid + '_' + 'poor').css("color", "#ffd93b");
@@ -1543,11 +1526,6 @@ function emoji(clickid) {
         $('#' + Firstid + '_' + 'excellent').css("color", "#e4e4e4");
         $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-300}px)`);
         AssignFeedback(Firstid, Secondid);
-        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
-        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
-        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
-        //Firstid = "";
-        //Secondid = "";
     }
 
     if (clickid == "b_excellent" || clickid == "l_excellent" || clickid == "s_excellent") {
@@ -1558,11 +1536,6 @@ function emoji(clickid) {
         $('#' + Firstid + '_' + 'excellent').css("color", "#ffd93b");
         $('#' + Firstid + '_' + 'emoji').css("transform", `translateX(${-400}px)`);
         AssignFeedback(Firstid, Secondid);
-        //if (Firstid == 'b') { $('#lbl_BreakfastFeedback').text(Secondid); }
-        //if (Firstid == 'l') { $('#lbl_LunchFeedback').text(Secondid); }
-        //if (Firstid == 's') { $('#lbl_SupperFeedback').text(Secondid); }
-        //Firstid = "";
-        //Secondid = "";
     }
 
 }
@@ -1571,36 +1544,10 @@ function GetFoodFeedBackDaily() {
     var test = $('#c_date1').val();
     if ($('#c_date1').val() == "") {
         alert("choose date..! ");
+        return false;
     }
     var data = new FormData();
     data.append("date", $("#c_date1").val());
-
-
-
-    //$.ajax({
-    //    url: "/Attendance/GetDailyAttendanceByDate",
-    //    type: "POST",
-    //    contentType: false,
-    //    processData: false,
-    //    cache: false,
-    //    data: data,
-    //    success: function (response) {
-    //        $("#container").html(response);
-    //        $('#mytable').DataTable({
-    //            dom: 'lBfrtip',
-    //            buttons: [
-    //                'copyHtml5',
-    //                'excelHtml5',
-    //                'pdfHtml5'
-    //            ]
-    //        });
-    //        $('#overlay').fadeOut()
-    //    },
-    //    error: function () {
-    //        $('#overlay').fadeOut()
-    //    }
-    //});
-
     $.ajax({
         url: "/Food/GetFoodFeedBackReportByDate",
         type: "POST",
@@ -1609,7 +1556,6 @@ function GetFoodFeedBackDaily() {
         cache: false,
         data: data,
         success: function (response) {
-          
             $("#container").html(response);
         },
         error: function () {
