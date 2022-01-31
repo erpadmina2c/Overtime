@@ -45,13 +45,21 @@ namespace Overtime.Repository
             try
             {
                 var valuedate = db.Foodschedule.Where(t => t.F_userid == foodSchedule.F_userid && t.f_date.Value.Date == foodSchedule.f_date.Value.Date).ToList();
-                if (valuedate.Count == 0)
+
+                if(valuedate != null)
                 {
-                    result.Message = "NotExist";
+                    if (valuedate.Count == 0)
+                    {
+                        result.Message = "NotExist";
+                    }
+                    else
+                    {
+                        result.Message = "Exist";
+                    }
                 }
                 else
                 {
-                    result.Message = "Exist";
+                    result.Message = "null";
                 }
             }
             catch(Exception ex)
@@ -61,7 +69,7 @@ namespace Overtime.Repository
             return result;
         }
 
-        public DataTable GetFoodFeedBackReportByDate(string date,int u_id)
+        public DataTable GetFoodFeedBackReportByDate(DateTime startDate, DateTime endDate,int u_id)
         {
             DataTable dt = new DataTable();
             var conn = db.Database.GetDbConnection();
@@ -71,7 +79,8 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    string query = @"exec usp_Feedback_Report @datefrom = '" + date + "',@u_id = '" + u_id + "'";
+                    //string query = @"exec usp_Feedback_Report @datefrom = '" + date + "',@u_id = '" + u_id + "'";
+                    string query = @"exec usp_Feedback_Report @startDate = '" + startDate + "',@endDate='" + endDate + "', @u_id = '" + u_id + "'";
                     command.CommandText = query;
 
                     DbDataReader reader = command.ExecuteReader();

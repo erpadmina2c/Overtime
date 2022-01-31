@@ -1541,13 +1541,15 @@ function emoji(clickid) {
 }
 
 function GetFoodFeedBackDaily() {
-    var test = $('#c_date1').val();
-    if ($('#c_date1').val() == "") {
-        alert("choose date..! ");
-        return false;
-    }
+    //var test = $('#c_date1').val();
+    //if ($('#c_date1').val() == "") {
+    //    alert("choose date..! ");
+    //    return false;
+    //}
+    var tst = $('#reportrange')
     var data = new FormData();
-    data.append("date", $("#c_date1").val());
+    //data.append("date", $("#c_date1").val());
+    data.append("date", $("#reportrange").val());
     $.ajax({
         url: "/Food/GetFoodFeedBackReportByDate",
         type: "POST",
