@@ -1433,11 +1433,11 @@ function AddFoodDetails() {
         if ($.trim($(this).text()) == '') {
             isValid = false;
             $(this).css({ "border": "3px solid red", "background": "#FF0000", "text-decoration":"thickness"});
-            $(this).text("choose the " + $(this).attr("name") + " feedback");
+            $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
         }
         else if (checkmeals != 'false') {
             isValid = false;
-            $(this).text("choose the " + $(this).attr("name") + " feedback");
+            $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
         }
         else {
             $(this).css({ "border": "", "background": "" });
