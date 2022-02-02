@@ -79,7 +79,6 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    //string query = @"exec usp_Feedback_Report @datefrom = '" + date + "',@u_id = '" + u_id + "'";
                     string query = @"exec usp_Feedback_Report @startDate = '" + startDate + "',@endDate='" + endDate + "', @u_id = '" + u_id + "'";
                     command.CommandText = query;
 

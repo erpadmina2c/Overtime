@@ -149,9 +149,7 @@ namespace Overtime.Controllers
         public  IActionResult GetFoodFeedBackReportByDate(string date)
         {
             DataTable dataTable = new DataTable();
-            string[] array = date.Split('-');
-            DateTime startDate = DateTime.Parse(array[0]);
-            DateTime endDate = DateTime.Parse(array[1]);
+           
             User user = getCurrentUser();
             if (user == null)
             {
@@ -159,8 +157,17 @@ namespace Overtime.Controllers
             }
             else
             {
-                dataTable= ifoodschedule.GetFoodFeedBackReportByDate(startDate,endDate,user.u_id);
-                ViewBag.dtcount = dataTable.Rows.Count;
+                if (!date.ToString().Equals("") || date != null)
+                {
+                    string[] array = date.Split('-');
+                    DateTime startDate = DateTime.Parse(array[0]);
+                    //DateTime endDate = DateTime.Parse(array[1]);
+                    DateTime endDate = DateTime.Parse(array[1] + " 11:59:59 PM");
+                    dataTable = ifoodschedule.GetFoodFeedBackReportByDate(startDate, endDate, user.u_id);
+                    ViewBag.dtcount = dataTable.Rows.Count;
+                }
+                
+               
             }
             return View(dataTable);
         }

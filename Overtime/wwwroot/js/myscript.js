@@ -1428,23 +1428,23 @@ function AddFoodDetails() {
     var lunchFeedback = $("#lbl_LunchFeedback").text();
     var supperFeedback = $("#lbl_SupperFeedback").text();
     var cmdSuggestion = $("#comments").val();
-    $('#lbl_BreakfastFeedback,#lbl_LunchFeedback,#lbl_SupperFeedback').each(function () {
-        var  checkmeals= $.trim($(this).is(':contains("choose")'));
-        if ($.trim($(this).text()) == '') {
-            isValid = false;
-            $(this).css({ "border": "3px solid red", "background": "#FF0000", "text-decoration":"thickness"});
-            $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
-        }
-        else if (checkmeals != 'false') {
-            isValid = false;
-            $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
-        }
-        else {
-            $(this).css({ "border": "", "background": "" });
-        }
-    });
-    if (isValid == false)
-        return false;
+    //$('#lbl_BreakfastFeedback,#lbl_LunchFeedback,#lbl_SupperFeedback').each(function () {
+    //    var  checkmeals= $.trim($(this).is(':contains("choose")'));
+    //    if ($.trim($(this).text()) == '') {
+    //        isValid = false;
+    //        $(this).css({ "border": "3px solid red", "background": "#FF0000", "text-decoration":"thickness"});
+    //        $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
+    //    }
+    //    else if (checkmeals != 'false') {
+    //        isValid = false;
+    //        $(this).text("choose the " + $(this).attr("name") + " feedback رائے کا انتخاب کریں؟");
+    //    }
+    //    else {
+    //        $(this).css({ "border": "", "background": "" });
+    //    }
+    //});
+    //if (isValid == false)
+    //    return false;
     data.append("F_Breakfeedback", breakFeedback);
     data.append("F_Lunchfeedback", lunchFeedback);
     data.append("F_Supperfeedback", supperFeedback);
@@ -1565,4 +1565,7 @@ function GetFoodFeedBackDaily() {
         }
     });
 
+}
+function SkipFoodFeedback() {
+    window.location.replace("/Home/index");
 }

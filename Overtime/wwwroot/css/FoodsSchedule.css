@@ -1,7 +1,9 @@
 ﻿div.containerfood #submit {
     background-color: #37af65;
 }
-
+div.containerfood #Skip {
+    background-color: #96bde7;
+}
 *,
 *::before,
 *::after {
@@ -160,8 +162,20 @@ textarea {
     border-radius: 2px;
     cursor: pointer;
     transition: 0.1s;
+    
 }
 
+.containerfood .skip-button {
+    display: block;
+    /*// width: 100%;*/
+    padding: -0.25rem;
+    background: var(--color-green);
+    color: inherit;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: 0.1s;
+    float: right;
+}
     .containerfood .submit-button:hover {
         background: rgba(173,255,47,0.7);
     }
