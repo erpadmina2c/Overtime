@@ -1559,6 +1559,7 @@ function GetFoodFeedBackDaily() {
         data: data,
         success: function (response) {
             $("#container").html(response);
+            loadDatatable('mytable');
         },
         error: function () {
             $('#overlay').fadeOut();
