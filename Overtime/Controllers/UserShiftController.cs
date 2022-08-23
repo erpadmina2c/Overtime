@@ -35,6 +35,8 @@ namespace Overtime.Controllers
             else
             {
                 ViewBag.UserList = iuser.GetUsersList();
+                 string [] daynames ={ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+                ViewBag.Daynames = daynames;
                 return View(iuserShift.GetUserShifts);
             }
         }
@@ -44,6 +46,7 @@ namespace Overtime.Controllers
             User user = getCurrentUser();
             if (user != null)
             {
+                userShift.us_cre_by = user.u_id;
                 result = iuserShift.Add(userShift);
             }
             else
@@ -57,8 +60,9 @@ namespace Overtime.Controllers
         [HttpPost]
         public ActionResult UserShiftData(int id,string reportrange)
         {
+            User user = getCurrentUser();
             IEnumerable<List_UserShift> TrainingData = Enumerable.Empty<List_UserShift>();
-            if (getCurrentUser() == null)
+            if (user == null)
             {
                 ViewBag.Message = "Session Expired !! Please reload Page ";
             }

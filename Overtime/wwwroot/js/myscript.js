@@ -1166,35 +1166,43 @@
     function addUserShilft() {
         $('#overlay').fadeIn();
         var data = new FormData();
-        data.append("us_start_time", $("#us_start_time").val());
-        data.append("us_end_time", $("#us_end_time").val());
-        data.append("us_start_date", $("#us_start_date").val());
-        data.append("us_u_id", $("#user").select2().val());
-        if ($("#user").select2().val() != 0) {
-            $.ajax({
-                url: "/UserShift/Create",
-                type: "POST",
-                contentType: false,
-                processData: false,
-                cache: false,
-                data: data,
-                success: function (response) {
-                    if (response.message == "Success") {
-                        $('#UserShiftModal').modal('hide');
-                        SearchUserShiftData();
+        if ($("#us_day").val() != "") {
+            data.append("us_start_time", $("#us_start_time").val());
+            data.append("us_end_time", $("#us_end_time").val());
+            data.append("us_break_from", $("#us_break_from").val());
+            data.append("us_break_to", $("#us_break_to").val());
+            data.append("us_start_date", $("#us_start_date").val());
+            data.append("us_day", $("#us_day").val());
+            data.append("us_u_id", $("#user").select2().val());
+            if ($("#user").select2().val() != 0) {
+                $.ajax({
+                    url: "/UserShift/Create",
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: data,
+                    success: function (response) {
+                        if (response.message == "Success") {
+                            $('#UserShiftModal').modal('hide');
+                            SearchUserShiftData();
+                            $('#overlay').fadeOut();
+                        }
+                        else {
+                            alert(response.message);
+                            $('#overlay').fadeOut();
+                        }
+                    },
+                    error: function () {
                         $('#overlay').fadeOut();
                     }
-                    else {
-                        alert(response.message);
-                        $('#overlay').fadeOut();
-                    }
-                },
-                error: function () {
-                    $('#overlay').fadeOut();
-                }
-            });
+                });
+            } else {
+                alert("Please select user !!!");
+                $('#overlay').fadeOut();
+            }
         } else {
-            alert("Please select user !!!");
+            alert("Please Select Day");
             $('#overlay').fadeOut();
         }
     }

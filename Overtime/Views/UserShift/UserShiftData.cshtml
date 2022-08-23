@@ -14,8 +14,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.us_u_full_name)
             </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.us_day)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.us_start_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_break_from)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.us_break_to)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.us_end_time)
@@ -33,7 +43,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.us_cre_date)
             </th>
-          
+
         </tr>
     </thead>
     <tbody>
@@ -45,8 +55,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.us_u_full_name)
             </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.us_day)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.us_start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_break_from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.us_break_to)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.us_end_time)
@@ -70,7 +90,7 @@
                 <td>
                 </td>
             }
-           
+
             <td>
                 @Html.DisplayFor(modelItem => item.us_cre_by_name)
             </td>

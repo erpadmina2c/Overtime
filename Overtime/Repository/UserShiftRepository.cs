@@ -25,12 +25,15 @@ namespace Overtime.Repository
         {
             var us_u_id = new SqlParameter("us_u_id", userShift.us_u_id + "");
             var us_start_time = new SqlParameter("us_start_time", userShift.us_start_time + "");
+            var us_day = new SqlParameter("us_day", userShift.us_day + "");
+            var us_break_from = new SqlParameter("us_break_from", userShift.us_break_from + "");
+            var us_break_to = new SqlParameter("us_break_to", userShift.us_break_to + "");
             var us_end_time = new SqlParameter("us_end_time", userShift.us_end_time + "");
             var us_start_date = new SqlParameter("us_start_date", userShift.us_start_date + "");
             var us_cre_by = new SqlParameter("us_cre_by", userShift.us_cre_by + "");
             var result = db.DbResult.FromSqlRaw<DbResult>
-                ("EXECUTE dbo.createUserShift @us_u_id,@us_start_time,@us_end_time,@us_start_date,@us_cre_by",
-                us_u_id, us_start_time, us_end_time, us_start_date, us_cre_by).ToList().FirstOrDefault();
+                ("EXECUTE dbo.createUserShift @us_u_id,@us_day,@us_start_time,@us_break_from,@us_break_to,@us_end_time,@us_start_date,@us_cre_by",
+                us_u_id, us_day,us_start_time, us_break_from, us_break_to, us_end_time, us_start_date, us_cre_by).ToList().FirstOrDefault();
             return result;
         }
 

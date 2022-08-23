@@ -15,6 +15,11 @@ namespace Overtime.Models
         [Display(Name = "Employee Id")]
         public int? us_u_id { get; set; }
 
+
+        [Display(Name = "Day")]
+        public string? us_day { get; set; }
+
+
         [Display(Name = "Employee Name")]
         public string? us_u_full_name { get; set; }
 
@@ -25,6 +30,14 @@ namespace Overtime.Models
         [Display(Name = "Shift End On ")]
         [DataType(DataType.Time)]
         public DateTime? us_end_time { get; set; }
+
+        [Display(Name = "Break Start")]
+        [DataType(DataType.Time)]
+        public DateTime? us_break_from { get; set; }
+
+        [Display(Name = "Break End")]
+        [DataType(DataType.Time)]
+        public DateTime? us_break_to { get; set; }
 
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]

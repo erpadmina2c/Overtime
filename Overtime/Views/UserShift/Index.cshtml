@@ -76,22 +76,37 @@
                                     <option value="0">All</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label">Shift Start time </label>
+                                <select id="us_day" class="form-control" asp-items="@(new SelectList(ViewBag.Daynames))" required>
+                                    <option value="">Please Select Day</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Shift Start time </label>
+                                <input id="us_start_time" type="time" class="form-control" value="@DateTime.Now.ToString("HH:mm")" required />
+                            </div>
 
                             <div class="form-group">
                                 <label class="control-label">Shift Start time </label>
-                                <input id="us_start_time" type="time" class="form-control"  value="@DateTime.Now.ToString("HH:mm")" required/>
+                                <input id="us_break_from" type="time" class="form-control"  />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Shift Start time </label>
+                                <input id="us_break_to" type="time" class="form-control"  />
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Shift end time </label>
-                                <input id="us_end_time" type="time" class="form-control"  value="@DateTime.Now.ToString("HH:mm")"  required/>
+                                <input id="us_end_time" type="time" class="form-control" value="@DateTime.Now.ToString("HH:mm")" required />
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">start date </label>
-                                <input type="date" class="form-control" id="us_start_date"  value="@DateTime.Today.ToString("yyyy-MM-dd")" required/>
+                                <input type="date" class="form-control" id="us_start_date" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
                             </div>
-                          
+
 
                         </div>
                     </div>
