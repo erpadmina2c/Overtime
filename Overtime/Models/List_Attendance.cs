@@ -29,6 +29,9 @@ namespace Overtime.Models
         [DisplayFormat(DataFormatString = @"{0:dd-MM-yyyy hh:mm tt}", ApplyFormatInEditMode = true, NullDisplayText = "")]
         public DateTime? a_first_Punch { get; set; }
 
+        [Display(Name = "First Punch Location")]
+        public string? a_f_punch_loc { get; set; }
+
         [Display(Name = "Duty End Time")]
         public string? a_duty_ended_at { get; set; }
 
@@ -37,6 +40,8 @@ namespace Overtime.Models
         [DisplayFormat(DataFormatString = @"{0:dd-MM-yyyy hh:mm tt}", ApplyFormatInEditMode = true, NullDisplayText = "")]
         public DateTime? a_second_punch { get; set; }
 
+        [Display(Name = "Second Punch Location")]
+        public string? a_s_punch_loc { get; set; }
 
         [Display(Name = "Worktime(Hour)")]
 

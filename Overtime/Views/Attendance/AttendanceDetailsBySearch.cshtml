@@ -33,6 +33,9 @@ else
                     @Html.DisplayNameFor(model => model.a_first_Punch)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.a_f_punch_loc)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.a_remark)
                 </th>
                 <th>
@@ -40,6 +43,9 @@ else
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.a_second_punch)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.a_s_punch_loc)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.a_duration)
@@ -57,44 +63,50 @@ else
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_u_name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_full_name)
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_u_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_full_name)
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_department)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_duty_start)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_first_Punch)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_remark)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_duty_ended_at)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_second_punch)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_duration)
-                    </td>
-                    <td class="status_@item.a_status">
-                        @Html.DisplayFor(modelItem => item.a_status)
-                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_duty_start)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_first_Punch)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_f_punch_loc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_remark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_duty_ended_at)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_second_punch)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_s_punch_loc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_duration)
+                </td>
+                <td class="status_@item.a_status">
+                    @Html.DisplayFor(modelItem => item.a_status)
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.a_attendance_date)
-                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.a_attendance_date)
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
