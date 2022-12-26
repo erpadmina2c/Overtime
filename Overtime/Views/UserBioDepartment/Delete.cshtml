@@ -1,0 +1,57 @@
+﻿@model Overtime.Models.UserBioDepartment
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="page-header">
+            <h3>User Bio Department</h3>
+        </div>
+        <div class="card">
+            <div class="card-body">
+ 
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ud_user_id)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ud_user_id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ud_depart_id)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ud_depart_id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ud_active_yn)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ud_active_yn)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ud_cre_by)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ud_cre_by)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ud_cre_date)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ud_cre_date)
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="ud_id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" /> |
+                    <a asp-action="Index">Back to List</a>
+                </form>
+            </div>
+            </div>
+</div>
+</div>

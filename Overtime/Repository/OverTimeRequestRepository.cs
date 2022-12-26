@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using NHibernate.Util;
 using Overtime.Models;
@@ -815,6 +816,42 @@ namespace Overtime.Repository
             return result;
 
           
+        }
+
+        public DbResult jq_Approve(int id,int u_id)
+        {
+            DbResult dbResult = new DbResult();
+            try
+            {
+                var _id = new SqlParameter("id", id + "");
+                var _u_id = new SqlParameter("u_id", u_id + "");
+
+                 dbResult = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.jq_Approve @id,@u_id", _id, _u_id).ToList().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                dbResult.Message = ex.Message + " " + ex.InnerException;
+            }
+            return dbResult;
+        }
+
+        public DbResult JQ_Reject(int id, string reason, int u_id)
+        {
+            DbResult dbResult = new DbResult();
+            try
+            {
+                var _id = new SqlParameter("id", id + "");
+                var _reason = new SqlParameter("reason", reason + "");
+                var _u_id = new SqlParameter("u_id", u_id + "");
+
+                dbResult = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.JQ_Reject @id,@reason,@u_id", _id, _reason, _u_id).ToList().FirstOrDefault();
+
+            }
+            catch (Exception ex)
+            {
+                dbResult.Message = ex.Message + " " + ex.InnerException;
+            }
+            return dbResult;
         }
     }
 }

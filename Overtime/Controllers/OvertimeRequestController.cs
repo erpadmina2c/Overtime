@@ -24,11 +24,11 @@ namespace Overtime.Controllers
         private readonly IInsight iinsight;
 
         public OvertimeRequestController(IOverTimeRequest _ioverTimeReques, IWorkflowDetail _iworkflowDetail,
-            IWorkflowTracker _iworkflowTracker,IDepartment _idepartment,IDocuments _idocuments,IRole _irole,IUser _iuser,IHold _ihold, IMenu _imenu,IInsight _iinsight)
+            IWorkflowTracker _iworkflowTracker, IDepartment _idepartment, IDocuments _idocuments, IRole _irole, IUser _iuser, IHold _ihold, IMenu _imenu, IInsight _iinsight)
         {
             ioverTimeRequest = _ioverTimeReques;
-            iworkflowDetail= _iworkflowDetail;
-            iworkflowTracker= _iworkflowTracker;
+            iworkflowDetail = _iworkflowDetail;
+            iworkflowTracker = _iworkflowTracker;
             idepartment = _idepartment;
             idocuments = _idocuments;
             irole = _irole;
@@ -47,7 +47,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.MyOnProcessRequests=ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
+                ViewBag.MyOnProcessRequests = ioverTimeRequest.GetMyOnProcessRequests(getCurrentUser().u_id);
                 return View(ioverTimeRequest.GetMyOvertimeRequests(getCurrentUser().u_id));
             }
         }
@@ -64,13 +64,13 @@ namespace Overtime.Controllers
                 return View();
             }
         }
-         
+
         // GET: OvertimeRequest/Create
         public ActionResult Create()
         {
             if (getCurrentUser() == null)
             {
-               
+
                 return RedirectToAction("Index", "Login");
             }
             else
@@ -124,12 +124,12 @@ namespace Overtime.Controllers
         {
             if (getCurrentUser() == null)
             {
-                
+
                 return RedirectToAction("Index", "Login");
             }
             else
             {
-                
+
                 ViewBag.from = from;
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View(ioverTimeRequest.GetOverTimeRequest(id));
@@ -142,40 +142,40 @@ namespace Overtime.Controllers
         public ActionResult Edit(int id, OverTimeRequest overTimeRequest, string from)
         {
             string from1 = from;
-                if (getCurrentUser() == null)
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                try
                 {
-                    return RedirectToAction("Index", "Login");
-                }
-                else
-                {
-                    try
+
+                    OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
+                    Requests.rq_description = overTimeRequest.rq_description;
+                    Requests.rq_dep_id = overTimeRequest.rq_dep_id;
+                    ioverTimeRequest.Update(Requests);
+                    if (from1.Equals("Approval"))
                     {
-                        
-                            OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
-                            Requests.rq_description = overTimeRequest.rq_description;
-                            Requests.rq_dep_id = overTimeRequest.rq_dep_id;
-                            ioverTimeRequest.Update(Requests);
-                            if (from1.Equals("Approval"))
-                            {
 
-                                return RedirectToAction("Approval");
+                        return RedirectToAction("Approval");
 
-                            }
-                            else
-                            {
-                                return RedirectToAction(nameof(Index));
-                            }
-
-                        
                     }
-                    catch (Exception e)
+                    else
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        ViewBag.from = from;
+                        return RedirectToAction(nameof(Index));
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ViewBag.from = from;
                     return View();
-                    }
                 }
-           
+            }
+
         }
 
         // GET: OvertimeRequest/Delete/5
@@ -187,7 +187,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                
+
                 return View(ioverTimeRequest.GetOverTimeRequest(id));
             }
         }
@@ -253,7 +253,7 @@ namespace Overtime.Controllers
 
         }
         [HttpPost]
-        public ActionResult Approve(int id,String from)
+        public ActionResult Approve(int id, String from)
         {
             if (getCurrentUser() == null)
             {
@@ -262,7 +262,7 @@ namespace Overtime.Controllers
             else
             {
 
-                Documents documents =idocuments.GetDocument(1);
+                Documents documents = idocuments.GetDocument(1);
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
@@ -300,7 +300,7 @@ namespace Overtime.Controllers
 
                         return RedirectToAction(from);
                     }
-                }else
+                } else
                 {
                     return RedirectToAction(from);
                 }
@@ -315,7 +315,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                
+
                 return View(ioverTimeRequest.GetRequestForApprovals(getCurrentUser().u_id));
             }
         }
@@ -348,7 +348,7 @@ namespace Overtime.Controllers
 
         }
         [HttpPost]
-        public ActionResult Reject(int id,string reason)
+        public ActionResult Reject(int id, string reason)
         {
             if (getCurrentUser() == null)
             {
@@ -356,13 +356,13 @@ namespace Overtime.Controllers
             }
             else
             {
-                
+
                 OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
                 Documents documents = idocuments.GetDocument(1);
                 int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
-                
+
                 int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 int previousStatusByRole = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
                 if (previousStatus == previousStatusByRole)
@@ -402,69 +402,107 @@ namespace Overtime.Controllers
             }
 
         }
+
         [HttpPost]
-        public Result JQ_Approve(int id)
+        public DbResult JQ_Approve(int id)
         {
-            Result result = new Result();
-            try
+            DbResult dbresult = new DbResult();
+            User user = getCurrentUser();
+            if (user != null)
             {
 
-                Documents documents = idocuments.GetDocument(1);
-                OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
-                WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
-                int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
-                int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
-                int nextStatusbyUser = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
-                int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
-                if (nextStatus == nextStatusbyUser)
-                {
-                    if (overTimeRequest.rq_hold_yn == "Y")
-                    {
-
-                        result.Message = "This Document is Hold by Someone,Click Hold Details For more Information";
-                        return result;
-
-                    }
-                    else
-                    {
-                        WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
-                        WorkflowTracker workflowTracker = new WorkflowTracker();
-                        workflowTracker.wt_doc_id = documents.dc_id;
-                        workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
-                        workflowTracker.wt_status = overTimeRequest.rq_status;
-                        workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
-                        workflowTracker.wt_role_id = getCurrentUser().u_role_id;
-                        workflowTracker.wt_role_description = getCurrentUser().u_role_description;
-                        workflowTracker.wt_status_to = nextStatus;
-                        workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
-                        workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
-                        workflowTracker.wt_approve_status = "Approved";
-                        workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                        workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
-                        workflowTracker.wt_cre_date = DateTime.Now;
-                        iworkflowTracker.Add(workflowTracker);
-                        overTimeRequest.rq_status = nextStatus;
-                        ioverTimeRequest.Update(overTimeRequest);
-                        result.Message = "Success";
-                    }
-                }
-                else
-                {
-                    result.Message = "Already Approved Or You Have No Privilege to Approve";
-                }
-            }
-            catch (Exception ex)
+                dbresult = ioverTimeRequest.jq_Approve(id, user.u_id);
+            }else
             {
-                result.Message = ex.Message+" "+ex.InnerException;
+                dbresult.Message = "Session Expired!!";
             }
+            return dbresult;
+        }
 
-                return result;
-            
+        //[HttpPost]
+        //public Result JQ_Approveold(int id)
+        //{
+        //    Result result = new Result();
+        //    try
+        //    {
 
+
+
+
+
+        //        Documents documents = idocuments.GetDocument(1);
+        //        OverTimeRequest overTimeRequest = ioverTimeRequest.GetOverTimeRequest(id);
+        //        WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
+        //        int nextStatus = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
+        //        int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
+        //        int nextStatusbyUser = iworkflowDetail.getNextWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
+        //        int MinofWorkflow = iworkflowDetail.getMinOfWorkFlow(overTimeRequest.rq_workflow_id);
+        //        if (nextStatus == nextStatusbyUser)
+        //        {
+        //            if (overTimeRequest.rq_hold_yn == "Y")
+        //            {
+
+        //                result.Message = "This Document is Hold by Someone,Click Hold Details For more Information";
+        //                return result;
+
+        //            }
+        //            else
+        //            {
+        //                WorkflowDetail workflowDetail = iworkflowDetail.getWorkflowDetlByWorkflowCodeAndPriority(overTimeRequest.rq_workflow_id, nextStatus);
+        //                WorkflowTracker workflowTracker = new WorkflowTracker();
+        //                workflowTracker.wt_doc_id = documents.dc_id;
+        //                workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
+        //                workflowTracker.wt_status = overTimeRequest.rq_status;
+        //                workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
+        //                workflowTracker.wt_role_id = getCurrentUser().u_role_id;
+        //                workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+        //                workflowTracker.wt_status_to = nextStatus;
+        //                workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
+        //                workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
+        //                workflowTracker.wt_approve_status = "Approved";
+        //                workflowTracker.wt_cre_by = getCurrentUser().u_id;
+        //                workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
+        //                workflowTracker.wt_cre_date = DateTime.Now;
+        //                iworkflowTracker.Add(workflowTracker);
+        //                overTimeRequest.rq_status = nextStatus;
+        //                ioverTimeRequest.Update(overTimeRequest);
+        //                result.Message = "Success";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            result.Message = "Already Approved Or You Have No Privilege to Approve";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.Message = ex.Message+" "+ex.InnerException;
+        //    }
+
+        //        return result;
+
+
+        //}
+
+        [HttpPost]
+        public DbResult JQ_Reject(int id, string reason)
+        {
+            DbResult dbresult = new DbResult();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+
+                dbresult = ioverTimeRequest.JQ_Reject(id,reason, user.u_id);
+            }
+            else
+            {
+                dbresult.Message = "Session Expired!!";
+            }
+            return dbresult;
         }
 
         [HttpPost]
-        public Result JQ_Reject(int id, string reason)
+        public Result JQ_RejectOld(int id, string reason)
         {
             Result result = new Result();
             try { 

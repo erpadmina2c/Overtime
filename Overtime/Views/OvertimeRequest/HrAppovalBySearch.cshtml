@@ -152,7 +152,7 @@
                     <tr  id="@string.Format("row{0}", @item.rq_id)">
 
                         <td>
-                            <button type="button" class="btn btn-danger" onclick="JQ_reject(@item.rq_id);">Reject</button>
+                            <button type="button" class="btn btn-danger"  name="btn_rejects" onclick="JQ_reject(@item.rq_id);">Reject</button>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.rq_id)
@@ -183,8 +183,7 @@
                             @(Math.Round((item.rq_working_hours - item.rq_deductions)*60,2))
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary" onclick="Workinghour(@item.rq_id
-                                                              ,@item.rq_doc_id,1)">
+                            <button type="button" class="btn btn-primary" onclick="Workinghour(@item.rq_id ,@item.rq_doc_id,1)">
                                 Details
                             </button>
                         </td>
@@ -192,16 +191,13 @@
 
 
                         <td>
-                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id
-                                                              ,@item.rq_doc_id,'Approve')">
+                            <button type="button" class="btn btn-success" onclick="holdHistory(@item.rq_id ,@item.rq_doc_id,'Approve')">
                                 View
                             </button>
                         </td>
 
                         <td>
-                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id
-                                                              ,@item.rq_doc_id,1
-                                                              )">
+                            <button type="button" class="btn btn-warning" onclick="viewInsights(@item.rq_id ,@item.rq_doc_id,1)">
                                 View
                             </button>
                         </td>
@@ -210,7 +206,7 @@
                         </td>
 
                         <td>
-                            <button type="button" class="btn btn-success" onclick="JQ_Approve(@item.rq_id);">Approve</button>
+                            <button type="button" class="btn btn-success" name="btn_Approvals" onclick="JQ_Approve(@item.rq_id);">Approve</button>
                             @*<form asp-action="Approve">
                                 <input type="hidden" name="id" class="form-control" value="@item.rq_id" />
                                 <input type="hidden" name="from" class="form-control" value="Approval" />

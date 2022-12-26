@@ -29,5 +29,7 @@ namespace Overtime.Services
         object getConsolidateByType(DateTime startDate, DateTime endDate, string type);
         decimal getWorkingHourByDocument(int v1, int v2);
         IEnumerable<OverTimeRequest> getApprovalsBySearch(int rq_dep_id, DateTime rq_start_time, DateTime rq_end_time, int role_id, int rq_cre_by, DateTime rq_cre_date, string approve,int id);
+        DbResult jq_Approve(int id,int u_id);
+        DbResult JQ_Reject(int id, string reason, int u_id);
     }
 }

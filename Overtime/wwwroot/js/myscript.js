@@ -133,6 +133,9 @@
         setInterval(loadTimeForAllTr, 1000);
         //loadTimeForAllTr();
     }
+    if ($("#UserBioDepartment").length) {
+        getUserBioDepartment();
+    }
     if ($("#mytable").length) {
         $('#mytable').DataTable({
             dom: 'lBfrtip',
@@ -936,7 +939,10 @@
             }
         });
     }
-    function JQ_reject(id) {
+function JQ_reject(id) {
+
+        $('button[name="btn_rejects"]').attr("disabled", true);
+
         var reason = prompt("Reason For Rejection?? ", "");
 
         if (reason != null && reason != "") {
@@ -961,9 +967,10 @@
                     else {
                         alert(response.message);
                     }
-
+                    $('button[name="btn_rejects"]').removeAttr("disabled");
                 },
                 error: function () {
+                    $('button[name="btn_rejects"]').removeAttr("disabled");
                 }
             });
 
@@ -973,6 +980,8 @@
         }
     }
     function JQ_Approve(id) {
+
+        $('button[name="btn_Approvals"]').attr("disabled", true);
 
         var data = new FormData();
         data.append("id", id);
@@ -985,18 +994,20 @@
             data: data,
             success: function (response) {
                 if (response.message == "Success") {
+                  
                     var $datatable = $('#mytable').DataTable();
                     $datatable.row($("#row" + id)).remove().draw();
-                    //$('#myTable').dataTable().fnDeleteRow(row);
-                    // $("#row" + id).remove();
-                    // $('#mytable').DataTable().ajax.reload();
                 }
                 else {
                     alert(response.message);
                 }
-
+              
+                $('button[name="btn_Approvals"]').removeAttr("disabled");
             },
             error: function () {
+
+                $('button[name="btn_Approvals"]').removeAttr("disabled");
+
             }
         });
 
@@ -1577,4 +1588,26 @@ function GetFoodFeedBackDaily() {
 }
 function SkipFoodFeedback() {
     window.location.replace("/Home/index");
+}
+
+
+function getUserBioDepartment() {
+
+    var data = new FormData();
+    $.ajax({
+        url: "/UserBioDepartment/getUserBioDepartment",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
 }
