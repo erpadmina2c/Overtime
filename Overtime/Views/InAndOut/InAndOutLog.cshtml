@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "InAndOutLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/InAndOut/InAndOutLog">InAndOutLog   </a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid" id="RejectionPerformance">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="control-label">Date Range</label>
+                            <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group" align="justify">
+                        <input type="submit" onclick="getInAndOutLogBySearch();" style="margin-top:25px" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" id="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

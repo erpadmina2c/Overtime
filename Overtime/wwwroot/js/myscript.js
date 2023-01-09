@@ -1611,3 +1611,25 @@ function getUserBioDepartment() {
     });
 
 }
+
+function getInAndOutLogBySearch() {
+
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    $.ajax({
+        url: "/InAndOut/getInAndOutLogBySearch",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
