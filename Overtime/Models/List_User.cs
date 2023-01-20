@@ -23,6 +23,31 @@ namespace Overtime.Models
         [Display(Name = "Email")]
         public string? u_email { get; set; }
 
+
+        [Display(Name = "Role Id")]
+        public int u_role_id { get; set; }
+
+     
+        [Display(Name = "Role Name")]
+        public string u_role_description { get; set; }
+
+        [Display(Name = "Accomodation")]
+        public int? u_accomodation { get; set; }
+
+     
+        [Display(Name = "Accomodation Name")]
+        public string? u_accomodation_name { get; set; }
+
+
+        [Display(Name = "Active")]
+        public string u_active_yn { get; set; }
+
+        [Display(Name = "is Admin")]
+        public string u_is_admin { get; set; }
+
+        [Display(Name = "Allocation")]
+        public string u_allocation_yn { get; set; }
+
         [Display(Name = "Created by")]
         public string u_cre_by_Name { get; set; }
 

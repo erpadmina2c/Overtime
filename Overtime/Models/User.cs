@@ -34,6 +34,14 @@ namespace Overtime.Models
         public string u_role_description { get; set; }
 
 
+        [Display(Name = "Accomodation")]
+        public int? u_accomodation { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Accomodation Name")]
+        public string? u_accomodation_name { get; set; }
+
+
         [Display(Name = "is Admin")]
         public string u_is_admin { get; set; }
         

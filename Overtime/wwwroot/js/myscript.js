@@ -17,6 +17,8 @@
     $("#urh_reporting_to").select2({ width: '100%' });
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
+    $("#u_accomodation").select2({ width: '100%' });
+
     $('#saveMenu').click(function () {
 
         var reqRow = [];
@@ -1618,6 +1620,230 @@ function getInAndOutLogBySearch() {
     data.append("reportrange", $("#reportrange").val());
     $.ajax({
         url: "/InAndOut/getInAndOutLogBySearch",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+function getAccomodations() {
+  
+    var data = new FormData();
+    data.append("name", $("#name").val());
+    $.ajax({
+        url: "/Accomadation/getAccomodations",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+           
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+function OpenModalForAddAccommodation() {
+    $("#ac_active_yn").val("Y")
+    $("#ac_active_yn").hide();
+    $("#lbl_ac_active_yn").hide();
+    $('#AccomodationModal').modal('show');
+
+}
+function OpenModalForEditAccommodation(ac_id, ac_name, ac_first_punch_type, ac_active_yn) {
+    $("#ac_name").val(ac_name);
+    $("#ac_id").val(ac_id);
+    $("#ac_first_punch_type").val(ac_first_punch_type);
+    $("#ac_active_yn").val(ac_active_yn);
+    $("#ac_active_yn").show();
+    $("#lbl_ac_active_yn").show();
+    $('#AccomodationModal').modal('show');
+}
+
+function AddOrUpdateAccomodation() {
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("ac_name", $("#ac_name").val());
+    data.append("ac_id", $("#ac_id").val());
+    data.append("ac_first_punch_type", $("#ac_first_punch_type").val());
+    data.append("ac_active_yn", $("#ac_active_yn").val());
+    $.ajax({
+        url: "/Accomadation/AddOrUpdateAccomodation",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+               
+                $("#ac_name").val("");
+                $("#ac_id").val(0);
+                $("#ac_first_punch_type").val('Y');
+                getAccomodations();
+                $('#overlay').fadeOut()
+                $('#AccomodationModal').modal('hide');
+               
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+function DeleteAccomodation(id) {
+    var data = new FormData();
+    data.append("id", id);
+    $.ajax({
+        url: "/Accomadation/DeleteAccomodation",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                 getAccomodations();
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function getInAndOutReport() {
+
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("u_id", $("#user").select2().val());
+    $.ajax({
+        url: "/InAndOut/getInAndOutReport",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+
+
+function AddRegularizationPunch() {
+    $("#InAndOutModal").modal("show");
+
+    $("#io_u_id").val($("#user").select2().val());
+    $("#io_u_id").select2({ width: '100%' });
+
+}
+
+
+function AddInAndOut() {
+
+    var data = new FormData();
+
+    var inandout = $("input[name='InAndOut']:checked").val();
+
+    data.append("io_u_id", $("#io_u_id").select2().val());
+    data.append("io_punchtime", $("#io_punchtime").val());
+    data.append("io_punch_type", inandout);
+    data.append("io_remarks", $("#io_remarks").val());
+    $.ajax({
+        url: "/InAndOut/AddInAndOut",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                getInAndOutReport();
+                $("#InAndOutModal").modal("hide");
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+            $("#io_u_id").val(0);
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+
+function changeInAndOut(id) {
+    var data = new FormData();
+    var punchtype = $("input[name='InAndOut"+id+"']:checked").val();
+
+    data.append("io_id", id);
+    data.append("io_punch_type", punchtype);
+ 
+    $.ajax({
+        url: "/InAndOut/updateInAndOutPunchType",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                getInAndOutReport();
+                alert("Successfully Updated !!!");
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+
+function getAccomodationWiseInAndOut() {
+
+    var data = new FormData();
+    var inandout = $("input[name='InAndOut']:checked").val();
+    data.append("ac_id", $("#ac_id").select2().val());
+    data.append("status", inandout);
+    $.ajax({
+        url: "/InAndOut/getAccomodationWiseInAndOut",
         type: "POST",
         contentType: false,
         processData: false,

@@ -73,7 +73,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.UserList = (iuser.GetUsers);
+                ViewBag.UserList = (iuser.GetUsersList());
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View();
             }

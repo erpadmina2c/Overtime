@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "AccommodationWiseInAndOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/InAndOut/AccommodationWiseInAndOut">Accommodation Wise In And Out Report</a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label"></label>
+                        <select id="ac_id" class="form-control" asp-items="@(new SelectList(ViewBag.Accomodation,"ac_id","ac_name"))">
+                            <option value="">Select Accomodation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Punch Type</label>
+                        <br />
+                        <div class="col-sm-4">
+                            <label class="radio-inline">
+                                <input type="radio" name="InAndOut" value="All">&nbsp &nbsp &nbsp All
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="radio-inline">
+                                <input type="radio" name="InAndOut" checked value="In"> &nbsp &nbsp &nbsp In
+                            </label>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="radio-inline">
+                                <input type="radio" name="InAndOut" value="Out">&nbsp &nbsp &nbsp Out
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group" align="justify">
+                        <input type="submit" onclick="getAccomodationWiseInAndOut();" style="margin-top:25px" class="btn btn-primary" />
+
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" id="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

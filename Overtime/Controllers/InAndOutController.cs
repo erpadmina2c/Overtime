@@ -15,10 +15,14 @@ namespace Overtime.Controllers
     {
         private readonly IInAndOut iinAndOut;
         private readonly IMenu imenu;
-        public InAndOutController(IInAndOut _iinAndOut, IMenu _imenu)
+        private readonly IUser iuser;
+        private readonly IAccomadation iaccomadation;
+        public InAndOutController(IInAndOut _iinAndOut, IMenu _imenu,IUser _iuser, IAccomadation _iaccomadation)
         {
             iinAndOut = _iinAndOut;
             imenu = _imenu;
+            iuser = _iuser;
+            iaccomadation = _iaccomadation;
         }
         // GET: Role
         public ActionResult Index()
@@ -66,6 +70,104 @@ namespace Overtime.Controllers
             return View(dataTable);
         }
 
+
+        public ActionResult InAndOutReport()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.UserList = (iuser.GetUsersList());
+                return View();
+            }
+
+        }
+
+        public ActionResult getInAndOutReport(int u_id ,string reportrange)
+        {
+            DataTable dataTable = new DataTable();
+            if (getCurrentUser() == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+
+                if (!reportrange.Equals("undefined"))
+                {
+                    String[] array = reportrange.Split('-');
+
+                    DateTime from = DateTime.Parse(array[0]);
+                    DateTime to = DateTime.Parse(array[1] + " 11:59:59 PM");
+                    dataTable = iinAndOut.getInAndOutReport(u_id, from, to);
+                }
+            }
+            return View(dataTable);
+        }
+
+        public DbResult AddInAndOut(InAndOut inAndOut)
+        {
+            DbResult dataTable = new DbResult();
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+                inAndOut.io_created_by = user.u_id;
+                dataTable = iinAndOut.AddInAndOut(inAndOut);
+            }
+            return dataTable;
+        }
+
+        public DbResult updateInAndOutPunchType(InAndOut inAndOut)
+        {
+            DbResult dataTable = new DbResult();
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+                inAndOut.io_modified_by = user.u_id;
+                dataTable = iinAndOut.updateInAndOutPunchType(inAndOut);
+            }
+            return dataTable;
+        }
+
+        public ActionResult AccommodationWiseInAndOut()
+        {
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
+                return View();
+            }
+          
+        }
+
+        public ActionResult getAccomodationWiseInAndOut(int ac_id,string status)
+        {
+            DataTable dataTable = new DataTable();
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+                dataTable = iinAndOut.getAccomodationWiseInAndOut(ac_id,status,user.u_id);
+            }
+            return View(dataTable);
+        }
 
 
         private User getCurrentUser()

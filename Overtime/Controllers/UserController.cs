@@ -17,12 +17,13 @@ namespace Overtime.Controllers
         private readonly IUser iuser;
         private readonly IRole irole;
         private readonly IDepartment idepartment;
+        private readonly IAccomadation iaccomadation;
         private readonly IMenu imenu;
         private readonly ILoginLog iloginLog;
         private readonly IUserReportingHierarchy iuserReportingHierarchy;
 
 
-        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu,ILoginLog _loginLog, IUserReportingHierarchy _iuserReportingHierarchy)
+        public UserController(IUser _iuser,IRole _irole, IDepartment _idepartment,IMenu _imenu,ILoginLog _loginLog, IUserReportingHierarchy _iuserReportingHierarchy,IAccomadation _iaccomadation)
         {
             iuser=_iuser;
             irole = _irole;
@@ -30,6 +31,7 @@ namespace Overtime.Controllers
             imenu = _imenu;
             iloginLog = _loginLog;
             iuserReportingHierarchy = _iuserReportingHierarchy;
+            iaccomadation = _iaccomadation;
         }
         
         public ActionResult Index()
@@ -144,6 +146,7 @@ namespace Overtime.Controllers
             {
 
                 ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
             }
             return View();
@@ -179,6 +182,7 @@ namespace Overtime.Controllers
                         else
                         {
                             ViewBag.RoleList = (irole.GetRoles);
+                            ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                             ViewBag.DepartmentList = (idepartment.GetDepartments);
                             ViewBag.Message = "Username already exsist";
                             return View();
@@ -196,6 +200,7 @@ namespace Overtime.Controllers
                 {
                     ViewBag.RoleList = (irole.GetRoles);
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
+                    ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                     ViewBag.Message = ex.Message;
                     return View();
                 }
@@ -212,6 +217,7 @@ namespace Overtime.Controllers
             else
             {
                 ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
                 User user = iuser.GetUser(id);
                 user.u_password = null;
@@ -239,6 +245,7 @@ namespace Overtime.Controllers
                     temp_user.u_name = user.u_name;
                     temp_user.u_is_admin = user.u_is_admin;
                     temp_user.u_role_id = user.u_role_id;
+                    temp_user.u_accomodation = user.u_accomodation;
                     temp_user.u_active_yn = user.u_active_yn;
                     temp_user.u_email = user.u_email;
                     temp_user.u_allocation_yn= user.u_allocation_yn;
@@ -261,6 +268,7 @@ namespace Overtime.Controllers
                 {
                     ViewBag.RoleList = (irole.GetRoles);
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
+                    ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                     ViewBag.Message = ex.Message ;
                     return View();

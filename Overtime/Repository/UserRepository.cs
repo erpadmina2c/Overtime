@@ -43,36 +43,11 @@ namespace Overtime.Repository
         }
 
        
-        public IEnumerable<User> GetUsersList() {
+        public IEnumerable<List_User> GetUsersList() {
 
-           var query = from u in db.Users
-                         join r in db.Roles
-                           on u.u_role_id equals r.r_id
-                         join k in db.Users
-                          on u.u_cre_by equals k.u_id
-                         where r.r_active_yn =="Y"
-                         select new User{u_id=u.u_id,
-                                    u_name= u.u_name,
-                                    u_full_name= u.u_name+" - "+u.u_full_name,
-                                    u_email=u.u_email,
-                                    u_password= u.u_password,
-                                    u_role_id= u.u_role_id,
-                                    u_role_description=r.r_description,
-                                    u_active_yn=u.u_active_yn,
-                                    u_allocation_yn=u.u_allocation_yn,
-                                    u_cancelation_date=u.u_cancelation_date,
-                                    u_canceled_by=u.u_canceled_by,
-                                    u_canceled_on=u.u_canceled_on,
-                                    u_joining_date=u.u_joining_date,
-                                    u_is_admin =u.u_is_admin,
-                                    u_cre_by= u.u_cre_by,
-                                    u_cre_by_Name=k.u_name,
-                                    u_cre_date= u.u_cre_date
-                         
-                         };
-            
-            return query;
-            
+            var userShifts = db.List_User.FromSqlRaw<List_User>("EXECUTE dbo.GetUsersList").ToList();
+            return userShifts;
+
         }
 
 
@@ -108,6 +83,7 @@ namespace Overtime.Repository
                            u_is_admin=u.u_is_admin,
                            u_role_id=u.u_role_id,
                            u_role_description=r.r_description,
+                           u_accomodation=u.u_accomodation,
                            u_active_yn=u.u_active_yn,
                            u_allocation_yn=u.u_allocation_yn,
                             u_cancelation_date = u.u_cancelation_date,

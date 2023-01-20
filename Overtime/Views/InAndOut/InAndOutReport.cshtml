@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "InAndOutReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/InAndOut/InAndOutReport">In And Out Report</a></li>
+    </ol>
+</nav>
+<div class="Pallet-fluid" id="RejectionPerformance">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Select User</label>
+                        <select id="user" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="control-label">Date Range</label>
+                            <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group" align="justify">
+                        <input type="submit" onclick="getInAndOutReport();" style="margin-top:25px" class="btn btn-primary" />
+                        <button class="btn btn-warning" onclick="AddRegularizationPunch(); " style="margin-top:25px">Add</button>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" id="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal" id="InAndOutModal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">In And Out</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Select User</label>
+                                <select id="io_u_id" class="form-control" asp-items="@(new SelectList(ViewBag.UserList,"u_id","u_full_name"))">
+                                    <option value="">Select User</option>
+                                </select>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label">Punch Time</label>
+                                <input type="datetime-local" id="io_punchtime" name="datetime" class="form-control" placeholder="Punch Time" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Replace(' ','T')">
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label">Punch Type</label>
+                                <br/>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="InAndOut" checked value="In"> &nbsp &nbsp &nbsp In
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="InAndOut" value="Out">&nbsp &nbsp &nbsp Out
+                                    </label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label">Remarks</label>
+                                <input type="text" id="io_remarks" name="wh_remarks" class="form-control" placeholder="Enter Remarks..">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="button" id="save" class="btn btn-success pull-right"  onclick="AddInAndOut()" value="Add" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -64,6 +64,7 @@ namespace Overtime
             services.AddTransient<IFoodSchedule, FoodScheduleRepository>();
             services.AddTransient<IUserBioDepartment, UserBioDepartmentRepository>();
             services.AddTransient<IInAndOut, InAndOutRepository>();
+            services.AddTransient<IAccomadation, AccomadationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

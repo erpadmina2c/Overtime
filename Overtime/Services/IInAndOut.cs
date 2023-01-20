@@ -12,5 +12,9 @@ namespace Overtime.Services
         IEnumerable<InAndOut> GetInAndOuts { get; }
 
         DataTable getInAndOutLogBySearch(DateTime from, DateTime to);
+        DataTable getInAndOutReport(int u_id, DateTime from, DateTime to);
+        DbResult AddInAndOut(InAndOut inAndOut);
+        DbResult updateInAndOutPunchType(InAndOut inAndOut);
+        DataTable getAccomodationWiseInAndOut(int ac_id,string status,int u_id);
     }
 }

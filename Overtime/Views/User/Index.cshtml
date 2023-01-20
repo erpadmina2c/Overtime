@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Overtime.Models.User>
+﻿@model IEnumerable<Overtime.Models.List_User>
 
 @{
     ViewData["Title"] = "Index";
@@ -35,7 +35,9 @@
                                         <th>
                                             @Html.DisplayNameFor(model => model.u_role_description)
                                         </th>
-
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_accomodation_name)
+                                        </th>
                                         <th>
                                             @Html.DisplayNameFor(model => model.u_allocation_yn)
                                         </th>
@@ -75,6 +77,10 @@
 
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_role_description)
+                                        </td>
+                                       
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_accomodation_name)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_allocation_yn)
