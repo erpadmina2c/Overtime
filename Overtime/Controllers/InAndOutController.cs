@@ -79,13 +79,14 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
+                ViewBag.UserList = (iuser.getActiveUsers());
                 return View();
             }
 
         }
 
-        public ActionResult getInAndOutReport(int u_id ,string reportrange)
+        public ActionResult getInAndOutReport(int u_id ,int ac_id,string reportrange)
         {
             DataTable dataTable = new DataTable();
             if (getCurrentUser() == null)
@@ -101,7 +102,7 @@ namespace Overtime.Controllers
 
                     DateTime from = DateTime.Parse(array[0]);
                     DateTime to = DateTime.Parse(array[1] + " 11:59:59 PM");
-                    dataTable = iinAndOut.getInAndOutReport(u_id, from, to);
+                    dataTable = iinAndOut.getInAndOutReport(u_id, ac_id, from, to);
                 }
             }
             return View(dataTable);
@@ -135,6 +136,23 @@ namespace Overtime.Controllers
             {
                 inAndOut.io_modified_by = user.u_id;
                 dataTable = iinAndOut.updateInAndOutPunchType(inAndOut);
+            }
+            return dataTable;
+        }
+        
+        
+        public DbResult updateInAndOutPunchTypeUserWise(InAndOut inAndOut)
+        {
+            DbResult dataTable = new DbResult();
+            User user = getCurrentUser();
+            if (user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+                inAndOut.io_created_by = user.u_id;
+                dataTable = iinAndOut.updateInAndOutPunchTypeUserWise(inAndOut);
             }
             return dataTable;
         }

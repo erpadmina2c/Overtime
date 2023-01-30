@@ -1740,6 +1740,7 @@ function getInAndOutReport() {
     var data = new FormData();
     data.append("reportrange", $("#reportrange").val());
     data.append("u_id", $("#user").select2().val());
+    data.append("ac_id", $("#ac_id").select2().val());
     $.ajax({
         url: "/InAndOut/getInAndOutReport",
         type: "POST",
@@ -1858,4 +1859,34 @@ function getAccomodationWiseInAndOut() {
         }
     });
 
+}
+
+function changeInAndOutUserWise(u_id) {
+    var data = new FormData();
+    var punchtype = $("input[name='InAndOut" + u_id + "']:checked").val();
+
+    data.append("io_u_id", u_id);
+    data.append("io_punch_type", punchtype);
+
+    $.ajax({
+        url: "/InAndOut/updateInAndOutPunchTypeUserWise",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                getInAndOutReport();
+                alert("Successfully Updated !!!");
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
 }

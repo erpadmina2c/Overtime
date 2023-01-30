@@ -11,13 +11,18 @@
 </style>
 <div class="table-responsive">
 
-    <table class="table text-nowrap table-bordered " id="mytable" style="width:100%;">
+    <table class="table text-nowrap table-bordered " id="mytable" >
         <thead>
             <tr>
                 @foreach (DataColumn col in Model.Columns)
                 {
+                    if (@col.ColumnName != "CurrentStatus" && @col.ColumnName != "u_id")
+                    {
                         <th>@col.ColumnName</th>
+                    }
+
                 }
+                <th></th>
             </tr>
 
         </thead>
@@ -25,13 +30,45 @@
             @{
                 foreach (DataRow row in Model.Rows)
                 {
-                   
-                    <tr>
-                        @foreach (DataColumn col in Model.Columns)
-                        {
-                                <td> @row[col.ColumnName]</td>
-                        }
-                    </tr>
+                    var TypeIn = "";
+                    var TypeOut = "";
+                    @if (@row["CurrentStatus"].ToString() == "In")
+                    {
+                        TypeIn = "checked";
+                        TypeOut = "";
+                    }
+                    else
+                    {
+                        TypeIn = "checked";
+                        TypeOut = "checked";
+                    }
+            <tr>
+                @foreach (DataColumn col in Model.Columns)
+                {
+                    if (@col.ColumnName!= "CurrentStatus" && @col.ColumnName != "u_id")
+                    {
+                        <td> @row[col.ColumnName]</td>
+                    }
+
+                }
+                <td>
+                    <div class="container-fluid">
+
+                        <div class="col-sm-6">
+                            <label class="radio-inline">
+                                <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeIn value="In" onchange="changeInAndOutUserWise(@row["u_id"])"> &nbsp &nbsp &nbsp In
+                            </label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="radio-inline">
+                                <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeOut value="Out" onchange="changeInAndOutUserWise(@row["u_id"])">&nbsp &nbsp &nbsp Out
+                            </label>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
                 }
             }
         </tbody>

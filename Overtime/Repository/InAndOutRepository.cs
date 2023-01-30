@@ -112,7 +112,7 @@ namespace Overtime.Repository
             return dt;
         }
 
-        public DataTable getInAndOutReport(int u_id, DateTime from, DateTime to)
+        public DataTable getInAndOutReport(int u_id, int ac_id,DateTime from, DateTime to)
         {
             DataTable dt = new DataTable();
             var conn = db.Database.GetDbConnection();
@@ -122,7 +122,7 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    string query = @"exec [dbo].[getInAndOutReport] @u_id ='" + u_id + "',@from = '" + from + "',@to ='" + to + "'";
+                    string query = @"exec [dbo].[getInAndOutReport] @u_id ='" + u_id + "',@ac_id ='" + ac_id + "',@from = '" + from + "',@to ='" + to + "'";
                     command.CommandText = query;
                     command.CommandTimeout = 250;
 
@@ -157,6 +157,18 @@ namespace Overtime.Repository
 
             var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.updateInAndOutPunchType @io_id,@io_punch_type,@io_modified_by",
                 io_id, io_punch_type, io_modified_by).ToList().FirstOrDefault();
+
+            return dbResults;
+        }
+
+        public DbResult updateInAndOutPunchTypeUserWise(InAndOut inAndOut)
+        {
+            var io_u_id = new SqlParameter("io_u_id", inAndOut.io_u_id + "");
+            var io_punch_type = new SqlParameter("io_punch_type", inAndOut.io_punch_type + "");
+            var io_created_by = new SqlParameter("io_created_by", inAndOut.io_created_by + "");
+
+            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.updateInAndOutPunchTypeUserWise @io_u_id,@io_punch_type,@io_created_by",
+                io_u_id, io_punch_type, io_created_by).ToList().FirstOrDefault();
 
             return dbResults;
         }

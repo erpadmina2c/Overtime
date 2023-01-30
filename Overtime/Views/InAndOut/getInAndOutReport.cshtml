@@ -58,13 +58,13 @@
                                 
                                  <div class="col-sm-6">
                                      <label class="radio-inline">
-                                         <input type="radio" name="@string.Format("InAndOut{0}", @row["Id"])" @TypeIn value="In" onchange="changeInAndOut(@row["Id"])"> &nbsp &nbsp &nbsp In
+                                         <input type="radio" name="@string.Format("InAndOut{0}", @row["Id"])" @TypeIn value="In" onchange="changeInAndOut(@row["Id"])" disabled> &nbsp &nbsp &nbsp In
                                      </label>
                                  </div>
                                  
                                  <div class="col-sm-6">
                                      <label class="radio-inline">
-                                         <input type="radio" name="@string.Format("InAndOut{0}", @row["Id"])" @TypeOut value="Out" onchange="changeInAndOut(@row["Id"])">&nbsp &nbsp &nbsp Out
+                                         <input type="radio" name="@string.Format("InAndOut{0}", @row["Id"])" @TypeOut value="Out" onchange="changeInAndOut(@row["Id"])" disabled>&nbsp &nbsp &nbsp Out
                                      </label>
                                  </div>
                              </div>

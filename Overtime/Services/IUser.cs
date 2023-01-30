@@ -12,6 +12,7 @@ namespace Overtime.Services
         IEnumerable<EmpInfo> getUsersEmployeeDetails();
 
         IEnumerable<List_User> GetUsersList();
+        IEnumerable<List_User> getActiveUsers();
         User GetUser(int id);
 
         void Add(User user);
