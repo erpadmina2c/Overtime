@@ -185,6 +185,9 @@ namespace Overtime.Controllers
                 //habeebtest
                 dataTable = iinAndOut.getAccomodationWiseInAndOut(ac_id,status,user.u_id);
             }
+            ViewBag.Total = dataTable.AsEnumerable().Count();
+            ViewBag.In = dataTable.AsEnumerable().Where(row => row.Field<string>("CurrentStatus").Equals("In")).Count();
+            ViewBag.Out = dataTable.AsEnumerable().Where(row => row.Field<string>("CurrentStatus").Equals("Out")).Count();
             return View(dataTable);
         }
 

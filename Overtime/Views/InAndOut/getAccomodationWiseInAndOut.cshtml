@@ -9,9 +9,42 @@
         background-color: rgba(0,0,0,.075);
     }
 </style>
+<div class="card">
+    <div class="card-body" style="text-align: center">
+
+        <div class="row">
+            <div class="col">
+                <div class="card  mb-3">
+                    <div class="card-header"> <h5 class="card-title">Total Employees</h5></div>
+                    <div class="card-body">
+                        <p class="card-text">@ViewBag.Total</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card  mb-3">
+                    <div class="card-header"> <h5 class="card-title">In</h5></div>
+                    <div class="card-body">
+                        <p class="card-text">@ViewBag.In</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card  mb-3">
+                    <div class="card-header"> <h5 class="card-title">Out</h5></div>
+                    <div class="card-body">
+                        <p class="card-text">@ViewBag.Out</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
 <div class="table-responsive">
 
-    <table class="table text-nowrap table-bordered " id="mytable" >
+    <table class="table text-nowrap table-bordered " id="mytable">
         <thead>
             <tr>
                 @foreach (DataColumn col in Model.Columns)
@@ -42,33 +75,33 @@
                         TypeIn = "checked";
                         TypeOut = "checked";
                     }
-            <tr>
-                @foreach (DataColumn col in Model.Columns)
-                {
-                    if (@col.ColumnName!= "CurrentStatus" && @col.ColumnName != "u_id")
-                    {
-                        <td> @row[col.ColumnName]</td>
-                    }
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            if (@col.ColumnName != "CurrentStatus" && @col.ColumnName != "u_id")
+                            {
+                                <td> @row[col.ColumnName]</td>
+                            }
 
-                }
-                <td>
-                    <div class="container-fluid">
+                        }
+                        <td>
+                            <div class="container-fluid">
 
-                        <div class="col-sm-6">
-                            <label class="radio-inline">
-                                <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeIn value="In" onchange="changeInAndOutUserWise(@row["u_id"])"> &nbsp &nbsp &nbsp In
-                            </label>
-                        </div>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeIn value="In" onchange="changeInAndOutUserWise(@row["u_id"])"> &nbsp &nbsp &nbsp In
+                                    </label>
+                                </div>
 
-                        <div class="col-sm-6">
-                            <label class="radio-inline">
-                                <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeOut value="Out" onchange="changeInAndOutUserWise(@row["u_id"])">&nbsp &nbsp &nbsp Out
-                            </label>
-                        </div>
-                    </div>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="@string.Format("InAndOut{0}", @row["u_id"])" @TypeOut value="Out" onchange="changeInAndOutUserWise(@row["u_id"])">&nbsp &nbsp &nbsp Out
+                                    </label>
+                                </div>
+                            </div>
 
-                </td>
-            </tr>
+                        </td>
+                    </tr>
                 }
             }
         </tbody>

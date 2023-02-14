@@ -1877,7 +1877,7 @@ function changeInAndOutUserWise(u_id) {
         data: data,
         success: function (response) {
             if (response.message == "Success") {
-                getInAndOutReport();
+                getAccomodationWiseInAndOut();
                 alert("Successfully Updated !!!");
             }
             else {
