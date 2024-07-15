@@ -53,7 +53,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.UserList = (iuser.GetUsers);
+                ViewBag.UserList = (iuser.GetUsersList());
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View();
             }
@@ -97,7 +97,7 @@ namespace Overtime.Controllers
                 catch(Exception ex)
                 {
                     TempData["errorMessage"] = ex.Message;
-                    ViewBag.UserList = (iuser.GetUsers);
+                    ViewBag.UserList = (iuser.GetUsersList());
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
                     return View();
                 }
@@ -113,7 +113,7 @@ namespace Overtime.Controllers
             }
             else
             {
-                ViewBag.UserList = (iuser.GetUsers);
+                ViewBag.UserList = (iuser.GetUsersList());
                 ViewBag.DepartmentList = (idepartment.GetDepartments);
                 return View(iuserDepartment.GetUserDepartment(id));
             }
@@ -142,7 +142,7 @@ namespace Overtime.Controllers
                 catch(Exception ex)
                 {
                     TempData["errorMessage"] = ex.Message;
-                    ViewBag.UserList = (iuser.GetUsers);
+                    ViewBag.UserList = (iuser.GetUsersList());
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
                     return View();
                 }

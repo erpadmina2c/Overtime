@@ -10,6 +10,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\LeaveSalaryRequest1.rdlc" />
+    <Content Remove="wwwroot\Reports\SalaryRequestForm.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Reports\LeaveSalaryRequest1.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\SalaryRequestForm.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="jQuery" Version="3.6.0" />
     <PackageReference Include="MailKit" Version="2.14.0" />

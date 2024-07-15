@@ -15,41 +15,37 @@ namespace Overtime.Models
         public int u_id { get; set; }
 
         [Display(Name = "Full Name")]
-        public string u_full_name{ get; set;}
+        public string? u_full_name{ get; set;}
 
         [Display(Name = "Username")]
-        public string u_name{ get; set; }
+        public string? u_name{ get; set; }
 
         [Display(Name = "Email")]
         public string? u_email { get; set; }
 
-
         [Display(Name = "Role Id")]
         public int u_role_id { get; set; }
-
      
         [Display(Name = "Role Name")]
-        public string u_role_description { get; set; }
+        public string? u_role_description { get; set; }
 
         [Display(Name = "Accomodation")]
         public int? u_accomodation { get; set; }
-
      
         [Display(Name = "Accomodation Name")]
         public string? u_accomodation_name { get; set; }
 
-
         [Display(Name = "Active")]
-        public string u_active_yn { get; set; }
+        public string? u_active_yn { get; set; }
 
         [Display(Name = "is Admin")]
-        public string u_is_admin { get; set; }
+        public string? u_is_admin { get; set; }
 
         [Display(Name = "Allocation")]
-        public string u_allocation_yn { get; set; }
+        public string? u_allocation_yn { get; set; }
 
         [Display(Name = "Created by")]
-        public string u_cre_by_Name { get; set; }
+        public string? u_cre_by_Name { get; set; }
 
         [Display(Name = "Joining Date")]
         [DataType(DataType.Date)]
@@ -64,6 +60,10 @@ namespace Overtime.Models
 
         [Display(Name = "Cancelation updated By")]
         public string? u_canceled_by_name { get; set; }
+
+        [Display(Name = "Grade")]
+        [DataType(DataType.Date)]
+        public int? u_grade { get; set; }
 
         [Display(Name = "Cancelation updated On")]
         [DataType(DataType.Date)]

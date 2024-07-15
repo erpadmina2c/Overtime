@@ -11,6 +11,6 @@ namespace Overtime.Models
     {
         [Key]
         public int id { get; set; }
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }

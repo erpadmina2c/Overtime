@@ -157,7 +157,8 @@ namespace Overtime.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(User user)
         {
-            if (getCurrentUser() == null)
+            User curruser = getCurrentUser();
+            if (curruser == null)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -173,7 +174,7 @@ namespace Overtime.Controllers
                             var key = "shdfg2323g3g4j3879sdfh2j3237w8eh";
                             var encryptedString = AesOperaions.EncryptString(key, user.u_password);
                             user.u_password = encryptedString.ToString();
-                            user.u_cre_by = getCurrentUser().u_id;
+                            user.u_cre_by = curruser.u_id;
                             user.u_cre_date = DateTime.Now;
                             user.u_active_yn = "Y";
                             iuser.Add(user);
@@ -246,6 +247,8 @@ namespace Overtime.Controllers
                     temp_user.u_is_admin = user.u_is_admin;
                     temp_user.u_role_id = user.u_role_id;
                     temp_user.u_accomodation = user.u_accomodation;
+                    temp_user.u_joining_date = user.u_joining_date;
+                    temp_user.u_grade = user.u_grade;
                     temp_user.u_active_yn = user.u_active_yn;
                     temp_user.u_email = user.u_email;
                     temp_user.u_allocation_yn= user.u_allocation_yn;

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Overtime.Models.Leave>
+@{
+    Layout = null;
+}
+<div class="modal-body" id="LeaveContainer">
+    <div class="row">
+        <div class="col-5">
+            <div class="container-fluid">
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@ViewBag.Employee.u_full_name" disabled>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Joining Date</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@(Convert.ToDateTime(ViewBag.Employee.u_joining_date).ToString("yyyy-MM-dd") )" disabled>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Eligible Leave Days</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@ViewBag.remainingLeave.rl_eligible" disabled>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Leave Taken</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@ViewBag.remainingLeave.rl_leave_taken" disabled>
+                    </div>
+                </div>
+                <br /> 
+          
+                <div class="row">
+                    <div class="col-6">
+                        <label>Archived Leaves</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@ViewBag.remainingLeave.rl_archived_leave" disabled>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <label>Remaining Leaves</label>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" value="@ViewBag.remainingLeave.rl_remaining" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="table-responsive">
+                <table class="table table-hover text-nowrap" id="mytable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_dep_name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_type_name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_reason)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_authorization)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_leave_from)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_leave_to)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.l_leave_days)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_dep_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_type_name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_reason)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_authorization)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_leave_from)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_leave_to)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.l_leave_days)
+                                </td>
+                               
+                               
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

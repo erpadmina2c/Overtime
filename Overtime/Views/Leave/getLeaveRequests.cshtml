@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Overtime.Models.Leave>
+
+@{
+    Layout = null;
+}
+
+<div class="table-responsive">
+    <table class="table table-hover text-nowrap" id="mytable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_dep_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_type_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_reason)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_leave_for_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_leave_from)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_leave_to)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_leave_days)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_status_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_approval_status_name)
+                </th>
+                <th>
+                    Attachments
+                </th>
+                <th>
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_cre_by_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.l_cre_date)
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr id="@String.Format("tr{0}", @item.l_id)">
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_dep_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_type_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_reason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_leave_for_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_leave_from)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_leave_to)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_leave_days)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_status_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_approval_status_name)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info thumbnail" onclick="loadAttachment(2,'@item.l_id');">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                    </button>
+                </td>
+                <td>
+
+                    <button class="btn btn-warning" onclick="editLeaveApplication('@item.l_id','View')">View Details</button>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_cre_by_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_cre_date)
+                </td>
+
+                <td>
+                    @if (@item.l_status_name == "Supervisor")
+                    {
+                        <button class="btn btn-warning" onclick="editLeaveApplication('@item.l_id','Edit')">Edit</button>
+                    }
+
+                </td>
+                <td>
+                    @if (@item.l_status_name == "Supervisor")
+                    {
+                        <button class="btn btn-danger" onclick="deleteLeaveApplication('@item.l_id')">Delete</button>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

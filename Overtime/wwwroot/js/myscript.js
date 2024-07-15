@@ -4,10 +4,14 @@
     var m = date.getMonth();
     var y = date.getFullYear();
     var eventsdata = new Array;
-
+    $("#DateFilter").hide();
     $("#rq_cre_by").select2({ width: '100%' });
     $("#rq_dep_id").select2({ width: '100%' });
     $("#rq_cre_for").select2({ width: '100%' });
+    $("#l_leave_for").select2({ width: '100%' });
+    $("#l_dep_id").select2({ width: '100%' });
+    $("#l_designation").select2({ width: '100%' });
+    $("#l_type").select2({ width: '100%' });
     $("#us_u_id").select2({ width: '100%' });
     $("#User").select2({ width: '100%' });
     $("#ud_user_id").select2({ width: '100%' });
@@ -18,6 +22,10 @@
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
     $("#u_accomodation").select2({ width: '100%' });
+
+    $("#SalaryRequiredDiv").hide();
+    $("#SalaryRequestDetailDiv").hide();
+   
 
     $('#saveMenu').click(function () {
 
@@ -44,7 +52,6 @@
                 cache: false,
                 data: data,
                 success: function (response) {
-                    alert(response);
                     $("#multiselect_to").empty();
                     $("#multiselect").empty();
                 },
@@ -55,7 +62,13 @@
                 }
             });
         }
+        // Open the first tab by default
+        $(".tablinks:first").click();
     });
+
+   
+
+
     function getDaysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
     }
@@ -137,6 +150,18 @@
     }
     if ($("#UserBioDepartment").length) {
         getUserBioDepartment();
+    }
+    if ($("#Leave").length) {
+        getLeaveRequests();
+    }
+    if ($("#ReviewLeaveApplications").length) {
+        getLeaveApplicationsForReview();
+    }
+    if ($("#LeaveApproval").length) {
+        getLeaveApplicationsForHrApproval();
+    }
+    if ($("#ArchivedLeaves").length) {
+        getArchivedLeaves();
     }
     if ($("#mytable").length) {
         $('#mytable').DataTable({
@@ -1889,4 +1914,690 @@ function changeInAndOutUserWise(u_id) {
             $('#overlay').fadeOut();
         }
     });
+}
+
+function getLeaveRequests() {
+
+    var data = new FormData();
+    $.ajax({
+        url: "/Leave/getLeaveRequests",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+function OpenModalForCreateLeave() {
+    getRemainingLeaveOnly();
+    if ($('#l_leave_from').val()) {
+        updateDayOfWeek('#l_leave_from', 'dayOfWeekFrom');
+    }
+    if ($('#l_leave_to').val()) {
+        updateDayOfWeek('#l_leave_to', 'dayOfWeekTo');
+    }
+    $("#LeaveModal").modal("show");
+
+}
+
+function createOrUpdateLeave() {
+
+    var l_leave_for = $("#l_leave_for").val();
+    var l_dep_id = $("#l_dep_id").val();
+    var l_type = $("#l_type").val();
+    var l_reason = $("#l_reason").val();
+    var l_leave_for = $("#l_leave_for").val();
+    var l_leave_from = $("#l_leave_from").val();
+    var l_leave_to = $("#l_leave_to").val();
+    var l_leave_days = $("#l_leave_days").val();
+    var l_salary_month = $("#l_salary_month").val();
+    var l_required_amount = $("#l_required_amount").val();
+    var l_required_date = $("#l_required_date").val();
+    var salary_required = $('input[name="l_salary_required"]:checked').val();
+
+
+    if (l_leave_for != 0 && l_leave_days > 0 && l_dep_id != 0 && l_type != 0 &&
+        ((salary_required == 'Y' && l_salary_month != '' && l_required_amount > 0 && l_required_date!="") || (salary_required=='N'))
+    ) {
+        var data = new FormData($('#createLeaveForm')[0]);
+        $.ajax({
+            url: "/Leave/createOrUpdateLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    getLeaveRequests();
+                    alert("Successfully Created");
+                    clearLeaveRequestForm();
+                    $("#LeaveModal").modal("hide");
+                }
+                else {
+
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+    else {
+        alert("Please Enter all the Data !!");
+    }
+}
+function clearLeaveRequestForm() {
+   
+    $("#l_dep_id").select2().val("0").trigger("change");
+    $("#l_designation").select2().val("0").trigger("change");
+    $("#l_type").select2().val("0").trigger("change");
+    $("#l_reason").val("");
+    $("#l_salary_month").val("");
+    $("#l_required_amount").val("");
+    $("#l_required_date").val("");
+    $("#l_contact_no1").val("");
+    $("#l_contact_no2").val("");
+    $("#l_address").val("");
+    $('input[name="l_salary_required"][value="N"]').prop('checked', true);
+    $('#l_leave_from').val("");
+    updateDayOfWeek($('#l_leave_from'), 'dayOfWeekFrom');
+    $('#l_leave_to').val("");
+    updateDayOfWeek($('#l_leave_to'), 'dayOfWeekTo');
+    $("#SalaryRequiredDiv").hide();
+    $("#SalaryRequestDetailDiv").hide();
+}
+
+
+function editLeaveApplication(l_id,flag)
+{
+    var data = new FormData();
+    data.append("l_id", l_id);
+    $.ajax({
+        url: "/Leave/getLeave",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            setFormValues('#createLeaveForm', response);
+            $("#LeaveModal").modal("show");
+            if (flag == "View") {
+                disableFormControls('#createLeaveForm');
+                $("#attdiv").hide();
+            }
+            else
+            {
+                enableFormControls('#createLeaveForm');
+                $("#attdiv").show();
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function getLeaveApplicationsForReview() {
+    var data = new FormData();
+    $.ajax({
+        url: "/Leave/getLeaveApplicationsForReview",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function OpenReviewLeaveRequestModal(l_id) {
+    var data = new FormData();
+    data.append("l_id", l_id);
+    $.ajax({
+        url: "/Leave/getViewLeaveDetail",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#LeaveDetailContainer").html(response);
+            getRemainingLeaveOnly();
+            findNoOfDaysBetweenTwoDates();
+            updateDayOfWeek($('#l_leave_from'), 'dayOfWeekFrom');
+            updateDayOfWeek($('#l_leave_to'), 'dayOfWeekTo');
+            $('input[name="l_salary_required"]').trigger("change");
+            $("#LeaveModal").modal("show");
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+   
+}
+
+
+function AuthorizeLeave() {
+
+    var l_id = $("#l_id").val();
+    var l_authorization = $("#l_authorization").val();
+    if (l_id != 0 && l_authorization != "0") {
+        var data = new FormData();
+        data.append("l_id", l_id);
+        data.append("l_authorization", l_authorization);
+        $.ajax({
+            url: "/Leave/AuthorizeLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    getLeaveApplicationsForReview();
+                    $("#LeaveModal").modal("hide");
+
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+    else {
+        alert("Please Select Authorization !!");
+    }
+}
+
+
+
+
+function getLeaveApplicationsForHrApproval() {
+
+    var data = new FormData();
+    $.ajax({
+        url: "/Leave/getLeaveApplicationsForHrApproval",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+
+
+function ApproveLeave(id, type) {
+  
+    var data = new FormData();
+    data.append("id", id);
+    data.append("type", type);
+    $.ajax({
+        url: "/Leave/ApproveLeave",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                getLeaveApplicationsForHrApproval();
+                alert("Successfully Approved");
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+    
+}
+
+
+function deleteLeaveApplication(l_id) {
+    var data = new FormData();
+    data.append("l_id", l_id);
+    $.ajax({
+        url: "/Leave/deleteLeaveApplication",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                var datatable = $("#mytable").DataTable();
+                datatable.row("#tr" + l_id).remove().draw();
+                alert("Successfully Deleted");
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function getLeaveReport() {
+
+    var data = new FormData();
+    $.ajax({
+        url: "/Leave/getLeaveReport",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+
+
+function getLeaveReport() {
+
+    var data = new FormData();
+    var u_id = $("#User").val();
+    var daterange = $("#reportrange").val();
+    var Type = $("#Type").val();
+    var fullhistory = $('input[name="fullhistory"]').prop("checked");
+    if (daterange != "") {
+        data.append("u_id", u_id);
+        data.append("reportrange", daterange);
+        data.append("type", Type);
+        data.append("fullhistory", fullhistory);
+
+        $.ajax({
+            url: "/Leave/getLeaveReport",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#Container").html(response);
+                loadDatatable('mytable');
+            },
+            error: function () {
+            }
+        });
+    } else {
+        alert("Please enter Date Range");
+    }
+
+}
+
+function HideDateRange() {
+    $("#DateFilter").toggle();
+    if ($("#Verified").length) {
+       
+    }
+    if ($("#WarehouseVerified").length) {
+        
+    }
+}
+
+
+function getRemainingLeave() {
+
+    var u_id = $("#User").val();
+
+    var data = new FormData();
+    data.append("u_id", u_id);
+    $.ajax({
+        url: "/Leave/getRemainingLeave",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function loadAttachment(doc_id, fun_doc_id) {
+ 
+    var data = new FormData();
+    data.append('fun_doc_id', fun_doc_id);
+    data.append('doc_id', doc_id);
+    $.ajax({
+        url: "/Attachment/GetAttachmentsByDocument",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#attachmentContainer").html(response);
+            $(".tablinks:first").click();
+            $("#AttachmentModal").modal("show");
+          
+        },
+        error: function () {
+            $("#attachmentContainer").html("Error loading attachments.");
+        }
+    });
+}
+
+$(document).on('click', '.tablinks', function () {
+    var tabName = $(this).data("tab");
+
+    // Hide all tab content
+    $(".tabcontent").hide();
+
+    // Remove active class from all buttons
+    $(".tablinks").removeClass("active");
+
+    // Show the current tab and add active class to the clicked button
+    $("#" + tabName).show();
+    $(this).addClass("active");
+});
+
+
+function getArchivedLeaves() {
+
+    var data = new FormData();
+    $.ajax({
+        url: "/Leave/getArchivedLeaves",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#Container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+
+}
+
+function OpenArchivedLeaveModal() {
+
+    $("#ArchivedLeaveModal").modal("show");
+}
+
+function createArchivedLeave() {
+    var u_id = $("#User").val();
+    var leave_days = $("#leaveDays").val();
+
+    if (u_id != 0 && leave_days != 0) {
+        var data = new FormData();
+        data.append("u_id", u_id);
+        data.append("leave_days", leave_days);
+        $.ajax({
+            url: "/Leave/createArchivedLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    alert("Successfully Created");
+                    $("#ArchivedLeaveModal").modal("hide");
+                    $("#User").select2().val("").trigger("change");
+                    $("#leaveDays").val("");
+                    getArchivedLeaves()
+                    $('#overlay').fadeOut()
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+    else {
+        alert("Please Enter All Data");
+    }
+}
+
+function updateArchivedLeave(al_id) {
+
+
+    var leave_days = $("#inp"+al_id).val();
+
+    if (al_id != 0 && leave_days != 0) {
+        var data = new FormData();
+        data.append("al_id", al_id);
+        data.append("leave_days", leave_days);
+        $.ajax({
+            url: "/Leave/updateArchivedLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    alert("Successfully Updated");
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+    else {
+        alert("Please Enter All Data");
+    }
+}
+
+
+function findNoOfDaysBetweenTwoDates() {
+   
+    const leaveFrom = $('#l_leave_from').val();
+    const leaveTo = $('#l_leave_to').val();
+
+   
+    if (leaveFrom && leaveTo) {
+      
+        const dateFrom = new Date(leaveFrom);
+        const dateTo = new Date(leaveTo);
+        const timeDifference = dateTo.getTime() - dateFrom.getTime();
+        const dayDifference = timeDifference / (1000 * 3600 * 24)+1;
+
+        $("#l_leave_days").val(dayDifference);
+    }
+}
+
+function getRemainingLeaveOnly() {
+    var u_id = $("#l_leave_for").val();
+    if (u_id != 0) {
+        var data = new FormData();
+        data.append("u_id", u_id);
+        $.ajax({
+            url: "/Leave/getRemainingLeaveOnly",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#remainingContainer").html(response);
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+}
+
+function updateDayOfWeek(dateInput, dayOfWeekId) {
+    findNoOfDaysBetweenTwoDates();
+    var dateValue = $(dateInput).val();
+    if (dateValue) {
+        var date = new Date(dateValue);
+        var options = { weekday: 'long' };
+        var dayOfWeek = new Intl.DateTimeFormat('en-US', options).format(date);
+        $('#' + dayOfWeekId).attr("class", "btn btn-default");
+        $('#' + dayOfWeekId).text(dayOfWeek);
+    } else {
+        $('#' + dayOfWeekId).attr("class", "");
+        $('#' + dayOfWeekId).text('');
+    }
+}
+
+function setMinDateForInputs(flag) {
+    if (flag == true) {
+        var today = new Date().toISOString().split('T')[0];
+        $('#l_leave_from').attr('min', today);
+        $('#l_leave_to').attr('min', today);
+        $('#l_leave_from').val("");
+        updateDayOfWeek($('#l_leave_from'), 'dayOfWeekFrom');
+        $('#l_leave_to').val("");
+        updateDayOfWeek($('#l_leave_to'), 'dayOfWeekTo');
+    }
+    else {
+        $('#l_leave_from').removeAttr('min');
+        $('#l_leave_to').removeAttr('min');
+    }
+}
+
+
+
+$('#l_leave_from').change(function () {
+    updateDayOfWeek(this, 'dayOfWeekFrom');
+    var date = new Date($('#l_leave_from').val());
+    if (date != '') {
+        var day = ("0" + date.getDate()).slice(-2);
+        if (day >= 20) {
+            $("#SalaryRequiredDiv").show();
+        }
+        else {
+            $("#SalaryRequiredDiv").hide();
+        }
+    }
+});
+
+$('#l_leave_to').change(function () {
+    updateDayOfWeek(this, 'dayOfWeekTo');
+});
+
+
+
+function onchangeLeaveType() {
+    var l_type = $('#l_type').val();
+    if (l_type==1) {
+        setMinDateForInputs(true);
+    }
+    else {
+        setMinDateForInputs(false);
+    }
+}
+
+
+$('input[name="l_salary_required"]').change(function () {
+    $('input[name="l_salary_required"]').not(this).prop('checked', false); // Uncheck other checkboxes
+    var selectedValue = $(this).val();
+    if (selectedValue == "Y") {
+        $("#SalaryRequestDetailDiv").show();
+    }
+    else {
+        $("#SalaryRequestDetailDiv").hide();
+    }
+});
+
+
+function setFormValues(formSelector, data) {
+    $.each(data, function (key, value) {
+        var $field = $(formSelector + ' [name=' + key + ']');
+        
+        if ($field.length === 0) {
+            // Skip if no element is found for the name
+            return true;
+        }
+
+        if (value === null || value === undefined) {
+            // Skip if the value is null or undefined
+            return true; // equivalent to 'continue' in jQuery's each loop
+        }
+
+        if ($field.is(':checkbox')) {
+            $('input[name=' + key + '][value="' + value + '"]').prop('checked', true).trigger("change");
+        } else if ($field.is(':radio')) {
+            $field.filter('[value="' + value + '"]').prop('checked', true).trigger("change");
+        } else if ($field.hasClass('select2-hidden-accessible')) { // Check if it's a Select2 element
+            $field.val(value).trigger('change');
+        } else if ($field.is('input[type="date"]')) {
+            // Check if it's a date input and format the date value correctly
+            var dateValue = value.split("T")[0]; // Extract the date part
+            $field.val(dateValue).trigger("change");
+        } else if ($field.is('input[type="month"]')) {
+            // Check if it's a month input and ensure the value is in the correct format
+            var monthValue = value.slice(0, 7); // Extract the YYYY-MM part
+            $field.val(monthValue).trigger("change");
+        } else {
+            $field.val(value).trigger("change");
+        }
+    });
+}
+
+
+function disableFormControls(formSelector) {
+    $(formSelector).find('input, select, textarea, button').prop('disabled', true);
+}
+function enableFormControls(formSelector) {
+    $(formSelector).find('input, select, textarea, button').removeattr("disabled");
 }

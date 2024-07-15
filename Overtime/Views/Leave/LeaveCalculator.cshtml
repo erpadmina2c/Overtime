@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "LeaveCalculator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/Leave/LeaveCalculator">Leave Calculator</a></li>
+    </ol>
+</nav>
+<div class="container-fluid" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">User</label>
+                <select id="User" class="form-control" asp-items="@(new SelectList(ViewBag.Users,"u_id","u_full_name"))" onchange="getRemainingLeave()">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12" id="Container">
+
+        </div>
+    </div>
+</div>
+
+

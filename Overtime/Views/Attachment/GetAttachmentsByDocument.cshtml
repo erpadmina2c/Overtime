@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Overtime.Models.Attachment>
+
+@{ Layout = null;
+                int i = 1; }
+
+<div class="tab">
+    @foreach (var item in Model)
+    {
+        var tabid = "Tab" + i;
+        var tabname = "Tab " + i;
+        <button class="tablinks" data-tab="@tabid">@tabname</button>i++;
+    }
+</div>
+
+@{ i = 1; }
+
+@foreach (var item in Model)
+{
+    var tabid = "Tab" + i;
+    var tabname = "Tab " + i;
+    var path = ViewBag.FileLocation + item.at_path;
+
+    <div id="@tabid" class="tabcontent" style="display:none;">
+        <embed src="@path" type="application/pdf" class="responsive-embed" width="600" height="500">
+    </div>i++;
+ }
+
+
+

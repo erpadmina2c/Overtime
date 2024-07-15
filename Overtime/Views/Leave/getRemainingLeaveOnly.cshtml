@@ -1,0 +1,50 @@
+﻿@model Overtime.Models.RemainingLeave
+
+@{
+    Layout = null;
+}
+    <div class="card">
+        <div class="card-header">
+            <h5>Remaining Leave Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.rl_joining_date) 
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_joining_date)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.rl_leave_taken)
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_leave_taken)
+                </dd>
+                <dt class="col-sm-2">
+                     @Html.DisplayNameFor(model => model.rl_archived_leave)
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_archived_leave)
+                </dd>
+                <dt class="col-sm-2">
+                     @Html.DisplayNameFor(model => model.rl_total_leave_taken)
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_total_leave_taken)
+                </dd>
+                <dt class="col-sm-2">
+                     @Html.DisplayNameFor(model => model.rl_eligible)
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_eligible)
+                </dd>
+                <dt class="col-sm-2">
+                     @Html.DisplayNameFor(model => model.rl_remaining)
+                </dt>
+                <dd class="col-sm-2">
+                    : @Html.DisplayFor(model => model.rl_remaining)
+                </dd>
+            </dl>
+        </div>
+    </div>

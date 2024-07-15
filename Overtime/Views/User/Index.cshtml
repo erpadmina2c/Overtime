@@ -45,6 +45,12 @@
                                             @Html.DisplayNameFor(model => model.u_is_admin)
                                         </th>
                                         <th>
+                                            @Html.DisplayNameFor(model => model.u_joining_date)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.u_grade)
+                                        </th>
+                                        <th>
                                             @Html.DisplayNameFor(model => model.u_active_yn)
                                         </th>
                                         <th>
@@ -73,21 +79,23 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_email)
                                         </td>
-
-
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_role_description)
                                         </td>
-                                       
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_accomodation_name)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_allocation_yn)
                                         </td>
-
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_is_admin)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_joining_date)
+                                        </td> 
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.u_grade)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.u_active_yn)

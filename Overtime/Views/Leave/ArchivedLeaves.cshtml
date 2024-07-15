@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "ArchivedLeaves";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/Leave/ArchivedLeaves">Archived Leaves</a></li>
+    </ol>
+</nav>
+<div class="container-fluid" id="ArchivedLeaves">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <button class="btn btn-primary"  onclick="OpenArchivedLeaveModal()">Create</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="Container">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="ArchivedLeaveModal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Archived Leave Days</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="LeaveContainer">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="form-row">
+                          <label class="control-label">User</label>
+                          <select id="User" class="form-control" asp-items="@(new SelectList(ViewBag.Users,"u_id","u_full_name"))">
+                              <option value="">All</option>
+                          </select>
+                      </div>
+                      <br />
+                      <div class="form-row">
+                          <label>Leave Days</label>
+                          <input class="form-control" type="number" id="leaveDays" min="0" />
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createArchivedLeave()">Create</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

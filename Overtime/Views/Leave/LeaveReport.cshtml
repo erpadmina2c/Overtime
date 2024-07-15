@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "LeaveReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+        <li class="breadcrumb-item active"><a href="/Leave/LeaveReport">Leave Report</a></li>
+    </ol>
+</nav>
+<div class="container-fluid" style="margin-top: 10px;">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">User</label>
+                        <select id="User" class="form-control" asp-items="@(new SelectList(ViewBag.Users,"u_id","u_full_name"))">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Report Type</label>
+                        <select id="Type" class="form-control">
+                            @*<option value="Consolidated">Consolidated</option>*@
+                            <option value="Detail">Detail</option>
+                            @*<option value="User">User Wise</option>
+                            <option value="Department">Department Wise</option>*@
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group right-pull">
+                        <label class="control-label">Full History</label>
+                        <br />
+                        <label class="switch">
+                            <input type="checkbox" name="fullhistory" id="fullhistory" value="See Full History" onchange="HideDateRange()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3" id="DateFilter">
+                    <div class="form-group">
+
+                        <label class="control-label">Date Range</label>
+                        <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />
+
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group bottom" align="justify">
+                        <input type="button" onclick="getLeaveReport();" style="margin-top:25px" class="btn btn-primary" value="Search" />
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-12" id="Container">
+
+                </div>
+
+
+            </div>
+        </div>

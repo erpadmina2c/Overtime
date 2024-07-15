@@ -1,0 +1,208 @@
+﻿@model Overtime.Models.Leave
+
+@{
+    Layout = null;
+    var dis = Model.l_authorization != null ? "disabled" : "";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data" id="createLeaveForm">
+            <fieldset>
+                <legend style="color:black;font-weight:bold;">Personal Information </legend>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="hidden" asp-for="l_id" />
+                        <label>Leave For</label>
+                        <select asp-for="l_leave_for" class="form-control" asp-items="@(new SelectList(ViewBag.Users,"u_id","u_full_name"))" disabled>
+                            <option value="0">Select User</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Department</label>
+                        <select asp-for="l_dep_id" class="form-control" asp-items="@(new SelectList(ViewBag.Departments,"d_id","d_description"))" disabled>
+                            <option value="0">Select Department</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Designation</label>
+                        <select asp-for="l_designation" class="form-control" asp-items="@(new SelectList(ViewBag.Designations,"ds_id","ds_name"))" disabled>
+                            <option value="0">Select Designation</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="form-row">
+                    <div class="col-md-12" id="remainingContainer">
+                    </div>
+                </div>
+            </fieldset>
+            <br />
+            <fieldset>
+                <legend style="color:black;font-weight:bold;">Leave Details</legend>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Leave Type</label>
+                        <select asp-for="l_type" class="form-control" asp-items="@(new SelectList(ViewBag.LeaveTypes,"LeavetypeId","Leavetype"))" onchange="onchangeLeaveType()" disabled>
+                            <option value="0">Select Leave Type</option>
+                        </select>
+                    </div>
+
+                </div>
+                <br />
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="col-form-label" for="l_leave_from">Leave From</label>
+                                    <input type="date" class="form-control" placeholder="Leave From" asp-for="l_leave_from" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label d-block">&nbsp;</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span class="" id="dayOfWeekFrom"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="col-form-label" for="l_leave_to">Leave To</label>
+                                    <input type="date" class="form-control" placeholder="Leave End" asp-for="l_leave_to" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label d-block">&nbsp;</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span class="" id="dayOfWeekTo"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Leave Days</label>
+                            <input type="number" class="form-control" asp-for="l_leave_days" disabled min="0">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <br />
+            <div class="form-row" id="SalaryRequiredDiv">
+                <div class="col-md-6">
+                    <label>Salary required for the month taking the leaves ?</label>
+                </div>
+                <div class="col-md-4">
+                    @if (Model.l_salary_required == "Y")
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="Y" checked disabled>
+                            <label class="form-check-label" for="inlineCheckbox1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="N" disabled>
+                            <label class="form-check-label" for="inlineCheckbox2">No</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="Y" disabled>
+                            <label class="form-check-label" for="inlineCheckbox1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="N" checked disabled>
+                            <label class="form-check-label" for="inlineCheckbox2">No</label>
+                        </div>
+                    }
+
+
+                </div>
+
+            </div>
+            <br />
+            @if (Model.l_salary_required == "Y")
+            {
+                <div id="SalaryRequestDetailDiv">
+                    <br />
+                    <fieldset>
+                        <legend style="color:black;font-weight:bold;">For Current Salary Request</legend>
+                        <div class="col-md-4">
+                            <label class="col-form-label" for="l_salary_month">Salary of Month</label>
+                            <input type="month" class="form-control" placeholder="Salary of Month" asp-for="l_salary_month" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label" for="l_required_amount">Required Amount</label>
+                            <input type="number" class="form-control" placeholder="Required Amount" asp-for="l_required_amount" min="0" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="col-form-label" for="l_required_date">Required Date</label>
+                            <input type="date" class="form-control" placeholder="Required Date" asp-for="l_required_date" disabled>
+                        </div>
+                    </fieldset>
+                </div>
+                <br />
+            }
+            <fieldset>
+                <legend style="color:black;font-weight:bold;">Contact Detail During Leave </legend>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>Contact Number 1</label>
+                        <input class="form-control" type="tel" asp-for="l_contact_no1" placeholder="+971-00000000" pattern="\+\d{1,3}-\d{1,4}-\d{1,4}-\d{4}" disabled>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Contact Number 2</label>
+                        <input class="form-control" type="tel" asp-for="l_contact_no2" placeholder="+971-00000000" pattern="\+\d{1,3}-\d{1,4}-\d{1,4}-\d{4}" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label>Address</label>
+                    <textarea class="form-control" rows="5" asp-for="l_address" disabled></textarea>
+                </div>
+                <br />
+            </fieldset>
+            <fieldset>
+                <legend style="color:black;font-weight:bold;">Other Details</legend>
+                <div class="form-row">
+                    <label>Remarks</label>
+                    <textarea class="form-control" rows="5" asp-for="l_reason" disabled></textarea>
+                </div>
+                <div class="form-row">
+                    <label>Authorization</label>
+                    @if (Model.l_authorization != null)
+                    {
+                        <select asp-for="l_authorization" class="form-control">
+                            <option value="0">Select Authorization</option>
+                            <option value="Authorized">Authorized</option>
+                            <option value="Unauthorized">Unauthorized</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select asp-for="l_authorization" class="form-control">
+                            <option value="0">Select Authorization</option>
+                            <option value="Authorized">Authorized</option>
+                            <option value="Unauthorized">Unauthorized</option>
+                        </select>
+                    }
+
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</div>

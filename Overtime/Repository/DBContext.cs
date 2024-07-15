@@ -22,25 +22,19 @@ namespace Overtime.Repository
         public DbSet<WorkflowTracker> workflowTrackers { get; set; }
         public DbSet<OverTimeRequest> OverTimeRequest { get; set; }
         public DbSet<Documents> Documents { get; set; }
-
         public DbSet<Hold> Holds { get; set; }
-
         public DbSet<RoleMenu> RoleMenus { get; set; }
-
         public DbSet<Menu> Menus { get; set; }
-
         public DbSet<UserDepartment> UserDepartments { get; set; }
-
         public DbSet<Insight> Insights { get; set; }
-
         public DbSet<OvCustomModel> OvCustomModel { get; set; }
         public DbSet<HourRate> HourRates { get; set; }
-
         public DbSet<WorkingHour> WorkingHour { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
         public DbSet<Training> Training { get; set; }
         public DbSet<List_Training> List_Training { get; set; }
         public DbSet<DbResult> DbResult { get; set; }
+        public DbSet<DbResultWithObject> DbResultWithObject { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<MachineDetail> MachineDetails { get; set; }
         public DbSet<Leavetypetbl> Leavetypetbl { get; set; }
@@ -53,9 +47,11 @@ namespace Overtime.Repository
         public DbSet<FoodSchedule> Foodschedule { get; set; }
         public DbSet<UserBioDepartment> Bio_UserDepartments { get; set; }
         public DbSet<Accomadation> Accomadations { get; set; }
-
-
-
+        public DbSet<Leave> Leaves { get; set; }
+        public DbSet<RemainingLeave> RemainingLeaves { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<ArchivedLeave> ArchivedLeaves { get; set; }
+        public DbSet<Designation> Designations { get; set; }
 
     }
 }

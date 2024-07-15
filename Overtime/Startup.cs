@@ -65,6 +65,10 @@ namespace Overtime
             services.AddTransient<IUserBioDepartment, UserBioDepartmentRepository>();
             services.AddTransient<IInAndOut, InAndOutRepository>();
             services.AddTransient<IAccomadation, AccomadationRepository>();
+            services.AddTransient<ILeave, LeaveRepository>();
+            services.AddTransient<IAttachment, AttachmentRepository>();
+            services.AddTransient<IArchivedLeave, ArchivedLeavesRepository>();
+            services.AddTransient<IDesignation, DesignationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

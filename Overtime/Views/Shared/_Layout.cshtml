@@ -52,25 +52,25 @@
                         </a>
                         @if (ViewBag.MenuList != null)
                         {
-                            @foreach (var item in ViewBag.MenuList)
+                        @foreach (var item in ViewBag.MenuList)
                             {
 
-                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="@String.Format("#nav{0}",@item.m_id)" aria-expanded="true" aria-controls="collapseLayout">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    @item.m_description
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                @if (item.menuItem != null)
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="@String.Format("#nav{0}",@item.m_id)" aria-expanded="true" aria-controls="collapseLayout">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            @item.m_description
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        @if (item.menuItem != null)
                                 {
-                                    <div class="collapse" id="@String.Format("nav{0}", @item.m_id)" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            @foreach (var abc in item.menuItem)
+                        <div class="collapse" id="@String.Format("nav{0}", @item.m_id)" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                @foreach (var abc in item.menuItem)
                                             {
-                                                <a class="nav-link" href="@abc.m_link">@abc.m_description</a>
+                                <a class="nav-link" href="@abc.m_link">@abc.m_description</a>
 
                                             }
-                                        </nav>
-                                    </div>
+                            </nav>
+                        </div>
                                 }
                             }
 
@@ -92,7 +92,7 @@
                 </div>
             </main>
         </div>
-
+        </div>
         <div class="modal fade bd-example-modal-lg" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog  modal-lg" role="document">
                 <div class="modal-content">
@@ -218,6 +218,29 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade bd-example-modal-lg" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Attachments</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="attachmentContainer">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div id="overlay" style="display:none;">
             <div class="spinner"></div>
             <br />
@@ -294,8 +317,9 @@
         <script src="~/js/calandarscript.js"></script>
         @*<script src="https://kit.fontawesome.com/66aa7c98b3.js" crossorigin="anonymous"></script>*@
         @RenderSection("Scripts", required: false)
-        
 
-</body>
+
+
+        </body>
 
 </html>

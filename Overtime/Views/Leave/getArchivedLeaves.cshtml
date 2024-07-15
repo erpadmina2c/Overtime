@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Overtime.Models.ArchivedLeave>
+
+@{
+    Layout = null;
+}
+<div class="table-responsive">
+    <table class="table table-hover" id="mytable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.al_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.al_user_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.al_leave_days)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.al_cre_by_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.al_cre_date)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.al_id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.al_user_name)
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" id="@string.Format("inp{0}",@item.al_id)" value="@item.al_leave_days" onchange="updateArchivedLeave('@item.al_id');"/>
+                    </td>
+                
+                    <td>
+                        @Html.DisplayFor(modelItem => item.al_cre_by_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.al_cre_date)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
