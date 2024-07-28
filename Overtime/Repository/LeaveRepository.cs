@@ -22,12 +22,13 @@ namespace Overtime.Repository
             db = _db;
         }
 
-        public DbResult ApproveLeave(int id, string type, int u_id)
+        public DbResult ApproveLeave(int id, string type,string ticket, int u_id)
         {
             var _id = new SqlParameter("id", id + "");
             var _type = new SqlParameter("type", type + "");
+            var _ticket = new SqlParameter("ticket", ticket + "");
             var _u_id = new SqlParameter("u_id", u_id + "");
-            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.ApproveLeave @id,@type,@u_id", _id, _type, _u_id)
+            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.ApproveLeave @id,@type,@ticket,@u_id", _id, _type, _ticket, _u_id)
              .ToList().FirstOrDefault();
 
             return dbResults;
@@ -181,6 +182,17 @@ namespace Overtime.Repository
         {
             var _u_id = new SqlParameter("u_id", u_id + "");
             var leave = db.RemainingLeaves.FromSqlRaw<RemainingLeave>("EXECUTE dbo.getRemainingLeave @u_id", _u_id).ToList().FirstOrDefault();
+
+            return leave;
+        }
+
+        public DbResult SendToAnotherSupervisor(int l_id, int supervisor,int u_id)
+        {
+            var _l_id = new SqlParameter("l_id", l_id + "");
+            var _supervisor = new SqlParameter("supervisor", supervisor + "");
+            var _u_id = new SqlParameter("u_id", u_id + "");
+            var leave = db.DbResult.FromSqlRaw<DbResult>
+                ("EXECUTE dbo.SendToAnotherSupervisor @l_id,@supervisor,@u_id", _l_id, _supervisor,_u_id).ToList().FirstOrDefault();
 
             return leave;
         }

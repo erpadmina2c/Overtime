@@ -173,20 +173,6 @@ namespace Overtime.Controllers
             }
         }
 
-
-
-
-        public ActionResult getViewLeaveDetail(int l_id)
-        {
-            ViewBag.Departments = idepartment.GetDepartments;
-            ViewBag.Users = iusers.GetUsers;
-            ViewBag.LeaveTypes = ileavetype.GetLeavetypes;
-            ViewBag.Designations = idesignation.GetDesignations();
-            Leave leave = ileave.getLeave(l_id);
-            return View(leave);
-        }
-      
-
         public ActionResult getLeaveApplicationsForReview()
         {
             List<Leave> leaves = new List<Leave>();
@@ -197,9 +183,36 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.Supervisors = iusers.getSupervisors();
                 leaves = ileave.getLeaveApplicationsForReview(user.u_id);
             }
             return View(leaves);
+        }
+
+        public DbResult SendToAnotherSupervisor(int l_id,int supervisor)
+        {
+            User user = getCurrentUser();
+            DbResult dbResult = new DbResult();
+            if (user == null)
+            {
+                dbResult.Message = "Session Expired !!";
+            }
+            else
+            {
+                dbResult = ileave.SendToAnotherSupervisor(l_id, supervisor, user.u_id);
+            }
+            return dbResult;
+        }
+
+        public ActionResult getViewLeaveDetail(int l_id)
+        {
+            ViewBag.Departments = idepartment.GetDepartments;
+            ViewBag.Users = iusers.GetUsers;
+            ViewBag.LeaveTypes = ileavetype.GetLeavetypes;
+            ViewBag.Designations = idesignation.GetDesignations();
+            Leave leave = ileave.getLeave(l_id);
+            ViewBag.LeaveType = ileavetype.GetLeavetype(leave.l_type ?? 0);
+            return View(leave);
         }
 
         public DbResult AuthorizeLeave(int l_id, string l_authorization)
@@ -249,14 +262,14 @@ namespace Overtime.Controllers
         }
 
 
-        public DbResult ApproveLeave(int id,string type)                        
+        public DbResult ApproveLeave(int id,string type,string ticket)                        
         {                                                                       
             DbResult dbResult = new DbResult();                                 
             User user = getCurrentUser();                                       
             if (user != null)                                                   
             {                                                                   
 
-                dbResult = ileave.ApproveLeave(id, type, user.u_id);            
+                dbResult = ileave.ApproveLeave(id, type, ticket, user.u_id);            
             }                                                                   
             else                                                                
             {                                                                   
@@ -264,6 +277,7 @@ namespace Overtime.Controllers
             }                                                                   
             return dbResult;                                                    
         }
+      
 
         public DbResult deleteLeaveApplication(int l_id)
         {
@@ -294,6 +308,17 @@ namespace Overtime.Controllers
                 return View();
             }
         }
+
+
+        public Leavetypetbl onchangeLeaveType(int id)
+        {
+            Leavetypetbl leavetypetbl = new Leavetypetbl();
+
+            leavetypetbl = ileavetype.GetLeavetype(id);
+
+            return leavetypetbl;
+        }
+
 
         public ActionResult getLeaveReport(int u_id, string reportrange, string type, string fullhistory)
         {

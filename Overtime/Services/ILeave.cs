@@ -15,11 +15,11 @@ namespace Overtime.Services
         Leave getLeave(int l_id);
         DbResult AuthorizeLeave(int l_id, string l_authorization,int u_id);
         List<Leave> getLeaveApplicationsForHrApproval(int u_id);
-        DbResult ApproveLeave(int id, string type, int u_id);
+        DbResult ApproveLeave(int id, string type,string ticket, int u_id);
         DbResult deleteLeaveApplication(int l_id, int u_id);
         DataTable getLeaveReport(int u_id, DateTime from, DateTime to, string type, string fullhistory);
         List<Leave> getLeaveDetailsOfAEmployee(int u_id);
         RemainingLeave getRemainingLeave(int u_id);
-  
+        DbResult SendToAnotherSupervisor(int l_id, int supervisor,int u_id);
     }
 }

@@ -94,6 +94,21 @@ namespace Overtime.Models
         [Display(Name = "Authorization")]
         public string? l_authorization { get; set; }
 
+        [Display(Name = "Supervisor")]
+        public int? l_supervisor { get; set; }
+
+        [Display(Name = "Supervisor")]
+        public string? l_supervisor_name { get; set; }
+
+        [Display(Name = "Supervisor Updated By")]
+        public int? l_sv_upd_by { get; set; }
+
+        [Display(Name = "Supervisor Updated By")]
+        public string? l_sv_upd_by_name { get; set; }
+
+        [Display(Name = "Supervisor")]
+        public DateTime? l_sv_upd_on { get; set; }
+
         [Display(Name = "Created By")]
         public int? l_cre_by { get; set; }
 

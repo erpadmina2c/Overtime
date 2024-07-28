@@ -23,5 +23,6 @@ namespace Overtime.Services
         IEnumerable<string> getUsersNames(string name);
         List<List_User> getEmployeeInformation(int u_id, string type);
         DbResult CancelEmployee(int u_id, string u_cancelation_date,int cre_by);
+        List<List_User> getSupervisors();
     }
 }

@@ -22,6 +22,7 @@
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
     $("#u_accomodation").select2({ width: '100%' });
+    $('select[name="Supervisors"]').select2({ width: '100%' });
 
     $("#SalaryRequiredDiv").hide();
     $("#SalaryRequestDetailDiv").hide();
@@ -1938,6 +1939,7 @@ function getLeaveRequests() {
 }
 
 function OpenModalForCreateLeave() {
+   
     getRemainingLeaveOnly();
     if ($('#l_leave_from').val()) {
         updateDayOfWeek('#l_leave_from', 'dayOfWeekFrom');
@@ -1945,7 +1947,10 @@ function OpenModalForCreateLeave() {
     if ($('#l_leave_to').val()) {
         updateDayOfWeek('#l_leave_to', 'dayOfWeekTo');
     }
+    enableFormControls('#createLeaveForm');
+    clearLeaveRequestForm();
     $("#LeaveModal").modal("show");
+    $("#upd_btn").show();
 
 }
 
@@ -1963,10 +1968,12 @@ function createOrUpdateLeave() {
     var l_required_amount = $("#l_required_amount").val();
     var l_required_date = $("#l_required_date").val();
     var salary_required = $('input[name="l_salary_required"]:checked').val();
-
+    var files = $('#files')[0].files;
+    var AttachementRequired = $("#AttachmentRequired").val();
 
     if (l_leave_for != 0 && l_leave_days > 0 && l_dep_id != 0 && l_type != 0 &&
-        ((salary_required == 'Y' && l_salary_month != '' && l_required_amount > 0 && l_required_date!="") || (salary_required=='N'))
+        ((salary_required == 'Y' && l_salary_month != '' && l_required_amount > 0 && l_required_date != "") || (salary_required == 'N'))
+        && ((files.length > 0 && AttachementRequired == "Y") || (AttachementRequired=="N"))
     ) {
         var data = new FormData($('#createLeaveForm')[0]);
         $.ajax({
@@ -1999,7 +2006,7 @@ function createOrUpdateLeave() {
     }
 }
 function clearLeaveRequestForm() {
-   
+    $("l_id").val("0");
     $("#l_dep_id").select2().val("0").trigger("change");
     $("#l_designation").select2().val("0").trigger("change");
     $("#l_type").select2().val("0").trigger("change");
@@ -2010,6 +2017,7 @@ function clearLeaveRequestForm() {
     $("#l_contact_no1").val("");
     $("#l_contact_no2").val("");
     $("#l_address").val("");
+    $("#l_leave_days").val("");
     $('input[name="l_salary_required"][value="N"]').prop('checked', true);
     $('#l_leave_from').val("");
     updateDayOfWeek($('#l_leave_from'), 'dayOfWeekFrom');
@@ -2022,6 +2030,7 @@ function clearLeaveRequestForm() {
 
 function editLeaveApplication(l_id,flag)
 {
+    $("#upd_btn").show();
     var data = new FormData();
     data.append("l_id", l_id);
     $.ajax({
@@ -2033,16 +2042,21 @@ function editLeaveApplication(l_id,flag)
         data: data,
         success: function (response) {
             setFormValues('#createLeaveForm', response);
-            $("#LeaveModal").modal("show");
-            if (flag == "View") {
-                disableFormControls('#createLeaveForm');
-                $("#attdiv").hide();
+           
+            if (flag == "Edit") {
+
+                enableFormControls('#createLeaveForm');
+                $("#attdiv").show();
+                $("#upd_btn").show();
+               
             }
             else
             {
-                enableFormControls('#createLeaveForm');
-                $("#attdiv").show();
+                disableFormControls('#createLeaveForm');
+                $("#attdiv").hide();
+                $("#upd_btn").hide();
             }
+            $("#LeaveModal").modal("show");
         },
         error: function () {
             $('#overlay').fadeOut();
@@ -2061,6 +2075,7 @@ function getLeaveApplicationsForReview() {
         data: data,
         success: function (response) {
             $("#Container").html(response);
+            $('select[name="Supervisors"]').select2({ width: '100%' });
             loadDatatable('mytable');
         },
         error: function () {
@@ -2545,6 +2560,25 @@ function onchangeLeaveType() {
     else {
         setMinDateForInputs(false);
     }
+
+    if (l_type != 0) {
+        var data = new FormData();
+        data.append("id", l_type);
+        $.ajax({
+            url: "/Leave/onchangeLeaveType",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                $("#AttachmentRequired").val(response.attachmentRequired);
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
 }
 
 
@@ -2599,5 +2633,79 @@ function disableFormControls(formSelector) {
     $(formSelector).find('input, select, textarea, button').prop('disabled', true);
 }
 function enableFormControls(formSelector) {
-    $(formSelector).find('input, select, textarea, button').removeattr("disabled");
+    $(formSelector).find('input, select, textarea, button').removeAttr("disabled");
+
+}
+
+
+function HrLeaveApprove(type) {
+    var l_id = $("#l_id").val();
+    var ticket = $('input[name="l_ticket"]:checked').val();
+    var l_type = $('#l_type').val();
+    if ((ticket != "" && l_type == 1) || (l_type!=1)) {
+        var data = new FormData();
+        data.append("id", l_id);
+        data.append("type", type);
+        data.append("ticket", ticket);
+        $.ajax({
+            url: "/Leave/ApproveLeave",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    alert("Successfully Approved");
+                    getLeaveApplicationsForHrApproval();
+                    $("#LeaveModal").modal("hide");
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+      
+    } else {
+
+        alert("Select Ticket !!!");
+    }
+}
+
+
+function SendToAnotherSupervisor(l_id) {
+
+    var supervisor=$("#su" + l_id).val();
+
+    var data = new FormData();
+    data.append("l_id", l_id);
+    data.append("supervisor", supervisor);
+    if (supervisor != 0) {
+        $.ajax({
+            url: "/Leave/SendToAnotherSupervisor",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    getLeaveApplicationsForReview();
+                }
+                else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
+            }
+        });
+    }
+    else {
+        alert("Please Select Supervisor !!");
+    }
 }

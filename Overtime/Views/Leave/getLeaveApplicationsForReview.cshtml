@@ -42,6 +42,12 @@
                     Attachments
                 </th>
                 <th>
+                    Send to Another Supervisor
+                </th>
+                <th>
+                    
+                </th>
+                <th>
                     Action
                 </th>
                 <th>
@@ -92,7 +98,22 @@
                         <i class="fa fa-paperclip" aria-hidden="true"></i>
                     </button>
                 </td>
-
+                @if(item.l_supervisor==null)
+                {
+                <td>
+                    
+                    <select name="Supervisors" id="@string.Format("su{0}",item.l_id)" class="form-control" asp-items="@(new SelectList(ViewBag.Supervisors,"u_id","u_full_name"))" required>
+                        <option value="">Select Supervisor</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-info" onclick="SendToAnotherSupervisor('@item.l_id')">Send</button>
+                </td>
+                }else
+                {
+                    <td></td>
+                    <td></td>
+                }
                 <td>
                     <button class="btn btn-primary" onclick="OpenReviewLeaveRequestModal('@item.l_id')">Review</button>
                 </td>

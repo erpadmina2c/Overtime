@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Overtime.Models;
 using Overtime.Services;
 using System;
@@ -52,11 +53,7 @@ namespace Overtime.Repository
             return returnResult;
         }
 
-        public LeaveDetail GetLeavetype(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+     
         public string DeleteLeave(int LeaveId)
         {
             string returnResult = "";
@@ -86,6 +83,11 @@ namespace Overtime.Repository
             }
 
             return returnResult;
+        }
+
+        public LeaveDetail GetLeavetype(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(LeaveDetail leavetype)

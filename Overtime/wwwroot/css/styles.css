@@ -10444,3 +10444,7 @@ input:checked + .slider:before {
     width: 90% !important; /* Adjust the percentage as needed */
     max-width: 1300px !important; /* You can also set a max width */
 }
+
+.select2-container {
+    width: 100% !important;
+}

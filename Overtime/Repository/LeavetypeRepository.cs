@@ -1,4 +1,6 @@
-﻿using Overtime.Models;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Overtime.Models;
 using Overtime.Services;
 using System;
 using System.Collections.Generic;
@@ -25,8 +27,12 @@ namespace Overtime.Repository
 
         public Leavetypetbl GetLeavetype(int id)
         {
-            throw new NotImplementedException();
+            var _id = new SqlParameter("id", id + "");
+            var LeaveType = db.Leavetypetbl.FromSqlRaw<Leavetypetbl>("EXECUTE dbo.GetLeavetype @id", _id).ToList().FirstOrDefault();
+
+            return LeaveType;
         }
+
 
         public void Remove(int id)
         {

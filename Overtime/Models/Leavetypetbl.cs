@@ -15,5 +15,11 @@ namespace Overtime.Models
         [Display(Name = "Leave Type")]
         public string? Leavetype { get; set; }
 
+        [Display(Name = "Fly Ticket")]
+        public string? FlyTicket { get; set; }
+
+        [Display(Name = "Attachment Required")]
+        public string? AttachmentRequired { get; set; }
+
     }
 }

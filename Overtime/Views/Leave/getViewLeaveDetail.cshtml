@@ -109,22 +109,22 @@
                     @if (Model.l_salary_required == "Y")
                     {
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="Y" checked disabled>
+                            <input class="form-check-input" type="radio" id="l_salary_required" name="l_salary_required" value="Y" checked disabled>
                             <label class="form-check-label" for="inlineCheckbox1">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="N" disabled>
+                            <input class="form-check-input" type="radio" id="l_salary_required" name="l_salary_required" value="N" disabled>
                             <label class="form-check-label" for="inlineCheckbox2">No</label>
                         </div>
                     }
                     else
                     {
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="Y" disabled>
+                            <input class="form-check-input" type="radio" id="l_salary_required" name="l_salary_required" value="Y" disabled>
                             <label class="form-check-label" for="inlineCheckbox1">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="l_salary_required" name="l_salary_required" value="N" checked disabled>
+                            <input class="form-check-input" type="radio" id="l_salary_required" name="l_salary_required" value="N" checked disabled>
                             <label class="form-check-label" for="inlineCheckbox2">No</label>
                         </div>
                     }
@@ -181,26 +181,49 @@
                     <label>Remarks</label>
                     <textarea class="form-control" rows="5" asp-for="l_reason" disabled></textarea>
                 </div>
+                <br />
                 <div class="form-row">
                     <label>Authorization</label>
                     @if (Model.l_authorization != null)
                     {
-                        <select asp-for="l_authorization" class="form-control">
-                            <option value="0">Select Authorization</option>
-                            <option value="Authorized">Authorized</option>
-                            <option value="Unauthorized">Unauthorized</option>
-                        </select>
+                    <select asp-for="l_authorization" class="form-control" disabled>
+                        <option value="0">Select Authorization</option>
+                        <option value="Authorized">Authorized</option>
+                        <option value="Unauthorized">Unauthorized</option>
+                    </select>
                     }
                     else
                     {
-                        <select asp-for="l_authorization" class="form-control">
-                            <option value="0">Select Authorization</option>
-                            <option value="Authorized">Authorized</option>
-                            <option value="Unauthorized">Unauthorized</option>
-                        </select>
+                    <select asp-for="l_authorization" class="form-control">
+                        <option value="0">Select Authorization</option>
+                        <option value="Authorized">Authorized</option>
+                        <option value="Unauthorized">Unauthorized</option>
+                    </select>
                     }
 
                 </div>
+                <br />
+                @if(Model.l_status_name!="Supervisor" && ViewBag.LeaveType.FlyTicket=="Y"){
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Ticket Entitlement</label>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="l_ticket" name="l_ticket" value="TwoWay" checked>
+                            <label class="form-check-label" for="l_ticket">Two Way</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="l_ticket" name="l_ticket" value="OneWay">
+                            <label class="form-check-label" for="l_ticket">One Way</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="l_ticket" name="l_ticket" value="None">
+                            <label class="form-check-label" for="l_ticket">None</label>
+                        </div>
+                    </div>
+                </div>
+                }
             </fieldset>
 
         </form>

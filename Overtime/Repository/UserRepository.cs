@@ -153,5 +153,11 @@ namespace Overtime.Repository
             var users = db.List_User.FromSqlRaw<List_User>("EXECUTE dbo.getActiveUsers").ToList();
             return users;
         }
+
+        public List<List_User> getSupervisors()
+        {
+            var users = db.List_User.FromSqlRaw<List_User>("EXECUTE dbo.getSupervisors").ToList();
+            return users;
+        }
     }
 }

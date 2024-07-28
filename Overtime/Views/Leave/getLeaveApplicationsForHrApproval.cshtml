@@ -32,11 +32,16 @@
                 <th>
                     @Html.DisplayNameFor(model => model.l_leave_days)
                 </th>
+
+                <th>
+                    Attachments
+                </th>
+                <th>Download Salary Request Form</th>
+                @*<th></th>
+                <th></th>*@
+                <th></th>
                 <th>
                     @Html.DisplayNameFor(model => model.l_status_name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.l_approval_status_name)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.l_cre_by_name)
@@ -44,13 +49,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.l_cre_date)
                 </th>
-                <th>
-                    Attachments
-                </th>
-                <th>Download Salary Request Form</th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -82,18 +80,6 @@
                     @Html.DisplayFor(modelItem => item.l_leave_days)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.l_status_name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.l_approval_status_name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.l_cre_by_name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.l_cre_date)
-                </td>
-                <td>
                     <button type="button" class="btn btn-info thumbnail" onclick="loadAttachment(2,'@item.l_id');">
                         <i class="fa fa-paperclip" aria-hidden="true"></i>
                     </button>
@@ -101,20 +87,29 @@
                 <td>
                     @if (item.l_salary_required == "Y")
                     {
-                        <form action="/Print/PrintSalaryRequestForm" method="post">
-                            <input type="hidden" name="id" value="@item.l_id" />
-                            <button class="btn btn-default"> <i class="fa fa-download" aria-hidden="true"></i></button>
-                        </form>
+                    <form action="/Print/PrintSalaryRequestForm" method="post">
+                        <input type="hidden" name="id" value="@item.l_id" />
+                        <button class="btn btn-default"> <i class="fa fa-download" aria-hidden="true"></i></button>
+                    </form>
                     }
                 </td>
                 <td>
-                    <button class="btn btn-primary" onclick="OpenReviewLeaveRequestModal('@item.l_id')">preview</button>
+                    <button class="btn btn-primary" onclick="OpenReviewLeaveRequestModal('@item.l_id')">Approve</button>
                 </td>
-                <td>
+                @*<td>
                     <button class="btn btn-danger" onclick="ApproveLeave('@item.l_id','Rejected')">Reject</button>
                 </td>
                 <td>
                     <button class="btn btn-success" onclick="ApproveLeave('@item.l_id','Approved')">Approve</button>
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_status_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_cre_by_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.l_cre_date)
                 </td>
             </tr>
             }
