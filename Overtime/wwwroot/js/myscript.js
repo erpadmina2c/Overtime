@@ -1948,7 +1948,9 @@ function OpenModalForCreateLeave() {
         updateDayOfWeek('#l_leave_to', 'dayOfWeekTo');
     }
     enableFormControls('#createLeaveForm');
+    $("#l_leave_days").prop("disabled", true);
     clearLeaveRequestForm();
+
     $("#LeaveModal").modal("show");
     $("#upd_btn").show();
 
@@ -1963,6 +1965,8 @@ function createOrUpdateLeave() {
     var l_leave_for = $("#l_leave_for").val();
     var l_leave_from = $("#l_leave_from").val();
     var l_leave_to = $("#l_leave_to").val();
+    var fromDate = new Date(l_leave_from);
+    var toDate = new Date(l_leave_to);
     var l_leave_days = $("#l_leave_days").val();
     var l_salary_month = $("#l_salary_month").val();
     var l_required_amount = $("#l_required_amount").val();
@@ -1971,35 +1975,40 @@ function createOrUpdateLeave() {
     var files = $('#files')[0].files;
     var AttachementRequired = $("#AttachmentRequired").val();
 
-    if (l_leave_for != 0 && l_leave_days > 0 && l_dep_id != 0 && l_type != 0 &&
+    if (l_leave_for != 0 && l_leave_days > 0 && l_dep_id != 0 && l_type != 0 && 
         ((salary_required == 'Y' && l_salary_month != '' && l_required_amount > 0 && l_required_date != "") || (salary_required == 'N'))
         && ((files.length > 0 && AttachementRequired == "Y") || (AttachementRequired=="N"))
     ) {
-        var data = new FormData($('#createLeaveForm')[0]);
-        $.ajax({
-            url: "/Leave/createOrUpdateLeave",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: data,
-            success: function (response) {
-                if (response.message == "Success") {
-                    getLeaveRequests();
-                    alert("Successfully Created");
-                    clearLeaveRequestForm();
-                    $("#LeaveModal").modal("hide");
-                }
-                else {
+        if (toDate < fromDate) {
+            alert('The "Leave To" date must be greater than the "Leave From" date.');
+        } else {
 
-                    alert(response.message);
-                    $('#overlay').fadeOut()
+            var data = new FormData($('#createLeaveForm')[0]);
+            $.ajax({
+                url: "/Leave/createOrUpdateLeave",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: data,
+                success: function (response) {
+                    if (response.message == "Success") {
+                        getLeaveRequests();
+                        alert("Successfully Created");
+                        clearLeaveRequestForm();
+                        $("#LeaveModal").modal("hide");
+                    }
+                    else {
+
+                        alert(response.message);
+                        $('#overlay').fadeOut()
+                    }
+                },
+                error: function () {
+                    $('#overlay').fadeOut();
                 }
-            },
-            error: function () {
-                $('#overlay').fadeOut();
-            }
-        });
+            });
+        }
     }
     else {
         alert("Please Enter all the Data !!");
@@ -2018,6 +2027,7 @@ function clearLeaveRequestForm() {
     $("#l_contact_no2").val("");
     $("#l_address").val("");
     $("#l_leave_days").val("");
+    $("#l_leave_days").prop("disabled", true);
     $('input[name="l_salary_required"][value="N"]').prop('checked', true);
     $('#l_leave_from').val("");
     updateDayOfWeek($('#l_leave_from'), 'dayOfWeekFrom');
@@ -2046,6 +2056,7 @@ function editLeaveApplication(l_id,flag)
             if (flag == "Edit") {
 
                 enableFormControls('#createLeaveForm');
+                $("#l_leave_days").prop("disabled", true);
                 $("#attdiv").show();
                 $("#upd_btn").show();
                
@@ -2053,6 +2064,7 @@ function editLeaveApplication(l_id,flag)
             else
             {
                 disableFormControls('#createLeaveForm');
+                $("#l_leave_days").prop("disabled", true);
                 $("#attdiv").hide();
                 $("#upd_btn").hide();
             }
@@ -2534,20 +2546,41 @@ function setMinDateForInputs(flag) {
 
 $('#l_leave_from').change(function () {
     updateDayOfWeek(this, 'dayOfWeekFrom');
-    var date = new Date($('#l_leave_from').val());
-    if (date != '') {
-        var day = ("0" + date.getDate()).slice(-2);
-        if (day >= 20) {
-            $("#SalaryRequiredDiv").show();
-        }
-        else {
-            $("#SalaryRequiredDiv").hide();
-        }
-    }
+    SalaryRequiredChangeTrigger();
 });
+
+function SalaryRequiredChangeTrigger() {
+    var date = new Date($('#l_leave_from').val());
+    var day = ("0" + date.getDate()).slice(-2);
+    var l_type = $('#l_type').val();
+    var fromdate = "";
+    if (!isNaN(date.getTime())) {
+        fromdate = date.toISOString().split('T')[0];
+        $('#l_leave_to').attr('min', fromdate);
+    }
+    if (day >= 20 && (l_type == 1 || l_type == 4)) {
+
+        if (!isNaN(date.getTime())) {
+            $('#l_salary_month').attr('min', fromdate);
+            $('#l_required_date').attr('min', fromdate);
+        }
+        $("#SalaryRequiredDiv").show();
+
+    } else {
+        $("#SalaryRequiredDiv").hide();
+        $('#l_salary_month').val("");
+        $('#l_required_amount').val("");
+        $('#l_required_date').val("");
+        $("#SalaryRequestDetailDiv").hide();
+    }
+
+ 
+}
+
 
 $('#l_leave_to').change(function () {
     updateDayOfWeek(this, 'dayOfWeekTo');
+   
 });
 
 
@@ -2560,6 +2593,8 @@ function onchangeLeaveType() {
     else {
         setMinDateForInputs(false);
     }
+
+    SalaryRequiredChangeTrigger();
 
     if (l_type != 0) {
         var data = new FormData();

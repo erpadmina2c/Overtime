@@ -202,7 +202,7 @@ namespace Overtime.Controllers
                     ViewBag.RoleList = (irole.GetRoles);
                     ViewBag.DepartmentList = (idepartment.GetDepartments);
                     ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
-                    ViewBag.Message = ex.Message;
+                    ViewBag.Message = ex.InnerException;
                     return View();
                 }
             }

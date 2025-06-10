@@ -350,7 +350,8 @@ namespace Overtime.Controllers
         [HttpPost]
         public ActionResult Reject(int id, string reason)
         {
-            if (getCurrentUser() == null)
+            User currUser = getCurrentUser();
+            if (currUser == null)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -361,7 +362,7 @@ namespace Overtime.Controllers
                 WorkflowDetail workflow = iworkflowDetail.GetWorkFlowDetail(overTimeRequest.rq_workflow_id);
                 WorkflowTracker workflowTracker = new WorkflowTracker();
                 Documents documents = idocuments.GetDocument(1);
-                int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, getCurrentUser().u_role_id);
+                int rolePriority = iworkflowDetail.getPriorityByRole(overTimeRequest.rq_workflow_id, currUser.u_role_id);
 
                 int previousStatus = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, overTimeRequest.rq_status);
                 int previousStatusByRole = iworkflowDetail.getPreviousWorkflow(overTimeRequest.rq_workflow_id, rolePriority);
@@ -373,14 +374,14 @@ namespace Overtime.Controllers
                     workflowTracker.wt_fun_doc_id = overTimeRequest.rq_id;
                     workflowTracker.wt_status = overTimeRequest.rq_status;
                     workflowTracker.wt_workflow_id = overTimeRequest.rq_workflow_id;
-                    workflowTracker.wt_role_id = getCurrentUser().u_role_id;
-                    workflowTracker.wt_role_description = getCurrentUser().u_role_description;
+                    workflowTracker.wt_role_id = currUser.u_role_id;
+                    workflowTracker.wt_role_description = currUser.u_role_description;
                     workflowTracker.wt_status_to = previousStatus;
                     workflowTracker.wt_assign_role = workflowDetail.wd_role_id;
                     workflowTracker.wt_assigned_role_name = workflowDetail.wd_role_description;
                     workflowTracker.wt_approve_status = "rejected";
-                    workflowTracker.wt_cre_by = getCurrentUser().u_id;
-                    workflowTracker.wt_cre_by_name = getCurrentUser().u_name + "-" + getCurrentUser().u_full_name;
+                    workflowTracker.wt_cre_by = currUser.u_id;
+                    workflowTracker.wt_cre_by_name = currUser.u_name + "-" + currUser.u_full_name;
                     workflowTracker.wt_cre_date = DateTime.Now;
                     iworkflowTracker.Add(workflowTracker);
                     overTimeRequest.rq_status = previousStatus;
@@ -391,7 +392,7 @@ namespace Overtime.Controllers
                         insight.in_fun_doc_id = overTimeRequest.rq_id;
                         insight.in_doc_id = overTimeRequest.rq_doc_id;
                         insight.in_remarks = reason;
-                        insight.in_cre_by = getCurrentUser().u_id;
+                        insight.in_cre_by = currUser.u_id;
                         insight.in_cre_date = DateTime.Now;
 
                         iinsight.Add(insight);

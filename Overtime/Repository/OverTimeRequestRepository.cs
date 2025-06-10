@@ -286,7 +286,7 @@ namespace Overtime.Repository
                         query += " and CONVERT(date, rq_cre_date) ='" + rq_cre_date.Date + @"'";
 
                     
-                    System.Diagnostics.Debug.WriteLine(query);
+                  
                     command.CommandText = query;
                     DbDataReader reader = command.ExecuteReader();
 
@@ -384,7 +384,7 @@ namespace Overtime.Repository
                     if (rq_cre_for != 0) query += " and rq_cre_for='" + rq_cre_for + @"'";
 
                     query += " group by rq_cre_for,u_name,u_full_name,rq_dep_id,d_description";
-                    System.Diagnostics.Debug.WriteLine(query);
+                 
                     command.CommandText = query;
                     DbDataReader reader = command.ExecuteReader();
 
@@ -683,7 +683,7 @@ namespace Overtime.Repository
 	                        [dbo].[fn_GetTotalWorkingHours](rq_start_time, rq_end_time) hour
                             from OverTimeRequest
                             where rq_id="+fun_id+ " and rq_doc_id=" + doc_no+"";
-                    System.Diagnostics.Debug.WriteLine(query);
+                   
                     command.CommandText = query;
                     DbDataReader reader = command.ExecuteReader();
 

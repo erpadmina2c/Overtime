@@ -69,7 +69,7 @@ namespace Overtime.Repository
 
                     string query = @"select sum(wh_hours) hour from WorkingHour
                                     where wh_doc_id="+ v2 + " and wh_fun_doc_id="+ v1 + "";
-                    System.Diagnostics.Debug.WriteLine(query);
+                  
                     command.CommandText = query;
                     DbDataReader reader = command.ExecuteReader();
 
