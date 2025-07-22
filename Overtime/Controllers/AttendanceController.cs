@@ -428,5 +428,57 @@ namespace Overtime.Controllers
             return new JsonResult(result);
 
         }
+
+        public ActionResult ManualPunching()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                
+                ViewBag.machineDetails = context.MachineDetails.ToList();
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult getMyTodaysPunchInfos()
+        {
+
+            DataTable dataTable = new DataTable();
+            User current_user = getCurrentUser();
+            if (current_user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+
+                dataTable = ibio.getMyTodaysPunchInfos(current_user.u_id);
+            }
+            return View(dataTable);
+
+        }
+
+        [HttpPost]
+        public DbResult addManualPunching(int machine)
+        {
+            DbResult dbresult = new DbResult();
+            User user = getCurrentUser();
+            if (user != null)
+            {
+
+                dbresult = ibio.addManualPunching(machine, user.u_id);
+            }
+            else
+            {
+                dbresult.Message = "Session Expired!!";
+            }
+            return dbresult;
+        }
+
     }
 }

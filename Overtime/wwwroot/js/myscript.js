@@ -22,6 +22,7 @@
     $("#ud_depart_id").select2({ width: '100%' });
     $("#u_role_id").select2({ width: '100%' });
     $("#u_accomodation").select2({ width: '100%' });
+    $("#machine").select2({ width: '100%' });
     $('select[name="Supervisors"]').select2({ width: '100%' });
 
     $("#SalaryRequiredDiv").hide();
@@ -163,6 +164,9 @@
     }
     if ($("#ArchivedLeaves").length) {
         getArchivedLeaves();
+    }
+    if ($("#ManualPunching").length) {
+        getMyTodaysPunchInfos();
     }
     if ($("#mytable").length) {
         $('#mytable').DataTable({
@@ -542,6 +546,7 @@
             }
         });
     }
+
     $(function () {
 
         var start = moment().subtract(29, 'days');
@@ -2743,4 +2748,116 @@ function SendToAnotherSupervisor(l_id) {
     else {
         alert("Please Select Supervisor !!");
     }
+}
+
+
+function getOvertimeFullDetails() {
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("type", $("#type").val());
+    data.append("user", $("#user").val());
+   
+    $.ajax({
+        url: "/OvertimeRequest/getOvertimeFullDetails",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
+}
+
+function getApprovedOtDetails() {
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("type", $("#type").val());
+    data.append("user", $("#user").val());
+
+    $.ajax({
+        url: "/OvertimeRequest/getApprovedOtDetails",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
+}
+
+function addManualPunching() {
+   
+    $('#overlay').fadeIn();
+    var data = new FormData();
+    data.append("machine", $("#machine").select2().val());
+    $.ajax({
+        url: "/Attendance/addManualPunching",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                getMyTodaysPunchInfos();
+                $('#overlay').fadeOut()
+            }
+            else {
+                alert(response.message);
+                $('#overlay').fadeOut()
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut()
+        }
+    });
+}
+
+function getMyTodaysPunchInfos() {
+    var data = new FormData();
+    $.ajax({
+        url: "/Attendance/getMyTodaysPunchInfos",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
 }

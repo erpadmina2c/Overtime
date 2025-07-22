@@ -64,6 +64,8 @@ namespace Overtime.Controllers
 
                     DateTime from = DateTime.Parse(array[0]);
                     DateTime to = DateTime.Parse(array[1] + " 11:59:59 PM");
+
+
                     dataTable = iinAndOut.getInAndOutLogBySearch(from, to);
                 }
             }

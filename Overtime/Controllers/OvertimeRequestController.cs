@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -894,8 +895,72 @@ namespace Overtime.Controllers
             return View(ioverTimeRequest.getConsolidateByType(startDate, endDate,type));
         }
 
+        public ActionResult OvertimeFullDetails()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
+            }
+        }
 
-        
+        [HttpPost]
+        public ActionResult getOvertimeFullDetails(String reportrange, string type,int user)
+        {
+
+            DataTable dataTable = new DataTable();
+            User current_user = getCurrentUser();
+            if (current_user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+
+                dataTable = ioverTimeRequest.getOvertimeFullDetails(reportrange, type, user);
+            }
+            return View(dataTable);
+          
+        }
+
+        public ActionResult ApprovedOtDetails()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult getApprovedOtDetails(String reportrange, string type, int user)
+        {
+
+            DataTable dataTable = new DataTable();
+            User current_user = getCurrentUser();
+            if (current_user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+
+                dataTable = ioverTimeRequest.getApprovedOtDetails(reportrange, type, user);
+            }
+            return View(dataTable);
+
+        }
     }
-
 }

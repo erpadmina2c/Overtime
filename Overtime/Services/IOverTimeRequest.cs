@@ -1,6 +1,7 @@
 ﻿using Overtime.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,5 +32,7 @@ namespace Overtime.Services
         IEnumerable<OverTimeRequest> getApprovalsBySearch(int rq_dep_id, DateTime rq_start_time, DateTime rq_end_time, int role_id, int rq_cre_by, DateTime rq_cre_date, string approve,int id);
         DbResult jq_Approve(int id,int u_id);
         DbResult JQ_Reject(int id, string reason, int u_id);
+        DataTable getOvertimeFullDetails(string reportrange, string type, int user);
+        DataTable getApprovedOtDetails(string reportrange, string type, int user);
     }
 }

@@ -6,7 +6,9 @@ using Overtime.Models;
 using Overtime.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -852,6 +854,80 @@ namespace Overtime.Repository
                 dbResult.Message = ex.Message + " " + ex.InnerException;
             }
             return dbResult;
+        }
+
+        public DataTable getOvertimeFullDetails(string reportrange, string type,int user)
+        {
+            DataTable dt = new DataTable();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"exec [dbo].[getOvertimeFullDetails] @reportrange = '" + reportrange + "',@type = '" + type + "',@user ='" + user + "'";
+                    command.CommandText = query;
+                    command.CommandTimeout = 250;
+
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        dt.Load(reader);
+                    }
+                    reader.Dispose();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message + " " + ex.InnerException);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
+
+        public DataTable getApprovedOtDetails(string reportrange, string type, int user)
+        {
+            DataTable dt = new DataTable();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"exec [dbo].[getApprovedOtDetails] @reportrange = '" + reportrange + "',@type = '" + type + "',@user ='" + user + "'";
+                    command.CommandText = query;
+                    command.CommandTimeout = 250;
+
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        dt.Load(reader);
+                    }
+                    reader.Dispose();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message + " " + ex.InnerException);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
         }
     }
 }

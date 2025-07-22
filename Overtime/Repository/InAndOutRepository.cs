@@ -49,6 +49,8 @@ namespace Overtime.Repository
                 using (var command = conn.CreateCommand())
                 {
                     string query = @"exec [dbo].[getAccomodationWiseInAndOut] @ac_id = '" + ac_id + "',@status = '" + status + "',@u_id ='" + u_id + "'";
+
+                    Trace.WriteLine(query);
                     command.CommandText = query;
                     command.CommandTimeout = 250;
 
@@ -86,6 +88,7 @@ namespace Overtime.Repository
                 using (var command = conn.CreateCommand())
                 {
                     string query = @"exec [dbo].[getInAndOutLogBySearch] @from = '" + from + "',@to ='" + to + "'";
+                    Trace.WriteLine(query);
                     command.CommandText = query;
                     command.CommandTimeout = 250;
 
@@ -123,6 +126,8 @@ namespace Overtime.Repository
                 using (var command = conn.CreateCommand())
                 {
                     string query = @"exec [dbo].[getInAndOutReport] @u_id ='" + u_id + "',@ac_id ='" + ac_id + "',@from = '" + from + "',@to ='" + to + "'";
+                    Trace.WriteLine(query);
+
                     command.CommandText = query;
                     command.CommandTimeout = 250;
 

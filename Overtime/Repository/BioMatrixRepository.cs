@@ -180,5 +180,49 @@ namespace Overtime.Repository
 
             return attendances;
         }
+
+        public DataTable getMyTodaysPunchInfos(int u_id)
+        {
+            DataTable dt = new DataTable();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"exec getMyTodaysPunchInfos @u_id = '" + u_id + "'";
+                    command.CommandText = query;
+
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        dt.Load(reader);
+                    }
+                    reader.Dispose();
+                }
+            }
+            catch (Exception)
+            {
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
+
+        public DbResult addManualPunching(int machine, int u_id)
+        {
+            var _machine = new SqlParameter("machine", machine + "");
+            var _u_id = new SqlParameter("u_id", u_id + "");
+
+            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.addManualPunching @machine,@u_id", _machine, _u_id).ToList().FirstOrDefault();
+
+            return dbResults;
+        }
     }
 }

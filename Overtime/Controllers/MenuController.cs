@@ -106,7 +106,7 @@ namespace Overtime.Controllers
                 try
                 {
                     Menu _menu = imenu.GetMenu(id);
-                    _menu.m_description = _menu.m_description;
+                    _menu.m_description = menu.m_description;
                     _menu.m_desc_to_show = menu.m_desc_to_show;
                     _menu.m_link = menu.m_link;
                     _menu.m_type = menu.m_type;
