@@ -154,7 +154,7 @@ namespace Overtime.Controllers
 
                     OverTimeRequest Requests = ioverTimeRequest.GetOverTimeRequest(id);
                     Requests.rq_description = overTimeRequest.rq_description;
-                    Requests.rq_dep_id = overTimeRequest.rq_dep_id;
+                 //   Requests.rq_dep_id = overTimeRequest.rq_dep_id;
                     ioverTimeRequest.Update(Requests);
                     if (from1.Equals("Approval"))
                     {
