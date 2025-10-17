@@ -962,5 +962,41 @@ namespace Overtime.Controllers
             return View(dataTable);
 
         }
+
+
+
+        public ActionResult OvertimeNewReport()
+        {
+            if (getCurrentUser() == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.RoleList = (irole.GetRoles);
+                ViewBag.UserList = (iuser.GetUsersList());
+                ViewBag.DepartmentList = (idepartment.GetDepartments);
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult getOvertimeReportNew(String reportrange, string type, int user)
+        {
+
+            DataTable dataTable = new DataTable();
+            User current_user = getCurrentUser();
+            if (current_user == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+
+                dataTable = ioverTimeRequest.getOvertimeReportNew(reportrange, type, user);
+            }
+            return View(dataTable);
+
+        }
     }
 }

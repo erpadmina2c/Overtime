@@ -34,5 +34,6 @@ namespace Overtime.Services
         DbResult JQ_Reject(int id, string reason, int u_id);
         DataTable getOvertimeFullDetails(string reportrange, string type, int user);
         DataTable getApprovedOtDetails(string reportrange, string type, int user);
+        DataTable getOvertimeReportNew(string reportrange, string type, int user);
     }
 }

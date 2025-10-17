@@ -65,15 +65,18 @@
                 {
                     var TypeIn = "";
                     var TypeOut = "";
+                    var bgColor = "";
                     @if (@row["CurrentStatus"].ToString() == "In")
                     {
                         TypeIn = "checked";
                         TypeOut = "";
+                        bgColor = "p-3 mb-2 bg-success text-white";
                     }
                     else
                     {
                         TypeIn = "checked";
                         TypeOut = "checked";
+                        bgColor = "p-3 mb-2 bg-danger text-white";
                     }
                     <tr>
                         @foreach (DataColumn col in Model.Columns)
@@ -85,7 +88,7 @@
 
                         }
                         <td>
-                            <div class="container-fluid">
+                            <div class="container-fluid @bgColor"  >
 
                                 <div class="col-sm-6">
                                     <label class="radio-inline">

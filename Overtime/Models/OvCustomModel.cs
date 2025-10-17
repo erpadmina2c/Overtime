@@ -11,6 +11,7 @@ namespace Overtime.Models
         
         public int id { get; set; }
 
+        [Display(Name = "Employee Id")]
         public int emp_id { get; set; }
 
         [Display(Name = "Employee Code")]

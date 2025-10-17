@@ -2861,3 +2861,33 @@ function getMyTodaysPunchInfos() {
         }
     });
 }
+
+
+function getOvertimeReportNew() {
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("type", $("#type").val());
+    data.append("user", $("#user").val());
+
+    $.ajax({
+        url: "/OvertimeRequest/getOvertimeReportNew",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
+}

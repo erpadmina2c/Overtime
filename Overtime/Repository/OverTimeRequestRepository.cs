@@ -377,7 +377,7 @@ namespace Overtime.Repository
                                      from OverTimeRequest
                                      join Users on rq_cre_for = u_id
                                      join Departments on rq_dep_id = d_id
-                                     where 1=1 and rq_end_time is not null and rq_status!=0 ";
+                                     where 1=1 and rq_end_time is not null and rq_status!=0  and  rq_description !='automation test'";
 
                    
                     if (!startDate.ToString().Equals("1/1/0001 12:00:00 AM") && !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
@@ -605,8 +605,8 @@ namespace Overtime.Repository
                             from OverTimeRequest
                             join Users on rq_cre_for = u_id
                             join Departments on rq_dep_id = d_id
-                            where 1=1 " + daterange + @" and  rq_end_time is not null and rq_status!=0 
-							group by rq_dep_id,d_description";
+                            where 1=1 " + daterange + @" and  rq_end_time is not null and rq_status!=0   and  rq_description !='automation test'
+                            group by rq_dep_id,d_description";
 
                     }else
                     {
@@ -624,7 +624,7 @@ namespace Overtime.Repository
                             from OverTimeRequest
                             join Users on rq_cre_for = u_id
                             join Departments on rq_dep_id = d_id
-                            where 1=1 " + daterange + @" and rq_end_time is not null and rq_status!=0 
+                            where 1=1 " + daterange + @" and rq_end_time is not null and rq_status!=0  and   rq_description !='automation test'
 							group by rq_cre_for,u_name,u_full_name";
                     }
 
@@ -904,6 +904,43 @@ namespace Overtime.Repository
                 using (var command = conn.CreateCommand())
                 {
                     string query = @"exec [dbo].[getApprovedOtDetails] @reportrange = '" + reportrange + "',@type = '" + type + "',@user ='" + user + "'";
+                    command.CommandText = query;
+                    command.CommandTimeout = 250;
+
+                    DbDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        dt.Load(reader);
+                    }
+                    reader.Dispose();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message + " " + ex.InnerException);
+                conn.Close();
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
+
+        public DataTable getOvertimeReportNew(string reportrange, string type, int user)
+        {
+            DataTable dt = new DataTable();
+            var conn = db.Database.GetDbConnection();
+            try
+            {
+
+                conn.Open();
+                using (var command = conn.CreateCommand())
+                {
+                    string query = @"exec [dbo].[getOvertimeReportNew] @reportrange = '" + reportrange + "',@type = '" + type + "',@user ='" + user + "'";
                     command.CommandText = query;
                     command.CommandTimeout = 250;
 
