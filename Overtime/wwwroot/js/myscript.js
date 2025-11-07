@@ -2891,3 +2891,32 @@ function getOvertimeReportNew() {
         }
     });
 }
+
+function getAttendanceReport() {
+    var data = new FormData();
+    data.append("reportrange", $("#reportrange").val());
+    data.append("user", $("#user").select2().val());
+
+    $.ajax({
+        url: "/Attendance/getAttendanceReport",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
+
+}

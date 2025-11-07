@@ -480,5 +480,38 @@ namespace Overtime.Controllers
             return dbresult;
         }
 
+
+        public ActionResult AttendanceReport()
+        {
+            User user = getCurrentUser();
+            ViewBag.UserList = (iuser.GetUsersList());
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult getAttendanceReport(string reportrange, int user)
+        {
+
+            DataTable dataTable = new DataTable();
+            User curruser = getCurrentUser();
+            if (curruser == null)
+            {
+                ViewBag.message = "Session Expired !!";
+            }
+            else
+            {
+                String[] array = reportrange.Split('-');
+
+                DateTime fromdate = DateTime.Parse(array[0] + " 12:00:00 AM");
+                DateTime todate = DateTime.Parse(array[1] + " 11:59:59 PM");
+
+                dataTable = ibio.getAttendanceReport(fromdate, todate, user, curruser.u_id);
+
+               
+            }
+            return View(dataTable);
+
+        }
     }
 }

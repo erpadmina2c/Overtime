@@ -1,0 +1,53 @@
+﻿
+@model System.Data.DataTable
+@using System.Data;
+@{
+    Layout = null;
+}
+<style>
+    table td:hover {
+        background-color: rgba(0,0,0,.075);
+    }
+</style>
+@if (Model.Rows.Count > 0)
+{
+    <div class="table-responsive">
+
+        <table class="table text-nowrap table-bordered " id="mytable">
+            <thead>
+                <tr>
+                    @foreach (DataColumn col in Model.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (DataRow row in Model.Rows)
+                    {
+
+                                <tr>
+                                    @foreach (DataColumn col in Model.Columns)
+                                    {
+                                        if (col.ColumnName == "Status")
+                                        {
+                                             <td class="status_@row[col.ColumnName]">
+                                                 @row[col.ColumnName]
+                                             </td>
+                                        }
+                                        else
+                                        {
+                                            <td> @row[col.ColumnName]</td>
+                                        }
+
+                                    }
+
+                                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

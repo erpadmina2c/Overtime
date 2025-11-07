@@ -38,7 +38,7 @@ namespace Overtime.Repository
                         join x in db.Users
                         on u.rq_cre_for equals x.u_id
                         where u.rq_status == 0
-                        where u.rq_cre_by== Currentuserid
+                        where u.rq_cre_by== Currentuserid && u.rq_remarks!=".."
                         select new OverTimeRequest
                         {
                             rq_id = u.rq_id,
@@ -61,7 +61,7 @@ namespace Overtime.Repository
                             rq_cre_by = u.rq_cre_by,
                             rq_cre_by_name = j.u_full_name,
                             rq_cre_date = u.rq_cre_date,
-                        };
+                        } ;
             return query;
         }
 
@@ -377,7 +377,7 @@ namespace Overtime.Repository
                                      from OverTimeRequest
                                      join Users on rq_cre_for = u_id
                                      join Departments on rq_dep_id = d_id
-                                     where 1=1 and rq_end_time is not null and rq_status!=0  and  rq_description !='automation test'";
+                                     where 1=1 and rq_end_time is not null and rq_status!=0  ";
 
                    
                     if (!startDate.ToString().Equals("1/1/0001 12:00:00 AM") && !endDate.ToString().Equals("1/1/0001 12:00:00 AM"))
@@ -386,7 +386,9 @@ namespace Overtime.Repository
                     if (rq_cre_for != 0) query += " and rq_cre_for='" + rq_cre_for + @"'";
 
                     query += " group by rq_cre_for,u_name,u_full_name,rq_dep_id,d_description";
-                 
+
+
+                   // Trace.WriteLine(query);
                     command.CommandText = query;
                     DbDataReader reader = command.ExecuteReader();
 
@@ -605,7 +607,7 @@ namespace Overtime.Repository
                             from OverTimeRequest
                             join Users on rq_cre_for = u_id
                             join Departments on rq_dep_id = d_id
-                            where 1=1 " + daterange + @" and  rq_end_time is not null and rq_status!=0   and  rq_description !='automation test'
+                            where 1=1 " + daterange + @" and  rq_end_time is not null and rq_status!=0  
                             group by rq_dep_id,d_description";
 
                     }else
@@ -624,7 +626,7 @@ namespace Overtime.Repository
                             from OverTimeRequest
                             join Users on rq_cre_for = u_id
                             join Departments on rq_dep_id = d_id
-                            where 1=1 " + daterange + @" and rq_end_time is not null and rq_status!=0  and   rq_description !='automation test'
+                            where 1=1 " + daterange + @" and rq_end_time is not null and rq_status!=0   
 							group by rq_cre_for,u_name,u_full_name";
                     }
 
@@ -661,6 +663,10 @@ namespace Overtime.Repository
                     reader.Dispose();
 
                 }
+            }
+            catch
+            {
+
             }
             finally
             {

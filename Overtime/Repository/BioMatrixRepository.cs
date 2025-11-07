@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -224,5 +225,55 @@ namespace Overtime.Repository
 
             return dbResults;
         }
+
+        public DataTable getAttendanceReport(DateTime fromdate, DateTime todate, int user, int searchby)
+        {
+            DataTable dt = new DataTable();
+            using (var conn = db.Database.GetDbConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    using (var command = conn.CreateCommand())
+                    {
+                        command.CommandText = "getAttendanceReport";
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters safely
+                        var paramFrom = command.CreateParameter();
+                        paramFrom.ParameterName = "@fromdate";
+                        paramFrom.Value = fromdate;
+                        command.Parameters.Add(paramFrom);
+
+                        var paramTo = command.CreateParameter();
+                        paramTo.ParameterName = "@todate";
+                        paramTo.Value = todate;
+                        command.Parameters.Add(paramTo);
+
+                        var paramUid1 = command.CreateParameter();
+                        paramUid1.ParameterName = "@user";
+                        paramUid1.Value = user;
+                        command.Parameters.Add(paramUid1);
+
+                        var paramUid2 = command.CreateParameter();
+                        paramUid2.ParameterName = "@searchby";
+                        paramUid2.Value = searchby;
+                        command.Parameters.Add(paramUid2);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.InnerException);
+                    // optionally log exception
+                }
+            }
+            return dt;
+        }
+
     }
 }
