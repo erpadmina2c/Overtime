@@ -52,6 +52,7 @@ namespace Overtime.Repository
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<ArchivedLeave> ArchivedLeaves { get; set; }
         public DbSet<Designation> Designations { get; set; }
+        public DbSet<Salary> Salaries { get; set; }
 
     }
 }

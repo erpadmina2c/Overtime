@@ -2920,3 +2920,196 @@ function getAttendanceReport() {
     });
 
 }
+
+function getSalaryOftheMonth() {
+    var data = new FormData();
+    data.append("yearMonth", $("#salaryMonth").val());
+    $.ajax({
+        url: "/Salary/getSalaryOftheMonth",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#container").html(response);
+            $('#mytable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function () {
+        }
+    });
+}
+function openSalaryUploadModal() {
+    $("#salaryUploadModal").modal("show");
+}
+function UploadSalary() {
+    var data = new FormData();
+    var month = $("#salaryMonthUpload").val();
+    var fileInput = $("#salaryFile")[0].files[0];
+
+    if (!month) {
+        alert("Please select a month.");
+        return;
+    }
+
+    if (!fileInput) {
+        alert("Please select a file to upload.");
+        return;
+    }
+
+    data.append("yearMonth", month);
+    data.append("file", fileInput);
+
+
+    $.ajax({
+        url: "/Salary/UploadSalary",
+        type: "POST",
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            $("#uploadContainer").html(response);
+
+            $('#table2').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        },
+        error: function (xhr, status, error) {
+            alert("Error uploading file: " + error);
+        }
+    });
+}
+
+function deleteSalary(id){
+  
+    var data = new FormData();
+    data.append("id", id);
+    $.ajax({
+        url: "/Salary/deleteSalary",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message == "Success") {
+                var dataTable = $("#mytable").DataTable();
+                dataTable.row("#row" + id).remove().draw();
+            }
+            else {
+                alert(response.message);
+            }
+        },
+        error: function () {
+          
+        }
+    });
+}
+function getPaySlip(id) {
+    var data = new FormData();
+    data.append("id", id);
+    $.ajax({
+        url: "/Salary/getPaySlip",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#paySlipContainer").html(response);
+            $("#paySlipModal").modal("show");
+        },
+        error: function () {
+
+        }
+    });
+}
+
+
+    function printOnlyDiv() {
+        var content = document.getElementById("printArea").innerHTML;
+
+        // Create hidden iframe
+        var frame = document.createElement('iframe');
+        frame.style.position = 'fixed';
+        frame.style.right = '0';
+        frame.style.bottom = '0';
+        frame.style.width = '0';
+        frame.style.height = '0';
+        frame.style.border = '0';
+        document.body.appendChild(frame);
+
+        // Write content into iframe
+        var frameDoc = frame.contentWindow.document;
+        frameDoc.open();
+        frameDoc.write(`
+        <html>
+        <head>
+            <title>Print</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <style>
+                body { margin: 20px; }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `);
+        frameDoc.close();
+
+        // Print iframe
+        frame.onload = function () {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
+
+            // Remove iframe after print
+            setTimeout(() => document.body.removeChild(frame), 500);
+        };
+    }
+
+
+function DownloadSample() {
+    window.location.href = "/files/SalaryUploadFormat.xlsx";
+}
+
+function deleteSalaryOftheMonth() {
+    if (!confirm("Are you sure you want to delete  whole  salary for this month?")) {
+        return; // stop if user clicks Cancel
+    } else {
+
+     var data = new FormData();
+     data.append("yearMonth", $("#salaryMonth").val());
+     $.ajax({
+         url: "/Salary/deleteSalaryOftheMonth",
+         type: "POST",
+         contentType: false,
+         processData: false,
+         cache: false,
+         data: data,
+         success: function (response) {
+             if (response.message == "Success") {
+                 alert("Successfully Removed !!");
+                 getSalaryOftheMonth();
+             }
+             else {
+                 alert(response.message);
+             }
+         },
+         error: function () {
+         }
+     });
+    }
+}

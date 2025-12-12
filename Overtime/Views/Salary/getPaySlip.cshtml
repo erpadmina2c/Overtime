@@ -1,0 +1,115 @@
+﻿@model Overtime.Models.Salary
+
+@{
+    Layout = null;
+
+    var Overtime = (Model.s_daily_ot ?? 0) + (Model.s_overtime ?? 0);
+    var PerformanceBonus = (Model.s_special_bonus ?? 0);
+    var Allowance = (Model.s_allowance ?? 0) + (Model.s_aditional_bonus ?? 0) + (Model.s_performance_bonus ?? 0);
+    var traval = (Model.s_traveling_allowance ?? 0);
+    var adjustments = (Model.s_other_payment ?? 0);
+    var deductions = (Model.s_recovery ?? 0) + (Model.s_advance ?? 0) + (Model.s_deduction ?? 0);
+    var yearMonth = Model.s_year_month; // format: yyyy-MM
+    DateTime firstDay = DateTime.Parse(yearMonth + "-01");
+    DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+    var yearMonthFormatted = DateTime.Parse(Model.s_year_month + "-01")
+                                .ToString("yyyy-MMMM");
+}
+
+<!--<div class="text-right mb-3">
+    <button class="btn btn-primary btn-sm" onclick="printOnlyDiv('printArea')">
+        Print Voucher
+    </button>
+</div>-->
+<div class="container mt-4" id="printArea">
+
+    <div class="row mt-3">
+        <div class="col text-center">
+            <h3 class="p-2 border border-success" style="border-style:dashed !important; color:#0a7a0a;">
+                SALARY VOUCHER
+            </h3>
+        </div>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th width="20%">Paid To</th>
+            <td>@Model.s_emp_name</td>
+
+        </tr>
+
+        <tr>
+            <th>Employee ID</th>
+            <td>@Model.s_emp_code</td>
+            <th>Salary Month</th>
+            <td>@yearMonthFormatted</td>
+        </tr>
+
+        <tr>
+            <th>Pay Start</th>
+            <td>@firstDay.ToString("dd MMM yyyy")</td>
+            <th>Pay End</th>
+            <td>@lastDay.ToString("dd MMM yyyy")</td>
+        </tr>
+    </table>
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Remarks</th>
+                <th class="text-right" width="150px">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Basic Salary</td>
+                <td class="text-right">AED @(Model.s_basic_salary ?? 0)</td>
+            </tr>
+
+            <tr>
+                <td>Overtime</td>
+                <td class="text-right">AED @Overtime</td>
+            </tr>
+
+            <tr>
+                <td>Performance Bonus</td>
+                <td class="text-right">AED @PerformanceBonus</td>
+            </tr>
+
+            <tr>
+                <td>Allowances</td>
+                <td class="text-right">AED @Allowance</td>
+            </tr>
+
+            <tr>
+                <td>Travel Allowance</td>
+                <td class="text-right">AED @traval</td>
+            </tr>
+
+            <tr>
+                <td>Adjustments</td>
+                <td class="text-right">AED @adjustments</td>
+            </tr>
+
+            <tr>
+                <td>Deduction</td>
+                <td class="text-right">AED -@deductions</td>
+            </tr>
+
+            <tr class="font-weight-bold">
+                <td class="text-right">Total Payable Amount</td>
+                <td class="text-right">AED @(Model.s_payable ?? 0)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mt-4">
+        <div class="col-3 font-weight-bold">Receiver's Sign:</div>
+        <div class="col-9 border-bottom">&nbsp;</div>
+    </div>
+
+    <div class="text-center mt-4 text-muted" style="font-size: 12px;">
+        This is a computer generated payslip. No signature required.
+    </div>
+
+</div>

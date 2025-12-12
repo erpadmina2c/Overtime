@@ -1,0 +1,51 @@
+﻿
+@model System.Data.DataTable
+@using System.Data;
+@{
+    Layout = null;
+}
+<style>
+    table td:hover {
+        background-color: rgba(0,0,0,.075);
+    }
+</style>
+@if (Model.Rows.Count > 0)
+{
+    <div class="table-responsive">
+
+        <table class="table text-nowrap table-bordered " id="mytable">
+            <thead>
+                <tr>
+                    <th></th>
+                    @foreach (DataColumn col in Model.Columns)
+                    {
+                        <th>@col.ColumnName</th>
+                    }
+                    @if (ViewBag.AccessForSalaryUpload != null)
+                    {
+                        <th>Action</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (DataRow row in Model.Rows)
+                    {
+
+                            <tr id="@string.Format("row{0}",@row["Id"])">
+                                <td><button class="btn btn-default" onclick="getPaySlip('@row["Id"]')">Pay Slip</button></td>
+                                @foreach (DataColumn col in Model.Columns)
+                                {
+                                    <td> @row[col.ColumnName]</td>
+                                }
+                                @if (ViewBag.AccessForSalaryUpload != null)
+                                {
+                                    <td><button class="btn btn-danger" onclick="deleteSalary('@row["Id"]')">Delete</button></td>
+                                }
+                            </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
