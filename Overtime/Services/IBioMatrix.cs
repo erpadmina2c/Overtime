@@ -20,5 +20,6 @@ namespace Overtime.Services
         DataTable getMyTodaysPunchInfos(int u_id);
         DbResult addManualPunching(int machine, int u_id);
         DataTable getAttendanceReport(DateTime fromdate, DateTime todate, int user, int searchby);
+        List<MachineDetail> getMachineDetails();
     }
 }

@@ -15,6 +15,9 @@ namespace Overtime.Models
         [Display(Name = "User ID")]
         public int io_u_id { get; set; }
 
+        [Display(Name = "Campus")]
+        public int io_campus { get; set; }
+
         [Display(Name = "Punch Date")]
         public DateTime? io_date { get; set; }
 

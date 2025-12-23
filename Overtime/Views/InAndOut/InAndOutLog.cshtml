@@ -18,6 +18,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label class="control-label">Campus</label>
+                        <select id="campus" class="form-control" asp-items="@(new SelectList(ViewBag.CampusList,"c_id","c_name"))">
+                            <option value="">Select Campus</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
                         <div class="form-group">
                             <label class="control-label">Date Range</label>
                             <input id="reportrange" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" />

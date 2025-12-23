@@ -1,19 +1,27 @@
 ﻿
 @{
-    ViewData["Title"] = "AccommodationWiseInAndOut";
+    ViewData["Title"] = "Campus Wise In And Out";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
-        <li class="breadcrumb-item active"><a href="/InAndOut/AccommodationWiseInAndOut">Accommodation Wise In And Out Report</a></li>
+        <li class="breadcrumb-item active"><a href="/InAndOut/campusWiseInAndOut">Campus Wise In And Out Report</a></li>
     </ol>
 </nav>
 <div class="Pallet-fluid">
     <div class="card">
         <div class="card-body">
             <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Campus</label>
+                        <select id="campus" class="form-control" asp-items="@(new SelectList(ViewBag.CampusList,"c_id","c_name"))">
+                            <option value="">Select Campus</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label"></label>
@@ -28,12 +36,12 @@
                         <br />
                         <div class="col-sm-4">
                             <label class="radio-inline">
-                                <input type="radio" name="InAndOut"  value="All" checked>&nbsp &nbsp &nbsp All
+                                <input type="radio" name="InAndOut" value="All" checked>&nbsp &nbsp &nbsp All
                             </label>
                         </div>
                         <div class="col-sm-4">
                             <label class="radio-inline">
-                                <input type="radio" name="InAndOut"  value="In"> &nbsp &nbsp &nbsp In
+                                <input type="radio" name="InAndOut" value="In"> &nbsp &nbsp &nbsp In
                             </label>
                         </div>
 
@@ -48,7 +56,7 @@
 
                 <div class="col-md-1">
                     <div class="form-group" align="justify">
-                        <input type="submit" onclick="getAccomodationWiseInAndOut();" style="margin-top:25px" class="btn btn-primary" />
+                        <input type="submit" onclick="getCampusWiseInAndOut();" style="margin-top:25px" class="btn btn-primary" />
 
                     </div>
                 </div>

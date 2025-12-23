@@ -38,7 +38,7 @@ namespace Overtime.Repository
             return dbResults;
         }
 
-        public DataTable getAccomodationWiseInAndOut(int ac_id,string status,int u_id)
+        public DataTable getCampusWiseInAndOut(int campus,int ac_id,string status,int u_id)
         {
             DataTable dt = new DataTable();
             var conn = db.Database.GetDbConnection();
@@ -48,7 +48,7 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    string query = @"exec [dbo].[getAccomodationWiseInAndOut] @ac_id = '" + ac_id + "',@status = '" + status + "',@u_id ='" + u_id + "'";
+                    string query = @"exec [dbo].[getCampusWiseInAndOut] @campus='" + campus + "',@ac_id='"+ac_id+"',@status = '" + status + "',@u_id ='" + u_id + "'";
 
                     Trace.WriteLine(query);
                     command.CommandText = query;
@@ -77,7 +77,7 @@ namespace Overtime.Repository
             return dt;
         }
 
-        public DataTable getInAndOutLogBySearch(DateTime from, DateTime to)
+        public DataTable getInAndOutLogBySearch(int campus,DateTime from, DateTime to)
         {
             DataTable dt = new DataTable();
             var conn = db.Database.GetDbConnection();
@@ -87,7 +87,7 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    string query = @"exec [dbo].[getInAndOutLogBySearch] @from = '" + from + "',@to ='" + to + "'";
+                    string query = @"exec [dbo].[getInAndOutLogBySearch] @campus='"+ campus + "' ,@from = '" + from + "',@to ='" + to + "'";
                     Trace.WriteLine(query);
                     command.CommandText = query;
                     command.CommandTimeout = 250;
@@ -115,7 +115,7 @@ namespace Overtime.Repository
             return dt;
         }
 
-        public DataTable getInAndOutReport(int u_id, int ac_id,DateTime from, DateTime to)
+        public DataTable getInAndOutReport(int campus,int u_id, int ac_id,DateTime from, DateTime to)
         {
             DataTable dt = new DataTable();
             var conn = db.Database.GetDbConnection();
@@ -125,7 +125,7 @@ namespace Overtime.Repository
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {
-                    string query = @"exec [dbo].[getInAndOutReport] @u_id ='" + u_id + "',@ac_id ='" + ac_id + "',@from = '" + from + "',@to ='" + to + "'";
+                    string query = @"exec [dbo].[getInAndOutReport] @campus='" + campus+"',@u_id ='" + u_id + "',@ac_id ='" + ac_id + "',@from = '" + from + "',@to ='" + to + "'";
                     Trace.WriteLine(query);
 
                     command.CommandText = query;
@@ -169,11 +169,12 @@ namespace Overtime.Repository
         public DbResult updateInAndOutPunchTypeUserWise(InAndOut inAndOut)
         {
             var io_u_id = new SqlParameter("io_u_id", inAndOut.io_u_id + "");
+            var io_campus = new SqlParameter("io_campus", inAndOut.io_campus + "");
             var io_punch_type = new SqlParameter("io_punch_type", inAndOut.io_punch_type + "");
             var io_created_by = new SqlParameter("io_created_by", inAndOut.io_created_by + "");
 
-            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.updateInAndOutPunchTypeUserWise @io_u_id,@io_punch_type,@io_created_by",
-                io_u_id, io_punch_type, io_created_by).ToList().FirstOrDefault();
+            var dbResults = db.DbResult.FromSqlRaw<DbResult>("EXECUTE dbo.updateInAndOutPunchTypeUserWise @io_u_id,@io_campus ,@io_punch_type,@io_created_by",
+                io_u_id, io_campus, io_punch_type, io_created_by).ToList().FirstOrDefault();
 
             return dbResults;
         }

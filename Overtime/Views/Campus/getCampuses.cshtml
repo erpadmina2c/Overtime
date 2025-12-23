@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Overtime.Models.Campus>
+
+@{
+    Layout = null;
+}
+
+
+@if (@ViewBag.Message == null)
+{
+
+    <div class="table-responsive">
+
+        <table class="table table-hover text-nowrap" id="mytable" width="100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.c_id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.c_name)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.c_active_yn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.c_cre_by_name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.c_cre_date)
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.c_id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.c_name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.c_active_yn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.c_cre_by_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.c_cre_date)
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" onclick="getCampus(@item.c_id)">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteCampus(@item.c_id);">Delete</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+}
+else
+{
+
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.message
+    </div>
+
+}
+

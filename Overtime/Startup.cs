@@ -71,6 +71,7 @@ namespace Overtime
             services.AddTransient<IDesignation, DesignationRepository>();
             services.AddTransient<ISalary, SalaryRepository>();
             services.AddTransient<IExcel, ExcelRepository>();
+            services.AddTransient<ICampus, CampusRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

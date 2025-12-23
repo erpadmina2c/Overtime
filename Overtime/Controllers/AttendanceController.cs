@@ -20,7 +20,8 @@ namespace Overtime.Controllers
         private readonly IUser iuser;
         private readonly ILeavetype ileavetype;
         private readonly ILeaveDetail ileavedetail;
-        public AttendanceController(DBContext _context, IMenu _imenu, IBioMatrix _ibio, IUser _iuser, ILeavetype _ileavetype,ILeaveDetail _leaveDetail)
+        private readonly ICampus icampus;
+        public AttendanceController(DBContext _context, IMenu _imenu, IBioMatrix _ibio, IUser _iuser, ILeavetype _ileavetype,ILeaveDetail _leaveDetail, ICampus _icampus)
         {
             imenu = _imenu;
             ibio = _ibio;
@@ -28,6 +29,7 @@ namespace Overtime.Controllers
             iuser = _iuser;
             ileavetype = _ileavetype;
             ileavedetail = _leaveDetail;
+            icampus=_icampus ;
         }
         // GET: AttendanceController
         public ActionResult Index()
@@ -126,7 +128,8 @@ namespace Overtime.Controllers
 
         public ActionResult MachineDetail()
         {
-            var values =  context.MachineDetails.ToList();
+            var values = ibio.getMachineDetails();
+           
             if (getCurrentUser() == null)
             {
                 return RedirectToAction("Index", "Login");
@@ -153,6 +156,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.CampusList = icampus.getCampuses();
                 return View();
             }
         }
@@ -176,6 +180,7 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.CampusList = icampus.getCampuses();
                 MachineDetail machine = ibio.GetMachine(id);
                 return View(machine);
             }
@@ -199,6 +204,8 @@ namespace Overtime.Controllers
                     entity.machine_name = machine.machine_name;
                     entity.port_number = machine.port_number;
                     entity.ip_address = machine.ip_address;
+                    entity.machine_type = machine.machine_type;
+                    entity.campus_id = machine.campus_id;
                     context.SaveChanges();
                 }
                 return RedirectToAction(nameof(MachineDetail));

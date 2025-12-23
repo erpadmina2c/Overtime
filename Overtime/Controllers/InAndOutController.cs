@@ -17,12 +17,14 @@ namespace Overtime.Controllers
         private readonly IMenu imenu;
         private readonly IUser iuser;
         private readonly IAccomadation iaccomadation;
-        public InAndOutController(IInAndOut _iinAndOut, IMenu _imenu,IUser _iuser, IAccomadation _iaccomadation)
+        private readonly ICampus icampus;
+        public InAndOutController(IInAndOut _iinAndOut, IMenu _imenu,IUser _iuser, IAccomadation _iaccomadation, ICampus _icampus)
         {
             iinAndOut = _iinAndOut;
             imenu = _imenu;
             iuser = _iuser;
             iaccomadation = _iaccomadation;
+            icampus = _icampus;
         }
         // GET: Role
         public ActionResult Index()
@@ -44,11 +46,12 @@ namespace Overtime.Controllers
             }
             else
             {
+                ViewBag.CampusList = icampus.getCampuses();
                 return View();
             }
           
         }
-        public ActionResult getInAndOutLogBySearch(string reportrange)
+        public ActionResult getInAndOutLogBySearch(int campus ,string reportrange)
         {
             DataTable dataTable = new DataTable();
             if (getCurrentUser() == null)
@@ -66,7 +69,7 @@ namespace Overtime.Controllers
                     DateTime to = DateTime.Parse(array[1] + " 11:59:59 PM");
 
 
-                    dataTable = iinAndOut.getInAndOutLogBySearch(from, to);
+                    dataTable = iinAndOut.getInAndOutLogBySearch(campus,from, to);
                 }
             }
             return View(dataTable);
@@ -83,12 +86,13 @@ namespace Overtime.Controllers
             {
                 ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
                 ViewBag.UserList = (iuser.getActiveUsers());
+                ViewBag.CampusList = icampus.getCampuses();
                 return View();
             }
 
         }
 
-        public ActionResult getInAndOutReport(int u_id ,int ac_id,string reportrange)
+        public ActionResult getInAndOutReport(int campus,int u_id ,int ac_id,string reportrange)
         {
             DataTable dataTable = new DataTable();
             if (getCurrentUser() == null)
@@ -104,7 +108,7 @@ namespace Overtime.Controllers
 
                     DateTime from = DateTime.Parse(array[0]);
                     DateTime to = DateTime.Parse(array[1] + " 11:59:59 PM");
-                    dataTable = iinAndOut.getInAndOutReport(u_id, ac_id, from, to);
+                    dataTable = iinAndOut.getInAndOutReport(campus,u_id, ac_id, from, to);
                 }
             }
             return View(dataTable);
@@ -159,7 +163,7 @@ namespace Overtime.Controllers
             return dataTable;
         }
 
-        public ActionResult AccommodationWiseInAndOut()
+        public ActionResult campusWiseInAndOut()
         {
             User user = getCurrentUser();
             if (user == null)
@@ -169,12 +173,13 @@ namespace Overtime.Controllers
             else
             {
                 ViewBag.Accomodation = (iaccomadation.GetAccomadationslist);
+                ViewBag.CampusList = icampus.getCampuses();
                 return View();
             }
           
         }
 
-        public ActionResult getAccomodationWiseInAndOut(int ac_id,string status)
+        public ActionResult getCampusWiseInAndOut(int campus,int ac_id ,string status)
         {
             DataTable dataTable = new DataTable();
             User user = getCurrentUser();
@@ -185,7 +190,7 @@ namespace Overtime.Controllers
             else
             {
                 //habeebtest
-                dataTable = iinAndOut.getAccomodationWiseInAndOut(ac_id,status,user.u_id);
+                dataTable = iinAndOut.getCampusWiseInAndOut(campus, ac_id, status,user.u_id);
             }
             ViewBag.Total = dataTable.AsEnumerable().Count();
             ViewBag.In = dataTable.AsEnumerable().Where(row => row.Field<string>("CurrentStatus").Equals("In")).Count();

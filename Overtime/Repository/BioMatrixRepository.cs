@@ -275,5 +275,52 @@ namespace Overtime.Repository
             return dt;
         }
 
+        public List<MachineDetail> getMachineDetails()
+        {
+            List<MachineDetail> machineDetails = new List<MachineDetail>();
+            MachineDetail machineDetail = new MachineDetail();
+            var conn = db.Database.GetDbConnection();
+
+            try
+            {
+                conn.Open();
+
+                using (var command = conn.CreateCommand())
+                {
+                    command.CommandText = "EXEC getMachines";
+                    command.CommandType = CommandType.Text;
+
+                    using (DbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            machineDetail = new MachineDetail();
+                            
+                            if (reader["machine_id"].ToString() != "") machineDetail.machine_Id = Convert.ToInt32(reader["machine_id"].ToString());
+                            if (reader["machine_name"].ToString() != "") machineDetail.machine_name = reader["machine_name"].ToString() ;
+                            if (reader["port_number"].ToString() != "") machineDetail.port_number = Convert.ToInt32(reader["port_number"].ToString());
+                            if (reader["ip_address"].ToString() != "") machineDetail.ip_address = reader["ip_address"].ToString();
+                            if (reader["machine_type"].ToString() != "") machineDetail.machine_type = reader["machine_type"].ToString();
+                           // if (reader["campus_id"].ToString() != "") machineDetail.campus_id = Convert.ToInt32(reader["campus_id"].ToString());
+                            if (reader["campus_name"].ToString() != "") machineDetail.campus_name = reader["campus_name"].ToString();
+                            if (reader["created_at"].ToString() != "") machineDetail.created_at = Convert.ToDateTime(reader["created_at"].ToString());
+
+                            machineDetails.Add(machineDetail);
+                        }
+                    }
+                }
+             }
+            catch (Exception ex)
+            {
+                conn.Close();
+                Trace.WriteLine(ex.Message+" "+ex.InnerException);
+            }
+            finally
+            {
+                conn.Close();
+            }
+           
+            return machineDetails;
+        }
     }
 }

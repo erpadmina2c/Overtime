@@ -10448,3 +10448,7 @@ input:checked + .slider:before {
 .select2-container {
     width: 100% !important;
 }
+
+.pallet{
+    padding:20px;
+}

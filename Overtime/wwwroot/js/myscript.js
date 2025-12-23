@@ -24,6 +24,7 @@
     $("#u_accomodation").select2({ width: '100%' });
     $("#machine").select2({ width: '100%' });
     $('select[name="Supervisors"]').select2({ width: '100%' });
+    $('#campus').select2({ width: '100%' });
 
     $("#SalaryRequiredDiv").hide();
     $("#SalaryRequestDetailDiv").hide();
@@ -167,6 +168,9 @@
     }
     if ($("#ManualPunching").length) {
         getMyTodaysPunchInfos();
+    }
+    if ($("#Campus").length) {
+        getCampuses();
     }
     if ($("#mytable").length) {
         $('#mytable').DataTable({
@@ -1648,6 +1652,7 @@ function getUserBioDepartment() {
 function getInAndOutLogBySearch() {
 
     var data = new FormData();
+    data.append("campus", $("#campus").select2().val());
     data.append("reportrange", $("#reportrange").val());
     $.ajax({
         url: "/InAndOut/getInAndOutLogBySearch",
@@ -1770,6 +1775,7 @@ function getInAndOutReport() {
 
     var data = new FormData();
     data.append("reportrange", $("#reportrange").val());
+    data.append("campus", $("#campus").select2().val());
     data.append("u_id", $("#user").select2().val());
     data.append("ac_id", $("#ac_id").select2().val());
     $.ajax({
@@ -1868,14 +1874,15 @@ function changeInAndOut(id) {
 }
 
 
-function getAccomodationWiseInAndOut() {
+function getCampusWiseInAndOut() {
 
     var data = new FormData();
     var inandout = $("input[name='InAndOut']:checked").val();
     data.append("ac_id", $("#ac_id").select2().val());
+    data.append("campus", $("#campus").select2().val());
     data.append("status", inandout);
     $.ajax({
-        url: "/InAndOut/getAccomodationWiseInAndOut",
+        url: "/InAndOut/getCampusWiseInAndOut",
         type: "POST",
         contentType: false,
         processData: false,
@@ -1897,29 +1904,35 @@ function changeInAndOutUserWise(u_id) {
     var punchtype = $("input[name='InAndOut" + u_id + "']:checked").val();
 
     data.append("io_u_id", u_id);
+    data.append("io_campus", $("#campus").select2().val());
     data.append("io_punch_type", punchtype);
-
-    $.ajax({
-        url: "/InAndOut/updateInAndOutPunchTypeUserWise",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function (response) {
-            if (response.message == "Success") {
-                getAccomodationWiseInAndOut();
-                alert("Successfully Updated !!!");
+    if ($("#campus").select2().val() != 0) {
+        $.ajax({
+            url: "/InAndOut/updateInAndOutPunchTypeUserWise",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: data,
+            success: function (response) {
+                if (response.message == "Success") {
+                    alert("Successfully Updated");
+                    getCampusWiseInAndOut();
+                   
+                }
+                else {
+                    alert(response.message);
+                    $('#overlay').fadeOut()
+                }
+            },
+            error: function () {
+                $('#overlay').fadeOut();
             }
-            else {
-                alert(response.message);
-                $('#overlay').fadeOut()
-            }
-        },
-        error: function () {
-            $('#overlay').fadeOut();
-        }
-    });
+        });
+    }
+    else {
+        alert("Please Select Campus");
+    }
 }
 
 function getLeaveRequests() {
@@ -3112,4 +3125,123 @@ function deleteSalaryOftheMonth() {
          }
      });
     }
+}
+
+function getCampuses() {
+
+    $.ajax({
+        url: "/Campus/getCampuses",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        success: function (response) {
+            $("#container").html(response);
+            loadDatatable('mytable');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+
+function OpenModalForAddCampus() {
+    $("#c_id").val(0);
+    $("#c_name").val("");
+    $("#c_active_yn").val("Y");
+    $("#c_active_yn_div").hide();
+    $('#CampusModal').modal('show');
+}
+
+
+function addOrUpdateCampus() {
+
+    $('#overlay').fadeIn();
+
+    var data = new FormData();
+    data.append("c_id", $("#c_id").val());
+    data.append("c_name", $("#c_name").val());
+    data.append("c_active_yn", $("#c_active_yn").val());
+
+    $.ajax({
+        url: "/Campus/addOrUpdateCampus",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+
+            if (response.message === "Success") {
+
+                $("#c_id").val(0);
+                $("#c_name").val("");
+                $("#c_active_yn").val("Y");
+
+                getCampuses();
+                $('#CampusModal').modal('hide');
+            }
+            else {
+                alert(response.message);
+            }
+
+            $('#overlay').fadeOut();
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+
+function deleteCampus(c_id) {
+
+    var data = new FormData();
+    data.append("c_id", c_id);
+
+    $.ajax({
+        url: "/Campus/deleteCampus",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            if (response.message === "Success") {
+                getCampuses();
+            }
+            else {
+                alert(response.message);
+            }
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
+}
+
+function getCampus(c_id) {
+
+    var data = new FormData();
+    data.append("c_id", c_id);
+
+    $.ajax({
+        url: "/Campus/getCampus",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function (response) {
+            $("#c_id").val(response.c_id);
+            $("#c_name").val(response.c_name);
+            $("#c_active_yn").val(response.c_active_yn);
+            $("#c_active_yn_div").show();
+            $('#CampusModal').modal('show');
+        },
+        error: function () {
+            $('#overlay').fadeOut();
+        }
+    });
 }

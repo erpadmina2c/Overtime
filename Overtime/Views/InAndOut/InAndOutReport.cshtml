@@ -13,7 +13,14 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Campus</label>
+                        <select id="campus" class="form-control" asp-items="@(new SelectList(ViewBag.CampusList,"c_id","c_name"))">
+                            <option value="">Select Campus</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Accomodation</label>
@@ -31,7 +38,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
                         <div class="form-group">
                             <label class="control-label">Date Range</label>
